@@ -9,6 +9,7 @@ import { DialogTitle } from "@/components/ui/dialog"
 import { compareSemVer, decimalString, parseSemVer, toFixedFloat } from "@/lib/utils"
 import type { ChartData, SystemStatsRecord } from "@/types"
 import { ChartCard } from "./chart-card"
+import { CpuPressureChart } from "./charts/cpu-pressure-chart"
 
 const minAgentVersion = parseSemVer("0.15.3")
 
@@ -119,6 +120,7 @@ export default memo(function CpuCoresSheet({
 			{hasOpened.current && (
 				<SheetContent aria-describedby={undefined} className="overflow-auto w-200 !max-w-full p-4 sm:p-6">
 					<ChartTimeSelect className="w-[calc(100%-2em)] bg-card" agentVersion={chartData.agentVersion} />
+					<CpuPressureChart chartData={chartData} grid={grid} dataEmpty={dataEmpty} />
 					{hasBreakdown && (
 						<ChartCard
 							key="cpu-breakdown"

@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { toast } from "@/components/ui/use-toast"
@@ -17,7 +18,7 @@ import { alertInfo } from "@/lib/alerts"
 import { pb } from "@/lib/api"
 import { $alerts, $systems } from "@/lib/stores"
 import { cn, debounce } from "@/lib/utils"
-import type { AlertInfo, AlertRecord, SystemRecord } from "@/types"
+import type { AlertInfo, AlertLevel, AlertRecord, SystemRecord } from "@/types"
 
 const Slider = lazy(() => import("@/components/ui/slider"))
 
@@ -236,10 +237,12 @@ export function AlertContent({
 	const { name } = alertData
 
 	const singleDescription = alertData.singleDesc?.()
+	const levels = (alertData as AlertInfo).levels
 
+	const defaultValue = levels ? (levels[0]?.value ?? 2) : singleDescription ? 0 : (alertData.start ?? 80)
 	const [checked, setChecked] = useState(global ? false : !!alert)
 	const [min, setMin] = useState(alert?.min || 10)
-	const [value, setValue] = useState(alert?.value || (singleDescription ? 0 : (alertData.start ?? 80)))
+	const [value, setValue] = useState(alert?.value || defaultValue)
 
 	const Icon = alertData.icon
 
@@ -310,7 +313,7 @@ export function AlertContent({
 			{checked && (
 				<div className="grid sm:grid-cols-2 mt-1.5 gap-5 px-4 pb-5 tabular-nums text-muted-foreground">
 					<Suspense fallback={<div className="h-10" />}>
-						{!singleDescription && (
+						{!singleDescription && !levels && (
 							<div>
 								<p id={`v${name}`} className="text-sm block h-6">
 									{alertData.invert ? (
@@ -359,6 +362,38 @@ export function AlertContent({
 										className="w-16 h-8 text-center px-1"
 									/>
 								</div>
+							</div>
+						)}
+						{levels && (
+							<div>
+								<p className="text-sm block h-6">
+									<Trans>
+										Trigger level:{" "}
+										<strong className="text-foreground">
+											{(levels as AlertLevel[]).find((l) => l.value === value)?.label() ??
+												`>${value}${alertData.unit}`}
+										</strong>
+									</Trans>
+								</p>
+								<Select
+									value={String(value)}
+									onValueChange={(val) => {
+										const num = Number(val)
+										setValue(num)
+										sendUpsert(min, num)
+									}}
+								>
+									<SelectTrigger className="w-full h-8 text-sm">
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										{(levels as AlertLevel[]).map((level) => (
+											<SelectItem key={level.value} value={String(level.value)}>
+												{level.label()}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
 							</div>
 						)}
 						<div className={cn(singleDescription && "col-span-full lowercase")}>

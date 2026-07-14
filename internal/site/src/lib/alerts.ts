@@ -1,5 +1,5 @@
 import { t } from "@lingui/core/macro"
-import { CpuIcon, HardDriveIcon, MemoryStickIcon, ServerIcon } from "lucide-react"
+import { CpuIcon, GaugeIcon, HardDriveIcon, MemoryStickIcon, ServerIcon } from "lucide-react"
 import type { RecordSubscription } from "pocketbase"
 import { EthernetIcon, GpuIcon } from "@/components/ui/icons"
 import { $alerts } from "@/lib/stores"
@@ -91,6 +91,39 @@ export const alertInfo: Record<string, AlertInfo> = {
 		desc: () => t`Triggers when battery charge drops below a threshold`,
 		start: 20,
 		invert: true,
+	},
+	CpuPressureAvg10: {
+		name: () => t`CPU Pressure avg10`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 10s CPU pressure stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	CpuPressureAvg60: {
+		name: () => t`CPU Pressure avg60`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 60s CPU pressure stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	CpuPressureAvg300: {
+		name: () => t`CPU Pressure avg300`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 300s CPU pressure stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
 	},
 } as const
 

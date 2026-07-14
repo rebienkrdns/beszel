@@ -89,6 +89,8 @@ export interface SystemStats {
 	cpub?: number[]
 	/** per-core cpu usage [CPU0..] (0-100 integers) */
 	cpus?: number[]
+	/** cpu pressure PSI some [avg10, avg60, avg300] (%) */
+	cpup?: [number, number, number]
 	/** load average */
 	la?: [number, number, number]
 	/** total memory (gb) */
@@ -321,6 +323,11 @@ export interface ChartData {
 	chartTime: ChartTimes
 }
 
+export interface AlertLevel {
+	label: () => string
+	value: number
+}
+
 export interface AlertInfo {
 	name: () => string
 	unit: string
@@ -333,6 +340,8 @@ export interface AlertInfo {
 	/** Single value description (when there's only one value, like status) */
 	singleDesc?: () => string
 	invert?: boolean
+	/** Predefined levels — when set, shows a level selector instead of a value slider */
+	levels?: readonly AlertLevel[]
 }
 
 export type AlertMap = Record<string, Map<string, AlertRecord>>
