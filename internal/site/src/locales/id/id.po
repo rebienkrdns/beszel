@@ -50,6 +50,10 @@ msgstr "{count, plural, one {{countString} menit} few {{countString} menit} many
 msgid "{threads, plural, one {# thread} other {# threads}}"
 msgstr "{threads, plural, one {# thread} other {# thread}}"
 
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for CPU — some stall"
+msgstr ""
+
 #: src/lib/utils.ts
 msgid "1 hour"
 msgstr "1 jam"
@@ -506,6 +510,22 @@ msgstr "Inti CPU"
 msgid "CPU Peak"
 msgstr "Puncak CPU"
 
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "CPU Pressure (PSI)"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "CPU Pressure avg10"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "CPU Pressure avg300"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "CPU Pressure avg60"
+msgstr ""
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "CPU time"
 msgstr "Waktu CPU"
@@ -534,9 +554,19 @@ msgstr "Buat akun"
 msgid "Created"
 msgstr "Dibuat"
 
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "Critical"
+msgstr ""
+
 #: src/components/routes/settings/general.tsx
 msgid "Critical (%)"
 msgstr "Kritis (%)"
+
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+msgid "Critical (>10%)"
+msgstr ""
 
 #: src/components/routes/system/network-sheet.tsx
 msgid "Cumulative Download"
@@ -717,7 +747,6 @@ msgstr "Masukkan otp anda."
 msgid "Ephemeral"
 msgstr "Sementara"
 
-#: src/components/login/auth-form.tsx
 #: src/components/routes/settings/alerts-history-data-table.tsx
 #: src/components/routes/settings/config-yaml.tsx
 #: src/components/routes/settings/heartbeat.tsx
@@ -741,6 +770,10 @@ msgstr "Contoh:"
 #: src/components/active-alerts.tsx
 msgid "Exceeds {0}{1} in last {2, plural, one {# minute} other {# minutes}}"
 msgstr "Melebihi {0}{1} dalam {2, plural, one {# menit} other {# menit}} terakhir"
+
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "Excellent"
+msgstr ""
 
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Exec main PID"
@@ -892,6 +925,16 @@ msgstr "Pemantauan Heartbeat"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Heartbeat sent successfully"
 msgstr "Heartbeat berhasil dikirim"
+
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "High"
+msgstr ""
+
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+msgid "High (>5%)"
+msgstr ""
 
 #: src/components/add-system.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
@@ -1133,6 +1176,10 @@ msgstr "Tidak ada atribut S.M.A.R.T. yang tersedia untuk perangkat ini."
 #: src/components/systems-table/systems-table.tsx
 msgid "No systems found."
 msgstr "Sistem tidak ditemukan."
+
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "Normal"
+msgstr ""
 
 #: src/components/command-palette.tsx
 #: src/components/routes/settings/layout.tsx
@@ -1550,6 +1597,11 @@ msgstr "Ruang swap yang digunakan oleh sistem"
 msgid "Swap Usage"
 msgstr "Penggunaan Swap"
 
+#: src/components/mode-toggle.tsx
+#: src/components/mode-toggle.tsx
+msgid "Switch theme"
+msgstr ""
+
 #: src/components/add-system.tsx
 #: src/components/alerts-history-columns.tsx
 #: src/components/containers-table/containers-table-columns.tsx
@@ -1657,11 +1709,6 @@ msgstr "Format waktu"
 msgid "To email(s)"
 msgstr "Ke email"
 
-#: src/components/mode-toggle.tsx
-#: src/components/mode-toggle.tsx
-msgid "Toggle theme"
-msgstr "Ganti tema"
-
 #: src/components/add-system.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
 msgid "Token"
@@ -1704,6 +1751,11 @@ msgstr ""
 msgid "Total: {0}"
 msgstr ""
 
+#. placeholder {0}: (levels as AlertLevel[]).find((l) => l.value === value)?.label() ?? `>${value}${alertData.unit}`
+#: src/components/alerts/alerts-sheet.tsx
+msgid "Trigger level: <0>{0}</0>"
+msgstr ""
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Triggered by"
 msgstr "Dipicu oleh"
@@ -1717,12 +1769,24 @@ msgid "Triggers when 1 minute load average exceeds a threshold"
 msgstr "Dipicu ketika rata-rata beban 1 menit melebihi ambang batas"
 
 #: src/lib/alerts.ts
+msgid "Triggers when 10s CPU pressure stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
 msgid "Triggers when 15 minute load average exceeds a threshold"
 msgstr "Dipicu ketika rata-rata beban 15 menit melebihi ambang batas"
 
 #: src/lib/alerts.ts
+msgid "Triggers when 300s CPU pressure stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
 msgid "Triggers when 5 minute load average exceeds a threshold"
 msgstr "Dipicu ketika rata-rata beban 5 menit melebihi ambang batas"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s CPU pressure stall exceeds a predefined level"
+msgstr ""
 
 #: src/lib/alerts.ts
 msgid "Triggers when any sensor exceeds a threshold"
@@ -1869,6 +1933,7 @@ msgid "Visible Fields"
 msgstr "Metrik yang Terlihat"
 
 #: src/components/routes/system/chart-card.tsx
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
 msgid "Waiting for enough records to display"
 msgstr "Menunggu cukup record untuk ditampilkan"
 
@@ -1880,9 +1945,19 @@ msgstr "Ingin membantu meningkatkan terjemahan kami? Periksa <0>Crowdin</0> untu
 msgid "Wants"
 msgstr "Menginginkan"
 
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "Warning"
+msgstr ""
+
 #: src/components/routes/settings/general.tsx
 msgid "Warning (%)"
 msgstr "Peringatan (%)"
+
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+msgid "Warning (>2%)"
+msgstr ""
 
 #: src/components/routes/settings/general.tsx
 msgid "Warning thresholds"

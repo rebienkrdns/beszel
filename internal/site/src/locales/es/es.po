@@ -50,6 +50,10 @@ msgstr "{count, plural, one {{countString} minuto} other {{countString} minutos}
 msgid "{threads, plural, one {# thread} other {# threads}}"
 msgstr "{threads, plural, one {# hilo} other {# hilos}}"
 
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for CPU — some stall"
+msgstr "% del tiempo que las tareas esperan CPU — stall parcial"
+
 #: src/lib/utils.ts
 msgid "1 hour"
 msgstr "1 hora"
@@ -506,6 +510,22 @@ msgstr "Núcleos de CPU"
 msgid "CPU Peak"
 msgstr "Pico de CPU"
 
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "CPU Pressure (PSI)"
+msgstr "Presión de CPU (PSI)"
+
+#: src/lib/alerts.ts
+msgid "CPU Pressure avg10"
+msgstr "Presión de CPU avg10"
+
+#: src/lib/alerts.ts
+msgid "CPU Pressure avg300"
+msgstr "Presión de CPU avg300"
+
+#: src/lib/alerts.ts
+msgid "CPU Pressure avg60"
+msgstr "Presión de CPU avg60"
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "CPU time"
 msgstr "Tiempo de CPU"
@@ -534,9 +554,19 @@ msgstr "Crear cuenta"
 msgid "Created"
 msgstr "Creada"
 
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "Critical"
+msgstr "Crítico"
+
 #: src/components/routes/settings/general.tsx
 msgid "Critical (%)"
 msgstr "Crítico (%)"
+
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+msgid "Critical (>10%)"
+msgstr "Crítico (>10%)"
 
 #: src/components/routes/system/network-sheet.tsx
 msgid "Cumulative Download"
@@ -717,7 +747,6 @@ msgstr "Ingrese su contraseña de un solo uso."
 msgid "Ephemeral"
 msgstr "Efímero"
 
-#: src/components/login/auth-form.tsx
 #: src/components/routes/settings/alerts-history-data-table.tsx
 #: src/components/routes/settings/config-yaml.tsx
 #: src/components/routes/settings/heartbeat.tsx
@@ -741,6 +770,10 @@ msgstr "Ejemplo:"
 #: src/components/active-alerts.tsx
 msgid "Exceeds {0}{1} in last {2, plural, one {# minute} other {# minutes}}"
 msgstr "Excede {0}{1} en el último {2, plural, one {# minuto} other {# minutos}}"
+
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "Excellent"
+msgstr "Excelente"
 
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Exec main PID"
@@ -892,6 +925,16 @@ msgstr "Monitorización de Heartbeat"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Heartbeat sent successfully"
 msgstr "Latido enviado con éxito"
+
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "High"
+msgstr "Alto"
+
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+msgid "High (>5%)"
+msgstr "Alto (>5%)"
 
 #: src/components/add-system.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
@@ -1133,6 +1176,10 @@ msgstr "No hay atributos S.M.A.R.T. disponibles para este dispositivo."
 #: src/components/systems-table/systems-table.tsx
 msgid "No systems found."
 msgstr "No se encontraron sistemas."
+
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "Normal"
+msgstr "Normal"
 
 #: src/components/command-palette.tsx
 #: src/components/routes/settings/layout.tsx
@@ -1550,6 +1597,11 @@ msgstr "Espacio de swap utilizado por el sistema"
 msgid "Swap Usage"
 msgstr "Uso de swap"
 
+#: src/components/mode-toggle.tsx
+#: src/components/mode-toggle.tsx
+msgid "Switch theme"
+msgstr ""
+
 #: src/components/add-system.tsx
 #: src/components/alerts-history-columns.tsx
 #: src/components/containers-table/containers-table-columns.tsx
@@ -1657,11 +1709,6 @@ msgstr "Formato de hora"
 msgid "To email(s)"
 msgstr "A correo(s)"
 
-#: src/components/mode-toggle.tsx
-#: src/components/mode-toggle.tsx
-msgid "Toggle theme"
-msgstr "Alternar tema"
-
 #: src/components/add-system.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
 msgid "Token"
@@ -1704,6 +1751,11 @@ msgstr ""
 msgid "Total: {0}"
 msgstr ""
 
+#. placeholder {0}: (levels as AlertLevel[]).find((l) => l.value === value)?.label() ?? `>${value}${alertData.unit}`
+#: src/components/alerts/alerts-sheet.tsx
+msgid "Trigger level: <0>{0}</0>"
+msgstr ""
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Triggered by"
 msgstr "Activado por"
@@ -1717,12 +1769,24 @@ msgid "Triggers when 1 minute load average exceeds a threshold"
 msgstr "Se activa cuando la carga media de 1 minuto supera un umbral"
 
 #: src/lib/alerts.ts
+msgid "Triggers when 10s CPU pressure stall exceeds a predefined level"
+msgstr "Se activa cuando la presión de CPU de 10s supera un nivel predefinido"
+
+#: src/lib/alerts.ts
 msgid "Triggers when 15 minute load average exceeds a threshold"
 msgstr "Se activa cuando la carga media de 15 minutos supera un umbral"
 
 #: src/lib/alerts.ts
+msgid "Triggers when 300s CPU pressure stall exceeds a predefined level"
+msgstr "Se activa cuando la presión de CPU de 300s supera un nivel predefinido"
+
+#: src/lib/alerts.ts
 msgid "Triggers when 5 minute load average exceeds a threshold"
 msgstr "Se activa cuando la carga media de 5 minutos supera un umbral"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s CPU pressure stall exceeds a predefined level"
+msgstr "Se activa cuando la presión de CPU de 60s supera un nivel predefinido"
 
 #: src/lib/alerts.ts
 msgid "Triggers when any sensor exceeds a threshold"
@@ -1869,6 +1933,7 @@ msgid "Visible Fields"
 msgstr "Columnas visibles"
 
 #: src/components/routes/system/chart-card.tsx
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
 msgid "Waiting for enough records to display"
 msgstr "Esperando suficientes registros para mostrar"
 
@@ -1880,9 +1945,19 @@ msgstr "¿Quieres ayudar a mejorar nuestras traducciones? Consulta <0>Crowdin</0
 msgid "Wants"
 msgstr "Desea"
 
+#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+msgid "Warning"
+msgstr "Advertencia"
+
 #: src/components/routes/settings/general.tsx
 msgid "Warning (%)"
 msgstr "Advertencia (%)"
+
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+msgid "Warning (>2%)"
+msgstr "Advertencia (>2%)"
 
 #: src/components/routes/settings/general.tsx
 msgid "Warning thresholds"
