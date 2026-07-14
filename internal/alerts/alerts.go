@@ -56,6 +56,7 @@ type SystemAlertStats struct {
 	LoadAvg      [3]float64                    `json:"la"`
 	Battery      [2]uint8                      `json:"bat"`
 	ExtraFs      map[string]SystemAlertFsStats `json:"efs"`
+	CpuPressure  [3]float64                    `json:"cpup"`
 }
 
 type SystemAlertGPUData struct {

@@ -67,6 +67,24 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 				continue
 			}
 			val = float64(data.Stats.Battery[0])
+		case "CpuPressureAvg10":
+			if data.Stats.CpuPressure[0] == 0 {
+				continue
+			}
+			val = data.Stats.CpuPressure[0]
+			unit = "%"
+		case "CpuPressureAvg60":
+			if data.Stats.CpuPressure[1] == 0 {
+				continue
+			}
+			val = data.Stats.CpuPressure[1]
+			unit = "%"
+		case "CpuPressureAvg300":
+			if data.Stats.CpuPressure[2] == 0 {
+				continue
+			}
+			val = data.Stats.CpuPressure[2]
+			unit = "%"
 		}
 
 		triggered := alertData.Triggered
@@ -236,6 +254,12 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 				alert.val += maxUsage
 			case "Battery":
 				alert.val += float64(stats.Battery[0])
+			case "CpuPressureAvg10":
+				alert.val += stats.CpuPressure[0]
+			case "CpuPressureAvg60":
+				alert.val += stats.CpuPressure[1]
+			case "CpuPressureAvg300":
+				alert.val += stats.CpuPressure[2]
 			default:
 				continue
 			}
@@ -305,14 +329,18 @@ func (am *AlertManager) sendSystemAlert(alert SystemAlertData) {
 	if alert.name == "Disk" {
 		alert.name += " usage"
 	}
-	// format LoadAvg5 and LoadAvg15
+	// format LoadAvg names
 	if after, ok := strings.CutPrefix(alert.name, "LoadAvg"); ok {
 		alert.name = after + "m Load"
 	}
+	// format CpuPressure names
+	if after, ok := strings.CutPrefix(alert.name, "CpuPressure"); ok {
+		alert.name = "CPU Pressure " + after
+	}
 
-	// make title alert name lowercase if not CPU or GPU
+	// make title alert name lowercase if not CPU, GPU, or CPU Pressure
 	titleAlertName := alert.name
-	if titleAlertName != "CPU" && titleAlertName != "GPU" {
+	if titleAlertName != "CPU" && titleAlertName != "GPU" && !strings.HasPrefix(titleAlertName, "CPU Pressure") {
 		titleAlertName = strings.ToLower(titleAlertName)
 	}
 
