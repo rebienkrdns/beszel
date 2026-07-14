@@ -157,6 +157,9 @@ func (a *Agent) getSystemStats(cacheTimeMs uint16) system.Stats {
 		systemStats.CpuCoresUsage = perCoreUsage
 	}
 
+	// cpu pressure (PSI) - Linux only
+	systemStats.CpuPressure = getCpuPressure()
+
 	// load average
 	if avgstat, err := load.Avg(); err == nil {
 		systemStats.LoadAvg[0] = avgstat.Load1
