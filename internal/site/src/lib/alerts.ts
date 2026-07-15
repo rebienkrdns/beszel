@@ -191,6 +191,72 @@ export const alertInfo: Record<string, AlertInfo> = {
 			{ label: () => t`Critical (>10%)`, value: 10 },
 		],
 	},
+	IOPressureSomeAvg10: {
+		name: () => t`IO Pressure Some avg10`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 10s IO pressure some stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	IOPressureSomeAvg60: {
+		name: () => t`IO Pressure Some avg60`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 60s IO pressure some stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	IOPressureSomeAvg300: {
+		name: () => t`IO Pressure Some avg300`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 300s IO pressure some stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	IOPressureFullAvg10: {
+		name: () => t`IO Pressure Full avg10`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 10s IO pressure full stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	IOPressureFullAvg60: {
+		name: () => t`IO Pressure Full avg60`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 60s IO pressure full stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	IOPressureFullAvg300: {
+		name: () => t`IO Pressure Full avg300`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 300s IO pressure full stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
 } as const
 
 /** Helper to manage user alerts */
