@@ -121,6 +121,42 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 			}
 			val = data.Stats.MemPressureFull[2]
 			unit = "%"
+		case "IOPressureSomeAvg10":
+			if data.Stats.IOPressureSome[0] == 0 {
+				continue
+			}
+			val = data.Stats.IOPressureSome[0]
+			unit = "%"
+		case "IOPressureSomeAvg60":
+			if data.Stats.IOPressureSome[1] == 0 {
+				continue
+			}
+			val = data.Stats.IOPressureSome[1]
+			unit = "%"
+		case "IOPressureSomeAvg300":
+			if data.Stats.IOPressureSome[2] == 0 {
+				continue
+			}
+			val = data.Stats.IOPressureSome[2]
+			unit = "%"
+		case "IOPressureFullAvg10":
+			if data.Stats.IOPressureFull[0] == 0 {
+				continue
+			}
+			val = data.Stats.IOPressureFull[0]
+			unit = "%"
+		case "IOPressureFullAvg60":
+			if data.Stats.IOPressureFull[1] == 0 {
+				continue
+			}
+			val = data.Stats.IOPressureFull[1]
+			unit = "%"
+		case "IOPressureFullAvg300":
+			if data.Stats.IOPressureFull[2] == 0 {
+				continue
+			}
+			val = data.Stats.IOPressureFull[2]
+			unit = "%"
 		}
 
 		triggered := alertData.Triggered
@@ -308,6 +344,18 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 				alert.val += stats.MemPressureFull[1]
 			case "MemPressureFullAvg300":
 				alert.val += stats.MemPressureFull[2]
+			case "IOPressureSomeAvg10":
+				alert.val += stats.IOPressureSome[0]
+			case "IOPressureSomeAvg60":
+				alert.val += stats.IOPressureSome[1]
+			case "IOPressureSomeAvg300":
+				alert.val += stats.IOPressureSome[2]
+			case "IOPressureFullAvg10":
+				alert.val += stats.IOPressureFull[0]
+			case "IOPressureFullAvg60":
+				alert.val += stats.IOPressureFull[1]
+			case "IOPressureFullAvg300":
+				alert.val += stats.IOPressureFull[2]
 			default:
 				continue
 			}
@@ -391,11 +439,17 @@ func (am *AlertManager) sendSystemAlert(alert SystemAlertData) {
 	} else if after, ok := strings.CutPrefix(alert.name, "MemPressureFull"); ok {
 		alert.name = "Memory Pressure Full " + after
 	}
+	// format IOPressure names
+	if after, ok := strings.CutPrefix(alert.name, "IOPressureSome"); ok {
+		alert.name = "IO Pressure Some " + after
+	} else if after, ok := strings.CutPrefix(alert.name, "IOPressureFull"); ok {
+		alert.name = "IO Pressure Full " + after
+	}
 
-	// make title alert name lowercase if not CPU, GPU, CPU Pressure, or Memory Pressure
+	// make title alert name lowercase if not CPU, GPU, CPU Pressure, Memory Pressure, or IO Pressure
 	titleAlertName := alert.name
 	if titleAlertName != "CPU" && titleAlertName != "GPU" && !strings.HasPrefix(titleAlertName, "CPU Pressure") &&
-		!strings.HasPrefix(titleAlertName, "Memory Pressure") {
+		!strings.HasPrefix(titleAlertName, "Memory Pressure") && !strings.HasPrefix(titleAlertName, "IO Pressure") {
 		titleAlertName = strings.ToLower(titleAlertName)
 	}
 
