@@ -41,7 +41,7 @@ type Stats struct {
 	Bandwidth    [2]uint64 `json:"b,omitzero" cbor:"26,keyasint,omitzero"` // [sent bytes, recv bytes]
 	MaxBandwidth [2]uint64 `json:"bm,omitzero" cbor:"-"`                   // [sent bytes, recv bytes]
 	// TODO: remove other load fields in future release in favor of load avg array
-	LoadAvg           [3]float64           `json:"la,omitempty" cbor:"28,keyasint"`
+	LoadAvg           [3]float64           `json:"la,omitzero" cbor:"28,keyasint"`
 	Battery           [2]uint8             `json:"bat,omitzero" cbor:"29,keyasint,omitzero"`    // [percent, charge state, current]
 	NetworkInterfaces map[string][4]uint64 `json:"ni,omitempty" cbor:"31,keyasint,omitempty"`   // [upload bytes, download bytes, total upload, total download]
 	DiskIO            [2]uint64            `json:"dio,omitzero" cbor:"32,keyasint,omitzero"`    // [read bytes, write bytes]
@@ -50,7 +50,7 @@ type Stats struct {
 	CpuCoresUsage     Uint8Slice           `json:"cpus,omitempty" cbor:"34,keyasint,omitempty"` // per-core busy usage [CPU0..]
 	DiskIoStats       [6]float64           `json:"dios,omitzero" cbor:"35,keyasint,omitzero"`   // [read time %, write time %, io utilization %, r_await ms, w_await ms, weighted io %]
 	MaxDiskIoStats    [6]float64           `json:"diosm,omitzero" cbor:"-"`                     // max values for DiskIoStats
-	CpuPressure       [3]float64           `json:"cpup,omitempty" cbor:"36,keyasint,omitzero"`  // PSI some: [avg10, avg60, avg300]
+	CpuPressure       [3]float64           `json:"cpup,omitzero" cbor:"36,keyasint,omitzero"`   // PSI some: [avg10, avg60, avg300]
 	MemPressureSome   [3]float64           `json:"memps,omitzero" cbor:"37,keyasint,omitzero"`  // memory PSI some: [avg10, avg60, avg300]
 	MemPressureFull   [3]float64           `json:"mempf,omitzero" cbor:"38,keyasint,omitzero"`  // memory PSI full: [avg10, avg60, avg300]
 }
