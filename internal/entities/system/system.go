@@ -53,6 +53,8 @@ type Stats struct {
 	CpuPressure       [3]float64           `json:"cpup,omitzero" cbor:"36,keyasint,omitzero"`   // PSI some: [avg10, avg60, avg300]
 	MemPressureSome   [3]float64           `json:"memps,omitzero" cbor:"37,keyasint,omitzero"`  // memory PSI some: [avg10, avg60, avg300]
 	MemPressureFull   [3]float64           `json:"mempf,omitzero" cbor:"38,keyasint,omitzero"`  // memory PSI full: [avg10, avg60, avg300]
+	IOPressureSome    [3]float64           `json:"iodp,omitzero" cbor:"39,keyasint,omitzero"`   // io PSI some: [avg10, avg60, avg300]
+	IOPressureFull    [3]float64           `json:"iodf,omitzero" cbor:"40,keyasint,omitzero"`   // io PSI full: [avg10, avg60, avg300]
 }
 
 // Uint8Slice wraps []uint8 to customize JSON encoding while keeping CBOR efficient.

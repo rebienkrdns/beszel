@@ -23,7 +23,7 @@ func TestStatsPressureFieldsOmittedWhenZero(t *testing.T) {
 		t.Fatalf("unmarshal into map: %v", err)
 	}
 
-	for _, key := range []string{"memps", "mempf", "cpup"} {
+	for _, key := range []string{"memps", "mempf", "cpup", "iodp", "iodf"} {
 		if _, present := raw[key]; present {
 			t.Errorf("expected %q to be omitted for a zero-value Stats, got: %s", key, raw[key])
 		}
@@ -35,6 +35,8 @@ func TestStatsPressureFieldsPresentWhenNonZero(t *testing.T) {
 		MemPressureSome: [3]float64{1.1, 2.2, 3.3},
 		MemPressureFull: [3]float64{4.4, 5.5, 6.6},
 		CpuPressure:     [3]float64{7.7, 8.8, 9.9},
+		IOPressureSome:  [3]float64{1.2, 3.4, 5.6},
+		IOPressureFull:  [3]float64{7.8, 9.0, 1.2},
 	}
 	b, err := json.Marshal(s)
 	if err != nil {
@@ -46,7 +48,7 @@ func TestStatsPressureFieldsPresentWhenNonZero(t *testing.T) {
 		t.Fatalf("unmarshal into map: %v", err)
 	}
 
-	for _, key := range []string{"memps", "mempf", "cpup"} {
+	for _, key := range []string{"memps", "mempf", "cpup", "iodp", "iodf"} {
 		if _, present := raw[key]; !present {
 			t.Errorf("expected %q to be present for a non-zero Stats", key)
 		}
