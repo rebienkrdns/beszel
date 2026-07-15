@@ -54,6 +54,14 @@ msgstr "{threads, plural, one {# スレッド} other {# スレッド}}"
 msgid "% of time tasks stalled waiting for CPU — some stall"
 msgstr ""
 
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for memory — full stall"
+msgstr ""
+
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for memory — some stall"
+msgstr ""
+
 #: src/lib/utils.ts
 msgid "1 hour"
 msgstr "1時間"
@@ -554,7 +562,7 @@ msgstr "アカウントを作成"
 msgid "Created"
 msgstr "作成日"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Critical"
 msgstr ""
 
@@ -562,6 +570,12 @@ msgstr ""
 msgid "Critical (%)"
 msgstr "致命的 (%)"
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
@@ -771,7 +785,7 @@ msgstr "例:"
 msgid "Exceeds {0}{1} in last {2, plural, one {# minute} other {# minutes}}"
 msgstr "過去{2, plural, one {# 分} other {# 分}}で{0}{1}を超えています"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Excellent"
 msgstr ""
 
@@ -926,10 +940,16 @@ msgstr "ハートビート監視"
 msgid "Heartbeat sent successfully"
 msgstr "ハートビートが正常に送信されました"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "High"
 msgstr ""
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
@@ -1105,7 +1125,40 @@ msgstr "メモリ制限"
 msgid "Memory Peak"
 msgstr "メモリピーク"
 
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "Memory Pressure (PSI) — Full"
+msgstr ""
+
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "Memory Pressure (PSI) — Some"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Full avg10"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Full avg300"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Full avg60"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Some avg10"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Some avg300"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Some avg60"
+msgstr ""
+
 #: src/components/routes/system/charts/memory-charts.tsx
+#: src/components/routes/system/memory-sheet.tsx
 #: src/lib/alerts.ts
 msgid "Memory Usage"
 msgstr "メモリ使用率"
@@ -1177,7 +1230,7 @@ msgstr "このデバイスのS.M.A.R.T.属性は利用できません。"
 msgid "No systems found."
 msgstr "システムが見つかりませんでした。"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Normal"
 msgstr ""
 
@@ -1773,6 +1826,14 @@ msgid "Triggers when 10s CPU pressure stall exceeds a predefined level"
 msgstr ""
 
 #: src/lib/alerts.ts
+msgid "Triggers when 10s memory pressure full stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 10s memory pressure some stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
 msgid "Triggers when 15 minute load average exceeds a threshold"
 msgstr "15分間の負荷平均がしきい値を超えたときにトリガーされます"
 
@@ -1781,11 +1842,27 @@ msgid "Triggers when 300s CPU pressure stall exceeds a predefined level"
 msgstr ""
 
 #: src/lib/alerts.ts
+msgid "Triggers when 300s memory pressure full stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 300s memory pressure some stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
 msgid "Triggers when 5 minute load average exceeds a threshold"
 msgstr "5分間の負荷平均がしきい値を超えたときにトリガーされます"
 
 #: src/lib/alerts.ts
 msgid "Triggers when 60s CPU pressure stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s memory pressure full stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s memory pressure some stall exceeds a predefined level"
 msgstr ""
 
 #: src/lib/alerts.ts
@@ -1920,6 +1997,7 @@ msgstr "表示"
 
 #: src/components/routes/system/cpu-sheet.tsx
 #: src/components/routes/system/disk-io-sheet.tsx
+#: src/components/routes/system/memory-sheet.tsx
 #: src/components/routes/system/network-sheet.tsx
 msgid "View more"
 msgstr "もっと見る"
@@ -1934,6 +2012,7 @@ msgstr "表示列"
 
 #: src/components/routes/system/chart-card.tsx
 #: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
 msgid "Waiting for enough records to display"
 msgstr "表示するのに十分なレコードを待っています"
 
@@ -1945,7 +2024,7 @@ msgstr "翻訳をさらに良くするためにご協力をお願いします。
 msgid "Wants"
 msgstr "要求"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Warning"
 msgstr ""
 
@@ -1953,6 +2032,12 @@ msgstr ""
 msgid "Warning (%)"
 msgstr "警告 (%)"
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts

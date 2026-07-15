@@ -49,6 +49,14 @@ msgstr "{threads, plural, one {# thread} other {# threads}}"
 msgid "% of time tasks stalled waiting for CPU — some stall"
 msgstr "% of time tasks stalled waiting for CPU — some stall"
 
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for memory — full stall"
+msgstr "% of time tasks stalled waiting for memory — full stall"
+
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for memory — some stall"
+msgstr "% of time tasks stalled waiting for memory — some stall"
+
 #: src/lib/utils.ts
 msgid "1 hour"
 msgstr "1 hour"
@@ -549,7 +557,7 @@ msgstr "Create account"
 msgid "Created"
 msgstr "Created"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Critical"
 msgstr "Critical"
 
@@ -557,6 +565,12 @@ msgstr "Critical"
 msgid "Critical (%)"
 msgstr "Critical (%)"
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
@@ -766,7 +780,7 @@ msgstr "Example:"
 msgid "Exceeds {0}{1} in last {2, plural, one {# minute} other {# minutes}}"
 msgstr "Exceeds {0}{1} in last {2, plural, one {# minute} other {# minutes}}"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Excellent"
 msgstr "Excellent"
 
@@ -921,10 +935,16 @@ msgstr "Heartbeat Monitoring"
 msgid "Heartbeat sent successfully"
 msgstr "Heartbeat sent successfully"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "High"
 msgstr "High"
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
@@ -1100,7 +1120,40 @@ msgstr "Memory limit"
 msgid "Memory Peak"
 msgstr "Memory Peak"
 
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "Memory Pressure (PSI) — Full"
+msgstr "Memory Pressure (PSI) — Full"
+
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "Memory Pressure (PSI) — Some"
+msgstr "Memory Pressure (PSI) — Some"
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Full avg10"
+msgstr "Memory Pressure Full avg10"
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Full avg300"
+msgstr "Memory Pressure Full avg300"
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Full avg60"
+msgstr "Memory Pressure Full avg60"
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Some avg10"
+msgstr "Memory Pressure Some avg10"
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Some avg300"
+msgstr "Memory Pressure Some avg300"
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Some avg60"
+msgstr "Memory Pressure Some avg60"
+
 #: src/components/routes/system/charts/memory-charts.tsx
+#: src/components/routes/system/memory-sheet.tsx
 #: src/lib/alerts.ts
 msgid "Memory Usage"
 msgstr "Memory Usage"
@@ -1172,7 +1225,7 @@ msgstr "No S.M.A.R.T. attributes available for this device."
 msgid "No systems found."
 msgstr "No systems found."
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Normal"
 msgstr "Normal"
 
@@ -1768,6 +1821,14 @@ msgid "Triggers when 10s CPU pressure stall exceeds a predefined level"
 msgstr "Triggers when 10s CPU pressure stall exceeds a predefined level"
 
 #: src/lib/alerts.ts
+msgid "Triggers when 10s memory pressure full stall exceeds a predefined level"
+msgstr "Triggers when 10s memory pressure full stall exceeds a predefined level"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 10s memory pressure some stall exceeds a predefined level"
+msgstr "Triggers when 10s memory pressure some stall exceeds a predefined level"
+
+#: src/lib/alerts.ts
 msgid "Triggers when 15 minute load average exceeds a threshold"
 msgstr "Triggers when 15 minute load average exceeds a threshold"
 
@@ -1776,12 +1837,28 @@ msgid "Triggers when 300s CPU pressure stall exceeds a predefined level"
 msgstr "Triggers when 300s CPU pressure stall exceeds a predefined level"
 
 #: src/lib/alerts.ts
+msgid "Triggers when 300s memory pressure full stall exceeds a predefined level"
+msgstr "Triggers when 300s memory pressure full stall exceeds a predefined level"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 300s memory pressure some stall exceeds a predefined level"
+msgstr "Triggers when 300s memory pressure some stall exceeds a predefined level"
+
+#: src/lib/alerts.ts
 msgid "Triggers when 5 minute load average exceeds a threshold"
 msgstr "Triggers when 5 minute load average exceeds a threshold"
 
 #: src/lib/alerts.ts
 msgid "Triggers when 60s CPU pressure stall exceeds a predefined level"
 msgstr "Triggers when 60s CPU pressure stall exceeds a predefined level"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s memory pressure full stall exceeds a predefined level"
+msgstr "Triggers when 60s memory pressure full stall exceeds a predefined level"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s memory pressure some stall exceeds a predefined level"
+msgstr "Triggers when 60s memory pressure some stall exceeds a predefined level"
 
 #: src/lib/alerts.ts
 msgid "Triggers when any sensor exceeds a threshold"
@@ -1915,6 +1992,7 @@ msgstr "View"
 
 #: src/components/routes/system/cpu-sheet.tsx
 #: src/components/routes/system/disk-io-sheet.tsx
+#: src/components/routes/system/memory-sheet.tsx
 #: src/components/routes/system/network-sheet.tsx
 msgid "View more"
 msgstr "View more"
@@ -1929,6 +2007,7 @@ msgstr "Visible Fields"
 
 #: src/components/routes/system/chart-card.tsx
 #: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
 msgid "Waiting for enough records to display"
 msgstr "Waiting for enough records to display"
 
@@ -1940,7 +2019,7 @@ msgstr "Want to help improve our translations? Check <0>Crowdin</0> for details.
 msgid "Wants"
 msgstr "Wants"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Warning"
 msgstr "Warning"
 
@@ -1948,6 +2027,12 @@ msgstr "Warning"
 msgid "Warning (%)"
 msgstr "Warning (%)"
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts

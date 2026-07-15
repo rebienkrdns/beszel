@@ -54,6 +54,14 @@ msgstr "{threads, plural, one {# nit} two {# niti} few {# niti} other {# niti}}"
 msgid "% of time tasks stalled waiting for CPU — some stall"
 msgstr ""
 
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for memory — full stall"
+msgstr ""
+
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for memory — some stall"
+msgstr ""
+
 #: src/lib/utils.ts
 msgid "1 hour"
 msgstr "1 ura"
@@ -554,7 +562,7 @@ msgstr "Ustvari račun"
 msgid "Created"
 msgstr "Ustvarjeno"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Critical"
 msgstr ""
 
@@ -562,6 +570,12 @@ msgstr ""
 msgid "Critical (%)"
 msgstr "Kritično (%)"
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
@@ -771,7 +785,7 @@ msgstr "Primer:"
 msgid "Exceeds {0}{1} in last {2, plural, one {# minute} other {# minutes}}"
 msgstr "Preseženo {0}{1} v zadnjih {2, plural, one {# minuti} other {# minutah}}"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Excellent"
 msgstr ""
 
@@ -926,10 +940,16 @@ msgstr "Spremljanje srčnega utripa"
 msgid "Heartbeat sent successfully"
 msgstr "Srčni utrip uspešno poslan"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "High"
 msgstr ""
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
@@ -1105,7 +1125,40 @@ msgstr "Omejitev pomnilnika"
 msgid "Memory Peak"
 msgstr "Vrhunec pomnilnika"
 
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "Memory Pressure (PSI) — Full"
+msgstr ""
+
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
+msgid "Memory Pressure (PSI) — Some"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Full avg10"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Full avg300"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Full avg60"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Some avg10"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Some avg300"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Memory Pressure Some avg60"
+msgstr ""
+
 #: src/components/routes/system/charts/memory-charts.tsx
+#: src/components/routes/system/memory-sheet.tsx
 #: src/lib/alerts.ts
 msgid "Memory Usage"
 msgstr "Poraba pomnilnika"
@@ -1177,7 +1230,7 @@ msgstr "Za to napravo ni na voljo atributov S.M.A.R.T."
 msgid "No systems found."
 msgstr "Ne najdem sistema."
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Normal"
 msgstr ""
 
@@ -1773,6 +1826,14 @@ msgid "Triggers when 10s CPU pressure stall exceeds a predefined level"
 msgstr ""
 
 #: src/lib/alerts.ts
+msgid "Triggers when 10s memory pressure full stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 10s memory pressure some stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
 msgid "Triggers when 15 minute load average exceeds a threshold"
 msgstr "Sproži se, ko 15-minutna povprečna obremenitev preseže prag"
 
@@ -1781,11 +1842,27 @@ msgid "Triggers when 300s CPU pressure stall exceeds a predefined level"
 msgstr ""
 
 #: src/lib/alerts.ts
+msgid "Triggers when 300s memory pressure full stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 300s memory pressure some stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
 msgid "Triggers when 5 minute load average exceeds a threshold"
 msgstr "Sproži se, ko 5-minutna povprečna obremenitev preseže prag"
 
 #: src/lib/alerts.ts
 msgid "Triggers when 60s CPU pressure stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s memory pressure full stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s memory pressure some stall exceeds a predefined level"
 msgstr ""
 
 #: src/lib/alerts.ts
@@ -1920,6 +1997,7 @@ msgstr "Pogled"
 
 #: src/components/routes/system/cpu-sheet.tsx
 #: src/components/routes/system/disk-io-sheet.tsx
+#: src/components/routes/system/memory-sheet.tsx
 #: src/components/routes/system/network-sheet.tsx
 msgid "View more"
 msgstr "Prikaži več"
@@ -1934,6 +2012,7 @@ msgstr "Vidna polja"
 
 #: src/components/routes/system/chart-card.tsx
 #: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/memory-pressure-chart.tsx
 msgid "Waiting for enough records to display"
 msgstr "Čakam na dovolj zapisov za prikaz"
 
@@ -1945,7 +2024,7 @@ msgstr "Ali nam želite pomagati, da bomo naše prevode še izboljšali? Za več
 msgid "Wants"
 msgstr "Zahteva"
 
-#: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Warning"
 msgstr ""
 
@@ -1953,6 +2032,12 @@ msgstr ""
 msgid "Warning (%)"
 msgstr "Opozorilo (%)"
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
