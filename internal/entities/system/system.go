@@ -41,7 +41,7 @@ type Stats struct {
 	Bandwidth    [2]uint64 `json:"b,omitzero" cbor:"26,keyasint,omitzero"` // [sent bytes, recv bytes]
 	MaxBandwidth [2]uint64 `json:"bm,omitzero" cbor:"-"`                   // [sent bytes, recv bytes]
 	// TODO: remove other load fields in future release in favor of load avg array
-	LoadAvg           [3]float64           `json:"la,omitzero" cbor:"28,keyasint"`
+	LoadAvg           [3]float64           `json:"la,omitempty" cbor:"28,keyasint"`
 	Battery           [2]uint8             `json:"bat,omitzero" cbor:"29,keyasint,omitzero"`    // [percent, charge state, current]
 	NetworkInterfaces map[string][4]uint64 `json:"ni,omitempty" cbor:"31,keyasint,omitempty"`   // [upload bytes, download bytes, total upload, total download]
 	DiskIO            [2]uint64            `json:"dio,omitzero" cbor:"32,keyasint,omitzero"`    // [read bytes, write bytes]
