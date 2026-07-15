@@ -386,7 +386,8 @@ const AllSystemsTable = memo(
 )
 
 function SystemsTableHead({ table }: { table: TableType<SystemRecord> }) {
-	useLingui()
+	// re-render on locale change so header cells (memoized independent of locale) re-translate
+	const { i18n: _i18n } = useLingui()
 	return (
 		<TableHeader className="sticky top-0 z-50 w-full border-b-2">
 			{table.getHeaderGroups().map((headerGroup) => (
