@@ -33,10 +33,7 @@ function IOPressureCard({
 	const [avg10, avg60, avg300] = pressure
 
 	return (
-		<Card
-			className={cn("px-3 py-5 sm:py-6 sm:px-6 min-h-auto", { "col-span-full": !grid })}
-			ref={ref}
-		>
+		<Card className={cn("px-3 py-5 sm:py-6 sm:px-6 min-h-auto", { "col-span-full": !grid })} ref={ref}>
 			<CardHeader className="gap-1.5 p-0 mb-3 sm:mb-4">
 				<CardTitle>{title}</CardTitle>
 				<CardDescription>{description}</CardDescription>
