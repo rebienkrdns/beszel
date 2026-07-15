@@ -125,6 +125,72 @@ export const alertInfo: Record<string, AlertInfo> = {
 			{ label: () => t`Critical (>10%)`, value: 10 },
 		],
 	},
+	MemPressureSomeAvg10: {
+		name: () => t`Memory Pressure Some avg10`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 10s memory pressure some stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	MemPressureSomeAvg60: {
+		name: () => t`Memory Pressure Some avg60`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 60s memory pressure some stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	MemPressureSomeAvg300: {
+		name: () => t`Memory Pressure Some avg300`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 300s memory pressure some stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	MemPressureFullAvg10: {
+		name: () => t`Memory Pressure Full avg10`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 10s memory pressure full stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	MemPressureFullAvg60: {
+		name: () => t`Memory Pressure Full avg60`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 60s memory pressure full stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
+	MemPressureFullAvg300: {
+		name: () => t`Memory Pressure Full avg300`,
+		unit: "%",
+		icon: GaugeIcon,
+		desc: () => t`Triggers when 300s memory pressure full stall exceeds a predefined level`,
+		levels: [
+			{ label: () => t`Warning (>2%)`, value: 2 },
+			{ label: () => t`High (>5%)`, value: 5 },
+			{ label: () => t`Critical (>10%)`, value: 10 },
+		],
+	},
 } as const
 
 /** Helper to manage user alerts */
