@@ -79,6 +79,13 @@ export function MemoryChart({
 						stackId: "1",
 						order: 1,
 					},
+					{
+						label: t`Available`,
+						dataKey: ({ stats }) => stats?.mav,
+						color: 1,
+						opacity: 0.5,
+						order: 4,
+					},
 				]}
 			/>
 		</ChartCard>

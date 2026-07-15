@@ -113,6 +113,8 @@ export interface SystemStats {
 	mm?: number
 	/** zfs arc memory (gb) */
 	mz?: number
+	/** available memory (gb) */
+	mav?: number
 	/** swap space (gb) */
 	s: number
 	/** swap used (gb) */
