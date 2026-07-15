@@ -91,6 +91,10 @@ export interface SystemStats {
 	cpus?: number[]
 	/** cpu pressure PSI some [avg10, avg60, avg300] (%) */
 	cpup?: [number, number, number]
+	/** memory pressure PSI some [avg10, avg60, avg300] (%) */
+	memps?: [number, number, number]
+	/** memory pressure PSI full [avg10, avg60, avg300] (%) */
+	mempf?: [number, number, number]
 	/** load average */
 	la?: [number, number, number]
 	/** total memory (gb) */
