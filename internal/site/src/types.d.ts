@@ -95,6 +95,10 @@ export interface SystemStats {
 	memps?: [number, number, number]
 	/** memory pressure PSI full [avg10, avg60, avg300] (%) */
 	mempf?: [number, number, number]
+	/** io pressure PSI some [avg10, avg60, avg300] (%) */
+	iodp?: [number, number, number]
+	/** io pressure PSI full [avg10, avg60, avg300] (%) */
+	iodf?: [number, number, number]
 	/** load average */
 	la?: [number, number, number]
 	/** total memory (gb) */
