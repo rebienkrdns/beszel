@@ -157,6 +157,12 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 			}
 			val = data.Stats.IOPressureFull[2]
 			unit = "%"
+		case "MemAvailable":
+			if data.Stats.MemAvailable == 0 {
+				continue
+			}
+			val = data.Stats.MemAvailable
+			unit = " GB"
 		}
 
 		triggered := alertData.Triggered
@@ -356,6 +362,8 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 				alert.val += stats.IOPressureFull[1]
 			case "IOPressureFullAvg300":
 				alert.val += stats.IOPressureFull[2]
+			case "MemAvailable":
+				alert.val += stats.MemAvailable
 			default:
 				continue
 			}
@@ -445,6 +453,10 @@ func (am *AlertManager) sendSystemAlert(alert SystemAlertData) {
 	} else if after, ok := strings.CutPrefix(alert.name, "IOPressureFull"); ok {
 		alert.name = "IO Pressure Full " + after
 	}
+	// format MemAvailable name
+	if alert.name == "MemAvailable" {
+		alert.name = "Available Memory"
+	}
 
 	// make title alert name lowercase if not CPU, GPU, CPU Pressure, Memory Pressure, or IO Pressure
 	titleAlertName := alert.name
@@ -492,5 +504,5 @@ func (am *AlertManager) sendSystemAlert(alert SystemAlertData) {
 }
 
 func isLowAlert(name string) bool {
-	return name == "Battery"
+	return name == "Battery" || name == "MemAvailable"
 }

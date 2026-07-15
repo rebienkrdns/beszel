@@ -191,6 +191,10 @@ func setBatteryAlertValue(info *system.Info, stats *system.Stats, value [2]uint8
 	stats.Battery = value
 }
 
+func setMemAvailableAlertValue(info *system.Info, stats *system.Stats, value float64) {
+	stats.MemAvailable = value
+}
+
 func TestSystemAlertsOneMin(t *testing.T) {
 	testOneMinuteSystemAlert(t, "CPU", 50, setCPUAlertValue, 51, 49)
 	testOneMinuteSystemAlert(t, "Memory", 50, setMemoryAlertValue, 51, 49)
@@ -202,6 +206,7 @@ func TestSystemAlertsOneMin(t *testing.T) {
 	testOneMinuteSystemAlert(t, "LoadAvg5", 4, setLoadAvgAlertValue, [3]float64{0, 4.1, 0}, [3]float64{0, 3.9, 0})
 	testOneMinuteSystemAlert(t, "LoadAvg15", 4, setLoadAvgAlertValue, [3]float64{0, 0, 4.1}, [3]float64{0, 0, 3.9})
 	testOneMinuteSystemAlert(t, "Battery", 20, setBatteryAlertValue, [2]uint8{19, 0}, [2]uint8{21, 0})
+	testOneMinuteSystemAlert(t, "MemAvailable", 4, setMemAvailableAlertValue, 3.9, 4.1)
 }
 
 func TestSystemAlertsTwoMin(t *testing.T) {
@@ -215,4 +220,5 @@ func TestSystemAlertsTwoMin(t *testing.T) {
 	testMultiMinuteSystemAlert(t, "LoadAvg5", 4, 2, setLoadAvgAlertValue, [3]float64{0, 2, 0}, [3]float64{0, 4.1, 0}, [3]float64{0, 3.5, 0})
 	testMultiMinuteSystemAlert(t, "LoadAvg15", 4, 2, setLoadAvgAlertValue, [3]float64{0, 0, 2}, [3]float64{0, 0, 4.1}, [3]float64{0, 0, 3.5})
 	testMultiMinuteSystemAlert(t, "Battery", 20, 2, setBatteryAlertValue, [2]uint8{21, 0}, [2]uint8{19, 0}, [2]uint8{25, 1})
+	testMultiMinuteSystemAlert(t, "MemAvailable", 4, 2, setMemAvailableAlertValue, 10, 3.9, 4.5)
 }
