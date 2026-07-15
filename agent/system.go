@@ -210,6 +210,7 @@ func (a *Agent) getSystemStats(cacheTimeMs uint16) system.Stats {
 		systemStats.MemBuffCache = utils.BytesToGigabytes(cacheBuff)
 		systemStats.MemUsed = utils.BytesToGigabytes(v.Used)
 		systemStats.MemPct = utils.TwoDecimals(v.UsedPercent)
+		systemStats.MemAvailable = utils.BytesToGigabytes(v.Available)
 	}
 
 	// disk usage
