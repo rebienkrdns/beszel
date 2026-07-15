@@ -47,16 +47,18 @@ type SystemAlertFsStats struct {
 
 // Values pulled from system_stats.stats that are relevant to alerts.
 type SystemAlertStats struct {
-	Cpu          float64                       `json:"cpu"`
-	Mem          float64                       `json:"mp"`
-	Disk         float64                       `json:"dp"`
-	Bandwidth    [2]uint64                     `json:"b"`
-	GPU          map[string]SystemAlertGPUData `json:"g"`
-	Temperatures map[string]float32            `json:"t"`
-	LoadAvg      [3]float64                    `json:"la"`
-	Battery      [2]uint8                      `json:"bat"`
-	ExtraFs      map[string]SystemAlertFsStats `json:"efs"`
-	CpuPressure  [3]float64                    `json:"cpup"`
+	Cpu             float64                       `json:"cpu"`
+	Mem             float64                       `json:"mp"`
+	Disk            float64                       `json:"dp"`
+	Bandwidth       [2]uint64                     `json:"b"`
+	GPU             map[string]SystemAlertGPUData `json:"g"`
+	Temperatures    map[string]float32            `json:"t"`
+	LoadAvg         [3]float64                    `json:"la"`
+	Battery         [2]uint8                      `json:"bat"`
+	ExtraFs         map[string]SystemAlertFsStats `json:"efs"`
+	CpuPressure     [3]float64                    `json:"cpup"`
+	MemPressureSome [3]float64                    `json:"memps"`
+	MemPressureFull [3]float64                    `json:"mempf"`
 }
 
 type SystemAlertGPUData struct {
