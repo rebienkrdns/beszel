@@ -257,6 +257,16 @@ export const alertInfo: Record<string, AlertInfo> = {
 			{ label: () => t`Critical (>10%)`, value: 10 },
 		],
 	},
+	MemAvailable: {
+		name: () => t`Available Memory`,
+		unit: " GB",
+		icon: MemoryStickIcon,
+		desc: () => t`Triggers when available memory drops below a threshold`,
+		invert: true,
+		start: 1,
+		min: 0.1,
+		step: 0.1,
+	},
 } as const
 
 /** Helper to manage user alerts */
