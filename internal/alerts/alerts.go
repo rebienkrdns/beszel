@@ -59,6 +59,8 @@ type SystemAlertStats struct {
 	CpuPressure     [3]float64                    `json:"cpup"`
 	MemPressureSome [3]float64                    `json:"memps"`
 	MemPressureFull [3]float64                    `json:"mempf"`
+	IOPressureSome  [3]float64                    `json:"iodp"`
+	IOPressureFull  [3]float64                    `json:"iodf"`
 }
 
 type SystemAlertGPUData struct {
