@@ -8,6 +8,7 @@ import { ChartCard, FilterBar, SelectAvgMax } from "../chart-card"
 import { dockerOrPodman } from "../chart-data"
 import { decimalString, formatBytes, toFixedFloat } from "@/lib/utils"
 import { pinnedAxisDomain } from "@/components/ui/chart"
+import MemorySheet from "../memory-sheet"
 
 export function MemoryChart({
 	chartData,
@@ -33,7 +34,12 @@ export function MemoryChart({
 			grid={grid}
 			title={t`Memory Usage`}
 			description={t`Precise utilization at the recorded time`}
-			cornerEl={maxValSelect}
+			cornerEl={
+				<div className="flex gap-2">
+					{maxValSelect}
+					<MemorySheet chartData={chartData} dataEmpty={dataEmpty} grid={grid} />
+				</div>
+			}
 		>
 			<AreaChartDefault
 				chartData={chartData}
