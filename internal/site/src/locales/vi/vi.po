@@ -54,6 +54,14 @@ msgstr "{threads, plural, one {# luồng} other {# luồng}}"
 msgid "% of time tasks stalled waiting for CPU — some stall"
 msgstr ""
 
+#: src/components/routes/system/charts/io-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for I/O — full stall"
+msgstr ""
+
+#: src/components/routes/system/charts/io-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for I/O — some stall"
+msgstr ""
+
 #: src/components/routes/system/charts/memory-pressure-chart.tsx
 msgid "% of time tasks stalled waiting for memory — full stall"
 msgstr ""
@@ -579,6 +587,12 @@ msgstr "Độ nghiêm trọng (%)"
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 msgid "Critical (>10%)"
 msgstr ""
 
@@ -953,6 +967,12 @@ msgstr ""
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 msgid "High (>5%)"
 msgstr ""
 
@@ -1014,6 +1034,38 @@ msgstr "Khoảng thời gian"
 #: src/components/login/auth-form.tsx
 msgid "Invalid email address."
 msgstr "Địa chỉ email không hợp lệ."
+
+#: src/components/routes/system/charts/io-pressure-chart.tsx
+msgid "IO Pressure (PSI) — Full"
+msgstr ""
+
+#: src/components/routes/system/charts/io-pressure-chart.tsx
+msgid "IO Pressure (PSI) — Some"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Full avg10"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Full avg300"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Full avg60"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Some avg10"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Some avg300"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Some avg60"
+msgstr ""
 
 #: src/components/lang-toggle.tsx
 #: src/components/routes/settings/general.tsx
@@ -1826,6 +1878,14 @@ msgid "Triggers when 10s CPU pressure stall exceeds a predefined level"
 msgstr ""
 
 #: src/lib/alerts.ts
+msgid "Triggers when 10s IO pressure full stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 10s IO pressure some stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
 msgid "Triggers when 10s memory pressure full stall exceeds a predefined level"
 msgstr ""
 
@@ -1842,6 +1902,14 @@ msgid "Triggers when 300s CPU pressure stall exceeds a predefined level"
 msgstr ""
 
 #: src/lib/alerts.ts
+msgid "Triggers when 300s IO pressure full stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 300s IO pressure some stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
 msgid "Triggers when 300s memory pressure full stall exceeds a predefined level"
 msgstr ""
 
@@ -1855,6 +1923,14 @@ msgstr "Kích hoạt khi tải trung bình 5 phút vượt quá ngưỡng"
 
 #: src/lib/alerts.ts
 msgid "Triggers when 60s CPU pressure stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s IO pressure full stall exceeds a predefined level"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s IO pressure some stall exceeds a predefined level"
 msgstr ""
 
 #: src/lib/alerts.ts
@@ -2012,6 +2088,7 @@ msgstr "Các cột hiển thị"
 
 #: src/components/routes/system/chart-card.tsx
 #: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/io-pressure-chart.tsx
 #: src/components/routes/system/charts/memory-pressure-chart.tsx
 msgid "Waiting for enough records to display"
 msgstr "Đang chờ đủ bản ghi để hiển thị"
@@ -2032,6 +2109,12 @@ msgstr ""
 msgid "Warning (%)"
 msgstr "Cảnh báo (%)"
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts

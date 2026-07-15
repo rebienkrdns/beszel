@@ -54,6 +54,14 @@ msgstr "{threads, plural, one {# hilo} other {# hilos}}"
 msgid "% of time tasks stalled waiting for CPU — some stall"
 msgstr "% del tiempo que las tareas esperan CPU — stall parcial"
 
+#: src/components/routes/system/charts/io-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for I/O — full stall"
+msgstr "% del tiempo que las tareas esperan E/S — stall completo"
+
+#: src/components/routes/system/charts/io-pressure-chart.tsx
+msgid "% of time tasks stalled waiting for I/O — some stall"
+msgstr "% del tiempo que las tareas esperan E/S — stall parcial"
+
 #: src/components/routes/system/charts/memory-pressure-chart.tsx
 msgid "% of time tasks stalled waiting for memory — full stall"
 msgstr "% del tiempo que las tareas esperan memoria — stall completo"
@@ -579,6 +587,12 @@ msgstr "Crítico (%)"
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 msgid "Critical (>10%)"
 msgstr "Crítico (>10%)"
 
@@ -953,6 +967,12 @@ msgstr "Alto"
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 msgid "High (>5%)"
 msgstr "Alto (>5%)"
 
@@ -1014,6 +1034,38 @@ msgstr "Intervalo"
 #: src/components/login/auth-form.tsx
 msgid "Invalid email address."
 msgstr "Dirección de correo electrónico no válida."
+
+#: src/components/routes/system/charts/io-pressure-chart.tsx
+msgid "IO Pressure (PSI) — Full"
+msgstr "Presión de E/S (PSI) — Completa"
+
+#: src/components/routes/system/charts/io-pressure-chart.tsx
+msgid "IO Pressure (PSI) — Some"
+msgstr "Presión de E/S (PSI) — Parcial"
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Full avg10"
+msgstr "Presión de E/S completa avg10"
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Full avg300"
+msgstr "Presión de E/S completa avg300"
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Full avg60"
+msgstr "Presión de E/S completa avg60"
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Some avg10"
+msgstr "Presión de E/S parcial avg10"
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Some avg300"
+msgstr "Presión de E/S parcial avg300"
+
+#: src/lib/alerts.ts
+msgid "IO Pressure Some avg60"
+msgstr "Presión de E/S parcial avg60"
 
 #: src/components/lang-toggle.tsx
 #: src/components/routes/settings/general.tsx
@@ -1826,6 +1878,14 @@ msgid "Triggers when 10s CPU pressure stall exceeds a predefined level"
 msgstr "Se activa cuando la presión de CPU de 10s supera un nivel predefinido"
 
 #: src/lib/alerts.ts
+msgid "Triggers when 10s IO pressure full stall exceeds a predefined level"
+msgstr "Se activa cuando la presión de E/S completa de 10s supera un nivel predefinido"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 10s IO pressure some stall exceeds a predefined level"
+msgstr "Se activa cuando la presión de E/S parcial de 10s supera un nivel predefinido"
+
+#: src/lib/alerts.ts
 msgid "Triggers when 10s memory pressure full stall exceeds a predefined level"
 msgstr "Se activa cuando la presión de memoria completa de 10s supera un nivel predefinido"
 
@@ -1842,6 +1902,14 @@ msgid "Triggers when 300s CPU pressure stall exceeds a predefined level"
 msgstr "Se activa cuando la presión de CPU de 300s supera un nivel predefinido"
 
 #: src/lib/alerts.ts
+msgid "Triggers when 300s IO pressure full stall exceeds a predefined level"
+msgstr "Se activa cuando la presión de E/S completa de 300s supera un nivel predefinido"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 300s IO pressure some stall exceeds a predefined level"
+msgstr "Se activa cuando la presión de E/S parcial de 300s supera un nivel predefinido"
+
+#: src/lib/alerts.ts
 msgid "Triggers when 300s memory pressure full stall exceeds a predefined level"
 msgstr "Se activa cuando la presión de memoria completa de 300s supera un nivel predefinido"
 
@@ -1856,6 +1924,14 @@ msgstr "Se activa cuando la carga media de 5 minutos supera un umbral"
 #: src/lib/alerts.ts
 msgid "Triggers when 60s CPU pressure stall exceeds a predefined level"
 msgstr "Se activa cuando la presión de CPU de 60s supera un nivel predefinido"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s IO pressure full stall exceeds a predefined level"
+msgstr "Se activa cuando la presión de E/S completa de 60s supera un nivel predefinido"
+
+#: src/lib/alerts.ts
+msgid "Triggers when 60s IO pressure some stall exceeds a predefined level"
+msgstr "Se activa cuando la presión de E/S parcial de 60s supera un nivel predefinido"
 
 #: src/lib/alerts.ts
 msgid "Triggers when 60s memory pressure full stall exceeds a predefined level"
@@ -2012,6 +2088,7 @@ msgstr "Columnas visibles"
 
 #: src/components/routes/system/chart-card.tsx
 #: src/components/routes/system/charts/cpu-pressure-chart.tsx
+#: src/components/routes/system/charts/io-pressure-chart.tsx
 #: src/components/routes/system/charts/memory-pressure-chart.tsx
 msgid "Waiting for enough records to display"
 msgstr "Esperando suficientes registros para mostrar"
@@ -2032,6 +2109,12 @@ msgstr "Advertencia"
 msgid "Warning (%)"
 msgstr "Advertencia (%)"
 
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
+#: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
 #: src/lib/alerts.ts
