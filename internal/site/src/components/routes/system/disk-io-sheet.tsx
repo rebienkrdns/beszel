@@ -13,6 +13,7 @@ import { ChartCard, SelectAvgMax } from "@/components/routes/system/chart-card"
 import type { SystemData } from "@/components/routes/system/use-system-data"
 import { diskDataFns, DiskUtilizationChart } from "./charts/disk-charts"
 import { pinnedAxisDomain } from "@/components/ui/chart"
+import { IOPressureChart } from "./charts/io-pressure-chart"
 
 export default memo(function DiskIOSheet({
 	systemData,
@@ -148,6 +149,8 @@ export default memo(function DiskIOSheet({
 							}}
 						/>
 					</ChartCard>
+
+					{!extraFsName && <IOPressureChart chartData={chartData} grid={grid} dataEmpty={dataEmpty} />}
 
 					{hasUtilization && <DiskUtilizationChart systemData={systemData} extraFsName={extraFsName} />}
 
