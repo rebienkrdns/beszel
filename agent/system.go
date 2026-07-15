@@ -163,6 +163,9 @@ func (a *Agent) getSystemStats(cacheTimeMs uint16) system.Stats {
 	// memory pressure (PSI) - Linux only
 	systemStats.MemPressureSome, systemStats.MemPressureFull = getMemPressure()
 
+	// io pressure (PSI) - Linux only
+	systemStats.IOPressureSome, systemStats.IOPressureFull = getIOPressure()
+
 	// load average
 	if avgstat, err := load.Avg(); err == nil {
 		systemStats.LoadAvg[0] = avgstat.Load1
