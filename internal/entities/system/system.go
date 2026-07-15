@@ -51,6 +51,8 @@ type Stats struct {
 	DiskIoStats       [6]float64           `json:"dios,omitzero" cbor:"35,keyasint,omitzero"`   // [read time %, write time %, io utilization %, r_await ms, w_await ms, weighted io %]
 	MaxDiskIoStats    [6]float64           `json:"diosm,omitzero" cbor:"-"`                     // max values for DiskIoStats
 	CpuPressure       [3]float64           `json:"cpup,omitempty" cbor:"36,keyasint,omitzero"`  // PSI some: [avg10, avg60, avg300]
+	MemPressureSome   [3]float64           `json:"memps,omitempty" cbor:"37,keyasint,omitzero"` // memory PSI some: [avg10, avg60, avg300]
+	MemPressureFull   [3]float64           `json:"mempf,omitempty" cbor:"38,keyasint,omitzero"` // memory PSI full: [avg10, avg60, avg300]
 }
 
 // Uint8Slice wraps []uint8 to customize JSON encoding while keeping CBOR efficient.
