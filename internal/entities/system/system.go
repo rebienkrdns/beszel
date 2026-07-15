@@ -55,6 +55,7 @@ type Stats struct {
 	MemPressureFull   [3]float64           `json:"mempf,omitzero" cbor:"38,keyasint,omitzero"`  // memory PSI full: [avg10, avg60, avg300]
 	IOPressureSome    [3]float64           `json:"iodp,omitzero" cbor:"39,keyasint,omitzero"`   // io PSI some: [avg10, avg60, avg300]
 	IOPressureFull    [3]float64           `json:"iodf,omitzero" cbor:"40,keyasint,omitzero"`   // io PSI full: [avg10, avg60, avg300]
+	MemAvailable      float64              `json:"mav,omitzero" cbor:"41,keyasint,omitzero"`    // available memory (gb), from /proc/meminfo MemAvailable
 }
 
 // Uint8Slice wraps []uint8 to customize JSON encoding while keeping CBOR efficient.
