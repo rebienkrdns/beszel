@@ -208,6 +208,14 @@ func AverageSystemStatsSlice(records []system.Stats) system.Stats {
 		sum.MemPct += stats.MemPct
 		sum.MemBuffCache += stats.MemBuffCache
 		sum.MemZfsArc += stats.MemZfsArc
+		sum.MemAvailable += stats.MemAvailable
+		for i := range stats.CpuPressure {
+			sum.CpuPressure[i] += stats.CpuPressure[i]
+			sum.MemPressureSome[i] += stats.MemPressureSome[i]
+			sum.MemPressureFull[i] += stats.MemPressureFull[i]
+			sum.IOPressureSome[i] += stats.IOPressureSome[i]
+			sum.IOPressureFull[i] += stats.IOPressureFull[i]
+		}
 		sum.Swap += stats.Swap
 		sum.SwapUsed += stats.SwapUsed
 		sum.DiskTotal += stats.DiskTotal
@@ -344,6 +352,14 @@ func AverageSystemStatsSlice(records []system.Stats) system.Stats {
 	sum.MemPct = twoDecimals(sum.MemPct / count)
 	sum.MemBuffCache = twoDecimals(sum.MemBuffCache / count)
 	sum.MemZfsArc = twoDecimals(sum.MemZfsArc / count)
+	sum.MemAvailable = twoDecimals(sum.MemAvailable / count)
+	for i := range sum.CpuPressure {
+		sum.CpuPressure[i] = twoDecimals(sum.CpuPressure[i] / count)
+		sum.MemPressureSome[i] = twoDecimals(sum.MemPressureSome[i] / count)
+		sum.MemPressureFull[i] = twoDecimals(sum.MemPressureFull[i] / count)
+		sum.IOPressureSome[i] = twoDecimals(sum.IOPressureSome[i] / count)
+		sum.IOPressureFull[i] = twoDecimals(sum.IOPressureFull[i] / count)
+	}
 	sum.Swap = twoDecimals(sum.Swap / count)
 	sum.SwapUsed = twoDecimals(sum.SwapUsed / count)
 	sum.DiskTotal = twoDecimals(sum.DiskTotal / count)

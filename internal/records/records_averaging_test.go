@@ -658,6 +658,36 @@ func TestAverageSystemStatsSlice_TenRecords(t *testing.T) {
 	assert.Equal(t, [2]uint64{4500, 9000}, result.Bandwidth)
 }
 
+func TestAverageSystemStatsSlice_MemAvailableAndPSI(t *testing.T) {
+	input := []system.Stats{
+		{
+			MemAvailable:    4.0,
+			CpuPressure:     [3]float64{1.0, 2.0, 3.0},
+			MemPressureSome: [3]float64{4.0, 5.0, 6.0},
+			MemPressureFull: [3]float64{7.0, 8.0, 9.0},
+			IOPressureSome:  [3]float64{10.0, 11.0, 12.0},
+			IOPressureFull:  [3]float64{13.0, 14.0, 15.0},
+		},
+		{
+			MemAvailable:    2.0,
+			CpuPressure:     [3]float64{3.0, 4.0, 5.0},
+			MemPressureSome: [3]float64{6.0, 7.0, 8.0},
+			MemPressureFull: [3]float64{9.0, 10.0, 11.0},
+			IOPressureSome:  [3]float64{12.0, 13.0, 14.0},
+			IOPressureFull:  [3]float64{15.0, 16.0, 17.0},
+		},
+	}
+
+	result := records.AverageSystemStatsSlice(input)
+
+	assert.Equal(t, 3.0, result.MemAvailable)
+	assert.Equal(t, [3]float64{2.0, 3.0, 4.0}, result.CpuPressure)
+	assert.Equal(t, [3]float64{5.0, 6.0, 7.0}, result.MemPressureSome)
+	assert.Equal(t, [3]float64{8.0, 9.0, 10.0}, result.MemPressureFull)
+	assert.Equal(t, [3]float64{11.0, 12.0, 13.0}, result.IOPressureSome)
+	assert.Equal(t, [3]float64{14.0, 15.0, 16.0}, result.IOPressureFull)
+}
+
 // --- Container Stats Tests ---
 
 func TestAverageContainerStatsSlice_Empty(t *testing.T) {
