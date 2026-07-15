@@ -130,7 +130,9 @@ Each card independently checks its own data presence (e.g. skip rendering the Fu
 
 ## 5. i18n
 
-New `t\`...\`` strings introduced by this feature (panel titles/descriptions for Some/Full, badge labels if any change, alert names/descriptions) are extracted via the project's lingui extract command. Every one of the 29 non-English locales configured in `lingui.config.ts` (`ar, bg, cs, da, de, es, fa, fr, he, hr, hu, id, it, ja, ko, nl, no, pl, pt, tr, ru, sl, sr, sv, uk, vi, zh, zh-CN, zh-HK`) gets translated `msgstr` values for the new `msgid`s — not just Spanish — following the existing `.po` structure (`#:` source-file comment + `msgid`/`msgstr` pair per entry, as seen in the CPU Pressure translations added in `a2082ddc`).
+New `t\`...\`` strings introduced by this feature (panel titles/descriptions for Some/Full, alert names/descriptions) are extracted via the project's lingui extract command, which adds the new `msgid`s (with empty `msgstr`) to all 29 non-English `.po` files automatically.
+
+**Correction from initial design**: inspection of the actual `.po` files shows that, despite the `a2082ddc` commit message ("add Spanish translations"), only the **Spanish** locale has real translated `msgstr` values for the CPU Pressure strings — the other 28 locales were left with `msgstr ""` after extraction. Each `.po` also carries `X-Crowdin-Project`/`X-Crowdin-File` headers, confirming non-Spanish translations are sourced from Crowdin (an external translation platform), not hand-written in this repo. Memory Pressure follows the same established pattern: extract to all locales (leaving 28 empty for Crowdin to pick up), and hand-translate only Spanish (`es.po`), matching exactly what was done for CPU Pressure.
 
 ## 6. Verification
 
