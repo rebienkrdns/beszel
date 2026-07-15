@@ -211,6 +211,14 @@ msgstr "Bạn có chắc không?"
 msgid "Automatic copy requires a secure context."
 msgstr "Sao chép tự động yêu cầu một ngữ cảnh an toàn."
 
+#: src/components/routes/system/charts/memory-charts.tsx
+msgid "Available"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Available Memory"
+msgstr ""
+
 #: src/components/routes/system/chart-card.tsx
 msgid "Average"
 msgstr "Trung bình"
@@ -1944,6 +1952,10 @@ msgstr ""
 #: src/lib/alerts.ts
 msgid "Triggers when any sensor exceeds a threshold"
 msgstr "Kích hoạt khi bất kỳ cảm biến nào vượt quá ngưỡng"
+
+#: src/lib/alerts.ts
+msgid "Triggers when available memory drops below a threshold"
+msgstr ""
 
 #: src/lib/alerts.ts
 msgid "Triggers when battery charge drops below a threshold"

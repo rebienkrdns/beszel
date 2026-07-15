@@ -211,6 +211,14 @@ msgstr "¿Estás seguro?"
 msgid "Automatic copy requires a secure context."
 msgstr "La copia automática requiere un contexto seguro."
 
+#: src/components/routes/system/charts/memory-charts.tsx
+msgid "Available"
+msgstr "Disponible"
+
+#: src/lib/alerts.ts
+msgid "Available Memory"
+msgstr "Memoria disponible"
+
 #: src/components/routes/system/chart-card.tsx
 msgid "Average"
 msgstr "Promedio"
@@ -1944,6 +1952,10 @@ msgstr "Se activa cuando la presión de memoria parcial de 60s supera un nivel p
 #: src/lib/alerts.ts
 msgid "Triggers when any sensor exceeds a threshold"
 msgstr "Se activa cuando cualquier sensor supera un umbral"
+
+#: src/lib/alerts.ts
+msgid "Triggers when available memory drops below a threshold"
+msgstr "Se activa cuando la memoria disponible cae por debajo de un umbral"
 
 #: src/lib/alerts.ts
 msgid "Triggers when battery charge drops below a threshold"

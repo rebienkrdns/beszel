@@ -211,6 +211,14 @@ msgstr "האם אתה בטוח?"
 msgid "Automatic copy requires a secure context."
 msgstr "העתקה אוטומטית דורשת הקשר מאובטח."
 
+#: src/components/routes/system/charts/memory-charts.tsx
+msgid "Available"
+msgstr ""
+
+#: src/lib/alerts.ts
+msgid "Available Memory"
+msgstr ""
+
 #: src/components/routes/system/chart-card.tsx
 msgid "Average"
 msgstr "ממוצע"
@@ -1944,6 +1952,10 @@ msgstr ""
 #: src/lib/alerts.ts
 msgid "Triggers when any sensor exceeds a threshold"
 msgstr "מופעל כאשר כל חיישן עולה על סף"
+
+#: src/lib/alerts.ts
+msgid "Triggers when available memory drops below a threshold"
+msgstr ""
 
 #: src/lib/alerts.ts
 msgid "Triggers when battery charge drops below a threshold"

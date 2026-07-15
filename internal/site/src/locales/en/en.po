@@ -206,6 +206,14 @@ msgstr "Are you sure?"
 msgid "Automatic copy requires a secure context."
 msgstr "Automatic copy requires a secure context."
 
+#: src/components/routes/system/charts/memory-charts.tsx
+msgid "Available"
+msgstr "Available"
+
+#: src/lib/alerts.ts
+msgid "Available Memory"
+msgstr "Available Memory"
+
 #: src/components/routes/system/chart-card.tsx
 msgid "Average"
 msgstr "Average"
@@ -1939,6 +1947,10 @@ msgstr "Triggers when 60s memory pressure some stall exceeds a predefined level"
 #: src/lib/alerts.ts
 msgid "Triggers when any sensor exceeds a threshold"
 msgstr "Triggers when any sensor exceeds a threshold"
+
+#: src/lib/alerts.ts
+msgid "Triggers when available memory drops below a threshold"
+msgstr "Triggers when available memory drops below a threshold"
 
 #: src/lib/alerts.ts
 msgid "Triggers when battery charge drops below a threshold"
