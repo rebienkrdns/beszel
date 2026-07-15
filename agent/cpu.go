@@ -1,12 +1,8 @@
 package agent
 
 import (
-	"bufio"
 	"math"
-	"os"
 	"runtime"
-	"strconv"
-	"strings"
 
 	"github.com/henrygd/beszel/internal/entities/system"
 	"github.com/shirou/gopsutil/v4/cpu"
@@ -121,46 +117,11 @@ func calculateBusy(t1, t2 cpu.TimesStat) float64 {
 
 // getCpuPressure reads Linux PSI (Pressure Stall Information) for CPU from
 // /proc/pressure/cpu and returns the "some" stall percentages [avg10, avg60, avg300].
-// Returns a zero array on non-Linux systems or if the file is unavailable.
+// CPU PSI has no "full" line (meaningless for CPU - if everything is stalled,
+// the CPU is idle by definition), so only "some" is returned.
 func getCpuPressure() [3]float64 {
-	if runtime.GOOS != "linux" {
-		return [3]float64{}
-	}
-	f, err := os.Open("/proc/pressure/cpu")
-	if err != nil {
-		return [3]float64{}
-	}
-	defer f.Close()
-
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if !strings.HasPrefix(line, "some ") {
-			continue
-		}
-		// Format: "some avg10=X.XX avg60=X.XX avg300=X.XX total=XXXXXX"
-		var vals [3]float64
-		for _, field := range strings.Fields(line[5:]) {
-			kv := strings.SplitN(field, "=", 2)
-			if len(kv) != 2 {
-				continue
-			}
-			v, err := strconv.ParseFloat(kv[1], 64)
-			if err != nil {
-				continue
-			}
-			switch kv[0] {
-			case "avg10":
-				vals[0] = v
-			case "avg60":
-				vals[1] = v
-			case "avg300":
-				vals[2] = v
-			}
-		}
-		return vals
-	}
-	return [3]float64{}
+	some, _ := readPressureFile("/proc/pressure/cpu")
+	return some
 }
 
 // getAllBusy calculates the total CPU time and busy CPU time from CPU times statistics.
