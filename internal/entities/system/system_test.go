@@ -12,8 +12,9 @@ import (
 // omitzero, every stats record would serialize memps/mempf/cpup as [0,0,0]
 // even when an agent never collected that data (old agents, non-Linux
 // hosts), defeating the frontend's presence check that hides the panel.
-// MemAvailable (mav) is included here too: it's a scalar omitzero field with
-// the same "must be absent, not zero, for old agents" requirement.
+// MemAvailable (mav) and OOMKillDelta (okd) are included here too: both are
+// scalar omitzero fields with the same "must be absent, not zero, for old
+// agents" requirement.
 func TestStatsPressureFieldsOmittedWhenZero(t *testing.T) {
 	b, err := json.Marshal(Stats{})
 	if err != nil {
@@ -25,7 +26,7 @@ func TestStatsPressureFieldsOmittedWhenZero(t *testing.T) {
 		t.Fatalf("unmarshal into map: %v", err)
 	}
 
-	for _, key := range []string{"memps", "mempf", "cpup", "iodp", "iodf", "mav"} {
+	for _, key := range []string{"memps", "mempf", "cpup", "iodp", "iodf", "mav", "okd"} {
 		if _, present := raw[key]; present {
 			t.Errorf("expected %q to be omitted for a zero-value Stats, got: %s", key, raw[key])
 		}
@@ -40,6 +41,7 @@ func TestStatsPressureFieldsPresentWhenNonZero(t *testing.T) {
 		IOPressureSome:  [3]float64{1.2, 3.4, 5.6},
 		IOPressureFull:  [3]float64{7.8, 9.0, 1.2},
 		MemAvailable:    5.5,
+		OOMKillDelta:    1,
 	}
 	b, err := json.Marshal(s)
 	if err != nil {
@@ -51,7 +53,7 @@ func TestStatsPressureFieldsPresentWhenNonZero(t *testing.T) {
 		t.Fatalf("unmarshal into map: %v", err)
 	}
 
-	for _, key := range []string{"memps", "mempf", "cpup", "iodp", "iodf", "mav"} {
+	for _, key := range []string{"memps", "mempf", "cpup", "iodp", "iodf", "mav", "okd"} {
 		if _, present := raw[key]; !present {
 			t.Errorf("expected %q to be present for a non-zero Stats", key)
 		}

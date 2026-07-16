@@ -56,6 +56,7 @@ type Stats struct {
 	IOPressureSome    [3]float64           `json:"iodp,omitzero" cbor:"39,keyasint,omitzero"`   // io PSI some: [avg10, avg60, avg300]
 	IOPressureFull    [3]float64           `json:"iodf,omitzero" cbor:"40,keyasint,omitzero"`   // io PSI full: [avg10, avg60, avg300]
 	MemAvailable      float64              `json:"mav,omitzero" cbor:"41,keyasint,omitzero"`    // available memory (gb), from /proc/meminfo MemAvailable
+	OOMKillDelta      uint32               `json:"okd,omitzero" cbor:"42,keyasint,omitzero"`    // OOM kills since last poll
 }
 
 // Uint8Slice wraps []uint8 to customize JSON encoding while keeping CBOR efficient.
@@ -161,6 +162,7 @@ type Info struct {
 	ExtraFsPct     map[string]float64 `json:"efs,omitempty" cbor:"21,keyasint,omitempty"`
 	Services       []uint16           `json:"sv,omitempty" cbor:"22,keyasint,omitempty"` // [totalServices, numFailedServices]
 	Battery        [2]uint8           `json:"bat,omitzero" cbor:"23,keyasint,omitzero"`  // [percent, charge state]
+	OOMKillCount   uint64             `json:"ok,omitempty" cbor:"24,keyasint,omitempty"` // cumulative OOM kills since boot
 }
 
 // Data that does not change during process lifetime and is not needed in All Systems table
