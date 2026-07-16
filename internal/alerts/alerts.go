@@ -251,6 +251,10 @@ func (am *AlertManager) SendAlert(data AlertMessageData) error {
 		am.hub.Logger().Error("Failed to resolve mail client", "err", err)
 		return err
 	}
+	if mailClient == nil {
+		// email delivery disabled at the instance level (mail provider set to "none")
+		return nil
+	}
 	err = mailClient.Send(&message)
 	if err != nil {
 		am.hub.Logger().Error("Failed to send email alert", "err", err)
@@ -262,18 +266,23 @@ func (am *AlertManager) SendAlert(data AlertMessageData) error {
 
 // resolveMailClient returns the mailer.Mailer to use for the currently
 // configured provider (SMTP or Resend), applying env-over-DB precedence.
+// Returns a nil client (with no error) when email delivery is disabled.
 func (am *AlertManager) resolveMailClient() (mailer.Mailer, error) {
 	info, resendApiKey, err := resolveMailSettings(am.hub)
 	if err != nil {
 		return nil, err
 	}
-	if info.Provider == "resend" {
+	switch info.Provider {
+	case "none":
+		return nil, nil
+	case "resend":
 		if resendApiKey == "" {
 			return nil, fmt.Errorf("resend is selected as the mail provider but no API key is configured")
 		}
 		return &ResendMailer{ApiKey: resendApiKey}, nil
+	default:
+		return am.hub.NewMailClient(), nil
 	}
-	return am.hub.NewMailClient(), nil
 }
 
 // SendShoutrrrAlert sends an alert via a Shoutrrr URL

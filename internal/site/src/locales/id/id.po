@@ -404,6 +404,10 @@ msgstr "Periksa {email} untuk tautan atur ulang password."
 msgid "Check logs for more details."
 msgstr "Periksa riwayat untuk lebih detail."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Check your inbox"
+msgstr ""
+
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Check your monitoring service"
 msgstr "Periksa layanan pemantauan Anda"
@@ -756,6 +760,10 @@ msgid "Email"
 msgstr ""
 
 #: src/components/routes/settings/notifications.tsx
+msgid "Email alert delivery is disabled. Webhook and Discord notifications are unaffected."
+msgstr ""
+
+#: src/components/routes/settings/notifications.tsx
 msgid "Email notifications"
 msgstr "Notifikasi email"
 
@@ -887,6 +895,11 @@ msgstr "Gagal menyimpan pengaturan"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Failed to send heartbeat"
 msgstr "Gagal mengirim heartbeat"
+
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Failed to send test email"
+msgstr ""
 
 #: src/components/routes/settings/notifications.tsx
 msgid "Failed to send test notification"
@@ -1334,6 +1347,10 @@ msgstr "Tidak ada atribut S.M.A.R.T. yang tersedia untuk perangkat ini."
 msgid "No systems found."
 msgstr "Sistem tidak ditemukan."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "None"
+msgstr ""
+
 #: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Normal"
 msgstr ""
@@ -1687,6 +1704,11 @@ msgstr "Kirim satu ping heartbeat untuk memverifikasi titik akhir Anda berfungsi
 msgid "Send periodic outbound pings to an external monitoring service so you can monitor Beszel without exposing it to the internet."
 msgstr "Kirim ping keluar secara berkala ke layanan pemantauan eksternal sehingga Anda dapat memantau Beszel tanpa mengeksposnya ke internet."
 
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Send test email"
+msgstr ""
+
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Send test heartbeat"
 msgstr "Kirim tes heartbeat"
@@ -1847,6 +1869,10 @@ msgstr "Temperatur sensor sistem"
 msgid "Test <0>URL</0>"
 msgstr "Tes <0>URL</0>"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Test email sent"
+msgstr ""
+
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Test heartbeat"
 msgstr "Tes heartbeat"
@@ -1859,6 +1885,10 @@ msgstr "Notifikasi tes dikirim"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "The overall status is <0>ok</0> when all systems are up, <1>warn</1> when alerts are triggered, and <2>error</2> when any system is down."
 msgstr "Status keseluruhan adalah <0>ok</0> ketika semua sistem aktif, <1>warn</1> ketika peringatan dipicu, dan <2>error</2> ketika ada sistem yang mati."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "The test email tests the currently saved provider — save your changes first if you just switched it."
+msgstr ""
 
 #: src/components/login/forgot-pass-form.tsx
 msgid "Then log into the backend and reset your user account password in the users table."

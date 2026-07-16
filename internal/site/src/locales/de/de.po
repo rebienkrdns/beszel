@@ -404,6 +404,10 @@ msgstr "Überprüfe {email} auf einen Link zum Zurücksetzen."
 msgid "Check logs for more details."
 msgstr "Überprüfe die Protokolle für weitere Details."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Check your inbox"
+msgstr ""
+
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Check your monitoring service"
 msgstr "Überprüfen Sie Ihren Überwachungsdienst"
@@ -756,6 +760,10 @@ msgid "Email"
 msgstr "E-Mail"
 
 #: src/components/routes/settings/notifications.tsx
+msgid "Email alert delivery is disabled. Webhook and Discord notifications are unaffected."
+msgstr ""
+
+#: src/components/routes/settings/notifications.tsx
 msgid "Email notifications"
 msgstr "E-Mail-Benachrichtigungen"
 
@@ -887,6 +895,11 @@ msgstr "Einstellungen konnten nicht gespeichert werden"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Failed to send heartbeat"
 msgstr "Heartbeat konnte nicht gesendet werden"
+
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Failed to send test email"
+msgstr ""
 
 #: src/components/routes/settings/notifications.tsx
 msgid "Failed to send test notification"
@@ -1334,6 +1347,10 @@ msgstr "Für dieses Gerät sind keine S.M.A.R.T.-Attribute verfügbar."
 msgid "No systems found."
 msgstr "Keine Systeme gefunden."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "None"
+msgstr ""
+
 #: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Normal"
 msgstr ""
@@ -1687,6 +1704,11 @@ msgstr "Senden Sie einen einzelnen Heartbeat-Ping, um zu überprüfen, ob Ihr En
 msgid "Send periodic outbound pings to an external monitoring service so you can monitor Beszel without exposing it to the internet."
 msgstr "Senden Sie regelmäßige ausgehende Pings an einen externen Überwachungsdienst, damit Sie Beszel überwachen können, ohne es dem Internet auszusetzen."
 
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Send test email"
+msgstr ""
+
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Send test heartbeat"
 msgstr "Test-Heartbeat senden"
@@ -1847,6 +1869,10 @@ msgstr "Temperaturen der Systemsensoren"
 msgid "Test <0>URL</0>"
 msgstr ""
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Test email sent"
+msgstr ""
+
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Test heartbeat"
 msgstr "Test-Heartbeat"
@@ -1859,6 +1885,10 @@ msgstr "Testbenachrichtigung gesendet"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "The overall status is <0>ok</0> when all systems are up, <1>warn</1> when alerts are triggered, and <2>error</2> when any system is down."
 msgstr "Der Gesamtstatus ist <0>ok</0>, wenn alle Systeme in Betrieb sind, <1>warn</1>, wenn Warnungen ausgelöst werden, und <2>error</2>, wenn ein System ausgefallen ist."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "The test email tests the currently saved provider — save your changes first if you just switched it."
+msgstr ""
 
 #: src/components/login/forgot-pass-form.tsx
 msgid "Then log into the backend and reset your user account password in the users table."

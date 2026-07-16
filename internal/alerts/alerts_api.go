@@ -5,12 +5,14 @@ import (
 	"errors"
 	"net"
 	"net/http"
+	"net/mail"
 	"net/url"
 	"slices"
 	"strings"
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/tools/mailer"
 )
 
 // UpsertUserAlerts handles API request to create or update alerts for a user
@@ -142,8 +144,8 @@ func UpdateMailSettings(e *core.RequestEvent) error {
 	if err := e.BindBody(&data); err != nil {
 		return e.BadRequestError("Bad data", err)
 	}
-	if data.Provider != "smtp" && data.Provider != "resend" {
-		return e.BadRequestError("provider must be \"smtp\" or \"resend\"", nil)
+	if data.Provider != "smtp" && data.Provider != "resend" && data.Provider != "none" {
+		return e.BadRequestError("provider must be \"smtp\", \"resend\", or \"none\"", nil)
 	}
 
 	record, err := getOrCreateHubSettings(e.App)
@@ -181,6 +183,38 @@ func (am *AlertManager) SendTestNotification(e *core.RequestEvent) error {
 	}
 	err = am.SendShoutrrrAlert(data.URL, "Test Alert", "This is a notification from Beszel.", am.hub.Settings().Meta.AppURL, "View Beszel")
 	if err != nil {
+		return e.JSON(200, map[string]string{"err": err.Error()})
+	}
+	return e.JSON(200, map[string]bool{"err": false})
+}
+
+// SendTestMail sends a test email to the requesting admin's own account email
+// using the currently configured mail provider (SMTP or Resend).
+// (POST /api/beszel/test-mail, admin role required)
+func (am *AlertManager) SendTestMail(e *core.RequestEvent) error {
+	adminEmail := e.Auth.GetString("email")
+	if adminEmail == "" {
+		return e.BadRequestError("Your account has no email address", nil)
+	}
+
+	mailClient, err := am.resolveMailClient()
+	if err != nil {
+		return e.JSON(200, map[string]string{"err": err.Error()})
+	}
+	if mailClient == nil {
+		return e.JSON(200, map[string]string{"err": "Email delivery is disabled (mail provider set to none)"})
+	}
+
+	message := mailer.Message{
+		To:      []mail.Address{{Address: adminEmail}},
+		Subject: "Beszel test email",
+		Text:    "This is a test email from Beszel.",
+		From: mail.Address{
+			Address: am.hub.Settings().Meta.SenderAddress,
+			Name:    am.hub.Settings().Meta.SenderName,
+		},
+	}
+	if err := mailClient.Send(&message); err != nil {
 		return e.JSON(200, map[string]string{"err": err.Error()})
 	}
 	return e.JSON(200, map[string]bool{"err": false})

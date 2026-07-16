@@ -404,6 +404,10 @@ msgstr "Preverite {email} za povezavo za ponastavitev."
 msgid "Check logs for more details."
 msgstr "Za več podrobnosti preverite dnevnike."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Check your inbox"
+msgstr ""
+
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Check your monitoring service"
 msgstr "Preverite svojo storitev za spremljanje"
@@ -756,6 +760,10 @@ msgid "Email"
 msgstr "E-pošta"
 
 #: src/components/routes/settings/notifications.tsx
+msgid "Email alert delivery is disabled. Webhook and Discord notifications are unaffected."
+msgstr ""
+
+#: src/components/routes/settings/notifications.tsx
 msgid "Email notifications"
 msgstr "E-poštna obvestila"
 
@@ -887,6 +895,11 @@ msgstr "Shranjevanje nastavitev ni uspelo"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Failed to send heartbeat"
 msgstr "Slanje srčnega utripa (heartbeat) ni uspelo"
+
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Failed to send test email"
+msgstr ""
 
 #: src/components/routes/settings/notifications.tsx
 msgid "Failed to send test notification"
@@ -1334,6 +1347,10 @@ msgstr "Za to napravo ni na voljo atributov S.M.A.R.T."
 msgid "No systems found."
 msgstr "Ne najdem sistema."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "None"
+msgstr ""
+
 #: src/components/routes/system/charts/pressure-utils.tsx
 msgid "Normal"
 msgstr ""
@@ -1687,6 +1704,11 @@ msgstr "Pošljite en srčni utrip (ping), da preverite, ali vaša končna točka
 msgid "Send periodic outbound pings to an external monitoring service so you can monitor Beszel without exposing it to the internet."
 msgstr "Pošiljajte občasne odhodne pinge zunanji storitvi za spremljanje, da boste lahko spremljali Beszel, ne da bi ga izpostavili internetu."
 
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Send test email"
+msgstr ""
+
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Send test heartbeat"
 msgstr "Pošlji testni srčni utrip"
@@ -1847,6 +1869,10 @@ msgstr "Temperature sistemskih senzorjev"
 msgid "Test <0>URL</0>"
 msgstr "Preveri <0>URL</0>"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Test email sent"
+msgstr ""
+
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Test heartbeat"
 msgstr "Testni srčni utrip"
@@ -1859,6 +1885,10 @@ msgstr "Testno obvestilo je poslano"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "The overall status is <0>ok</0> when all systems are up, <1>warn</1> when alerts are triggered, and <2>error</2> when any system is down."
 msgstr "Splošno stanje je <0>v redu</0>, ko vsi sistemi delujejo, <1>opozorilo</1>, ko se sprožijo opozorila, in <2>napaka</2>, ko kateri koli sistem ne deluje."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "The test email tests the currently saved provider — save your changes first if you just switched it."
+msgstr ""
 
 #: src/components/login/forgot-pass-form.tsx
 msgid "Then log into the backend and reset your user account password in the users table."

@@ -1729,7 +1729,7 @@ func init() {
 				"required": true,
 				"system": false,
 				"type": "select",
-				"values": ["smtp", "resend"]
+				"values": ["smtp", "resend", "none"]
 			},
 			{
 				"hidden": false,

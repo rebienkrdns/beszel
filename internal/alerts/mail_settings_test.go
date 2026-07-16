@@ -107,4 +107,12 @@ func TestResolveMailClient(t *testing.T) {
 	resendClient, isResend := client.(*alerts.ResendMailer)
 	require.True(t, isResend)
 	assert.Equal(t, "re_test_key", resendClient.ApiKey)
+
+	// switch to none -> should return a nil client with no error, meaning email delivery is skipped
+	record.Set("mail_provider", "none")
+	require.NoError(t, hub.Save(record))
+
+	client, err = am.ResolveMailClient()
+	require.NoError(t, err)
+	assert.Nil(t, client)
 }

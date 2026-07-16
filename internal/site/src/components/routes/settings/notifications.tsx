@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro"
 import { Trans } from "@lingui/react/macro"
-import { BellIcon, LoaderCircleIcon, PlusIcon, SaveIcon, Trash2Icon } from "lucide-react"
+import { BellIcon, LoaderCircleIcon, PlusIcon, SaveIcon, SendIcon, Trash2Icon } from "lucide-react"
 import { type ChangeEventHandler, useEffect, useState } from "react"
 import * as v from "valibot"
 import { prependBasePath } from "@/components/router"
@@ -377,7 +377,7 @@ const DiscordWebhookCard = ({ url, onUrlChange, onRemove }: ShoutrrrUrlCardProps
 }
 
 interface MailSettingsInfo {
-	provider: "smtp" | "resend"
+	provider: "smtp" | "resend" | "none"
 	providerSource: "env" | "db"
 	hasResendApiKey: boolean
 	resendApiKeySource: "env" | "db" | "none"
@@ -385,10 +385,11 @@ interface MailSettingsInfo {
 
 const MailProviderSettings = () => {
 	const [info, setInfo] = useState<MailSettingsInfo | null>(null)
-	const [provider, setProvider] = useState<"smtp" | "resend">("smtp")
+	const [provider, setProvider] = useState<"smtp" | "resend" | "none">("smtp")
 	const [resendApiKey, setResendApiKey] = useState("")
 	const [isLoading, setIsLoading] = useState(true)
 	const [isSaving, setIsSaving] = useState(false)
+	const [isTesting, setIsTesting] = useState(false)
 
 	useEffect(() => {
 		fetchInfo()
@@ -432,6 +433,33 @@ const MailProviderSettings = () => {
 		}
 	}
 
+	async function sendTestMail() {
+		setIsTesting(true)
+		try {
+			const res = await pb.send<{ err: string | false }>("/api/beszel/test-mail", { method: "POST" })
+			if (!res.err) {
+				toast({
+					title: t`Test email sent`,
+					description: t`Check your inbox`,
+				})
+			} else {
+				toast({
+					title: t`Failed to send test email`,
+					description: res.err,
+					variant: "destructive",
+				})
+			}
+		} catch (e: unknown) {
+			toast({
+				title: t`Failed to send test email`,
+				description: (e as ClientResponseError).data?.message ?? (e as Error).message,
+				variant: "destructive",
+			})
+		} finally {
+			setIsTesting(false)
+		}
+	}
+
 	if (isLoading || !info) {
 		return null
 	}
@@ -451,6 +479,18 @@ const MailProviderSettings = () => {
 				<p className="text-sm text-muted-foreground leading-relaxed">
 					<Trans>Active provider:</Trans> <span className="font-medium">{info.provider}</span>
 				</p>
+				<Button
+					type="button"
+					variant="outline"
+					className="w-fit"
+					onClick={sendTestMail}
+					disabled={isTesting || info.provider === "none"}
+				>
+					{isTesting ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : <SendIcon className="h-4 w-4" />}
+					<span className="ms-1">
+						<Trans>Send test email</Trans>
+					</span>
+				</Button>
 			</div>
 		)
 	}
@@ -461,13 +501,16 @@ const MailProviderSettings = () => {
 				<Label htmlFor="mail-provider">
 					<Trans>Mail provider</Trans>
 				</Label>
-				<Select value={provider} onValueChange={(value: "smtp" | "resend") => setProvider(value)}>
+				<Select value={provider} onValueChange={(value: "smtp" | "resend" | "none") => setProvider(value)}>
 					<SelectTrigger id="mail-provider">
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>
 						<SelectItem value="smtp">SMTP</SelectItem>
 						<SelectItem value="resend">Resend</SelectItem>
+						<SelectItem value="none">
+							<Trans>None</Trans>
+						</SelectItem>
 					</SelectContent>
 				</Select>
 			</div>
@@ -499,12 +542,34 @@ const MailProviderSettings = () => {
 					</p>
 				</div>
 			)}
-			<Button type="button" variant="outline" className="w-fit" onClick={save} disabled={isSaving}>
-				{isSaving ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : <SaveIcon className="h-4 w-4" />}
-				<span className="ms-1">
-					<Trans>Save mail provider</Trans>
-				</span>
-			</Button>
+			{provider === "none" && (
+				<p className="text-sm text-muted-foreground leading-relaxed">
+					<Trans>Email alert delivery is disabled. Webhook and Discord notifications are unaffected.</Trans>
+				</p>
+			)}
+			<div className="flex flex-wrap items-center gap-2.5">
+				<Button type="button" variant="outline" className="w-fit" onClick={save} disabled={isSaving}>
+					{isSaving ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : <SaveIcon className="h-4 w-4" />}
+					<span className="ms-1">
+						<Trans>Save mail provider</Trans>
+					</span>
+				</Button>
+				<Button
+					type="button"
+					variant="outline"
+					className="w-fit"
+					onClick={sendTestMail}
+					disabled={isTesting || info.provider === "none"}
+				>
+					{isTesting ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : <SendIcon className="h-4 w-4" />}
+					<span className="ms-1">
+						<Trans>Send test email</Trans>
+					</span>
+				</Button>
+			</div>
+			<p className="text-[0.8rem] text-muted-foreground">
+				<Trans>The test email tests the currently saved provider — save your changes first if you just switched it.</Trans>
+			</p>
 		</div>
 	)
 }

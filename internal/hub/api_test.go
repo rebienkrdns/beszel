@@ -731,6 +731,51 @@ func TestApiRoutesAuthentication(t *testing.T) {
 			ExpectedContent: []string{`"hasResendApiKey":true`},
 			TestAppFactory:  testAppFactory,
 		},
+		{
+			// switch to "none" so the test-mail scenarios below don't make a real network call to Resend
+			Name:   "POST /mail-settings - switch to none",
+			Method: http.MethodPost,
+			URL:    "/api/beszel/mail-settings",
+			Headers: map[string]string{
+				"Authorization": adminUserToken,
+			},
+			ExpectedStatus:  200,
+			ExpectedContent: []string{`"success":true`},
+			TestAppFactory:  testAppFactory,
+			Body: jsonReader(map[string]any{
+				"provider": "none",
+			}),
+		},
+		{
+			Name:            "POST /test-mail - no auth should fail",
+			Method:          http.MethodPost,
+			URL:             "/api/beszel/test-mail",
+			ExpectedStatus:  401,
+			ExpectedContent: []string{"requires valid"},
+			TestAppFactory:  testAppFactory,
+		},
+		{
+			Name:   "POST /test-mail - with user auth should fail",
+			Method: http.MethodPost,
+			URL:    "/api/beszel/test-mail",
+			Headers: map[string]string{
+				"Authorization": userToken,
+			},
+			ExpectedStatus:  403,
+			ExpectedContent: []string{"The authorized record is not allowed to perform this action."},
+			TestAppFactory:  testAppFactory,
+		},
+		{
+			Name:   "POST /test-mail - with admin auth when provider is none should report disabled",
+			Method: http.MethodPost,
+			URL:    "/api/beszel/test-mail",
+			Headers: map[string]string{
+				"Authorization": adminUserToken,
+			},
+			ExpectedStatus:  200,
+			ExpectedContent: []string{"disabled"},
+			TestAppFactory:  testAppFactory,
+		},
 		// this works but diff behavior on prod vs dev.
 		// dev returns 502; prod returns 200 with static html page 404
 		// TODO: align dev and prod behavior and re-enable this test
