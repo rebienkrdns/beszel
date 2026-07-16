@@ -136,6 +136,19 @@ const SettingsNotificationsPage = ({ userSettings }: { userSettings: UserSetting
 									to integrate with popular notification services.
 								</Trans>
 							</p>
+							<p className="text-sm text-muted-foreground mt-1 leading-relaxed">
+								<Trans>
+									Example for Discord:{" "}
+									<code className="bg-muted rounded-sm px-1 text-primary">discord://TOKEN@WEBHOOK_ID</code> — get{" "}
+									<code className="bg-muted rounded-sm px-1 text-primary">TOKEN</code> and{" "}
+									<code className="bg-muted rounded-sm px-1 text-primary">WEBHOOK_ID</code> from your Discord webhook
+									URL (
+									<code className="bg-muted rounded-sm px-1 text-primary">
+										https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN
+									</code>
+									).
+								</Trans>
+							</p>
 						</div>
 						<Button type="button" variant="outline" className="h-10 shrink-0" onClick={addWebhook}>
 							<PlusIcon className="size-4" />
