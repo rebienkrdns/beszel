@@ -52,6 +52,8 @@ export interface SystemInfo {
 	o?: string
 	/** uptime */
 	u: number
+	/** cumulative OOM kills since boot */
+	ok?: number
 	/** memory percent */
 	mp: number
 	/** disk percent */
@@ -115,6 +117,8 @@ export interface SystemStats {
 	mz?: number
 	/** available memory (gb) */
 	mav?: number
+	/** OOM kills since last poll */
+	okd?: number
 	/** swap space (gb) */
 	s: number
 	/** swap used (gb) */

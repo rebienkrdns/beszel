@@ -9,6 +9,7 @@ import {
 	MemoryStickIcon,
 	MonitorIcon,
 	Settings2Icon,
+	SkullIcon,
 } from "lucide-react"
 import { useMemo } from "react"
 import ChartTimeSelect from "@/components/charts/chart-time-select"
@@ -120,6 +121,14 @@ export default function InfoBar({
 				Icon: MemoryStickIcon,
 				hide: !memory,
 				label: t`Memory`,
+			})
+		}
+
+		if (system.info.ok) {
+			info.push({
+				value: system.info.ok,
+				Icon: SkullIcon,
+				label: t`OOM Kills`,
 			})
 		}
 
