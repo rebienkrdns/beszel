@@ -688,6 +688,23 @@ func TestAverageSystemStatsSlice_MemAvailableAndPSI(t *testing.T) {
 	assert.Equal(t, [3]float64{14.0, 15.0, 16.0}, result.IOPressureFull)
 }
 
+// TestAverageSystemStatsSlice_OOMKillDeltaSums verifies that OOMKillDelta is
+// summed (not averaged) across an aggregation window. Unlike every other
+// numeric field in this function, OOMKillDelta is a per-poll event count, not
+// a continuous gauge - "3 kills happened across this 10-minute window" is
+// meaningful, "an average of 0.3 kills per poll" is not.
+func TestAverageSystemStatsSlice_OOMKillDeltaSums(t *testing.T) {
+	input := []system.Stats{
+		{OOMKillDelta: 1},
+		{OOMKillDelta: 2},
+		{OOMKillDelta: 0},
+	}
+
+	result := records.AverageSystemStatsSlice(input)
+
+	assert.Equal(t, uint32(3), result.OOMKillDelta)
+}
+
 // --- Container Stats Tests ---
 
 func TestAverageContainerStatsSlice_Empty(t *testing.T) {
