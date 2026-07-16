@@ -622,6 +622,115 @@ func TestApiRoutesAuthentication(t *testing.T) {
 				"systems": []string{system.Id},
 			}),
 		},
+		{
+			Name:            "GET /mail-settings - no auth should fail",
+			Method:          http.MethodGet,
+			URL:             "/api/beszel/mail-settings",
+			ExpectedStatus:  401,
+			ExpectedContent: []string{"requires valid"},
+			TestAppFactory:  testAppFactory,
+		},
+		{
+			Name:   "GET /mail-settings - with user auth should fail",
+			Method: http.MethodGet,
+			URL:    "/api/beszel/mail-settings",
+			Headers: map[string]string{
+				"Authorization": userToken,
+			},
+			ExpectedStatus:  403,
+			ExpectedContent: []string{"The authorized record is not allowed to perform this action."},
+			TestAppFactory:  testAppFactory,
+		},
+		{
+			Name:   "GET /mail-settings - with admin auth should return default smtp provider",
+			Method: http.MethodGet,
+			URL:    "/api/beszel/mail-settings",
+			Headers: map[string]string{
+				"Authorization": adminUserToken,
+			},
+			ExpectedStatus:  200,
+			ExpectedContent: []string{`"provider":"smtp"`, `"hasResendApiKey":false`},
+			TestAppFactory:  testAppFactory,
+		},
+		{
+			Name:   "POST /mail-settings - with user auth should fail",
+			Method: http.MethodPost,
+			URL:    "/api/beszel/mail-settings",
+			Headers: map[string]string{
+				"Authorization": userToken,
+			},
+			ExpectedStatus:  403,
+			ExpectedContent: []string{"The authorized record is not allowed to perform this action."},
+			TestAppFactory:  testAppFactory,
+			Body: jsonReader(map[string]any{
+				"provider": "resend",
+			}),
+		},
+		{
+			Name:   "POST /mail-settings - invalid provider should fail",
+			Method: http.MethodPost,
+			URL:    "/api/beszel/mail-settings",
+			Headers: map[string]string{
+				"Authorization": adminUserToken,
+			},
+			ExpectedStatus:  400,
+			ExpectedContent: []string{"must be"},
+			TestAppFactory:  testAppFactory,
+			Body: jsonReader(map[string]any{
+				"provider": "carrier-pigeon",
+			}),
+		},
+		{
+			Name:   "POST /mail-settings - with admin auth should switch to resend",
+			Method: http.MethodPost,
+			URL:    "/api/beszel/mail-settings",
+			Headers: map[string]string{
+				"Authorization": adminUserToken,
+			},
+			ExpectedStatus:  200,
+			ExpectedContent: []string{`"success":true`},
+			TestAppFactory:  testAppFactory,
+			Body: jsonReader(map[string]any{
+				"provider":     "resend",
+				"resendApiKey": "re_test_key_123",
+			}),
+		},
+		{
+			Name:   "GET /mail-settings - with admin auth should reflect resend provider",
+			Method: http.MethodGet,
+			URL:    "/api/beszel/mail-settings",
+			Headers: map[string]string{
+				"Authorization": adminUserToken,
+			},
+			ExpectedStatus:  200,
+			ExpectedContent: []string{`"provider":"resend"`, `"hasResendApiKey":true`, `"resendApiKeySource":"db"`},
+			TestAppFactory:  testAppFactory,
+		},
+		{
+			Name:   "POST /mail-settings - blank resendApiKey should not clear stored key",
+			Method: http.MethodPost,
+			URL:    "/api/beszel/mail-settings",
+			Headers: map[string]string{
+				"Authorization": adminUserToken,
+			},
+			ExpectedStatus:  200,
+			ExpectedContent: []string{`"success":true`},
+			TestAppFactory:  testAppFactory,
+			Body: jsonReader(map[string]any{
+				"provider": "resend",
+			}),
+		},
+		{
+			Name:   "GET /mail-settings - key should still be set after blank-key update",
+			Method: http.MethodGet,
+			URL:    "/api/beszel/mail-settings",
+			Headers: map[string]string{
+				"Authorization": adminUserToken,
+			},
+			ExpectedStatus:  200,
+			ExpectedContent: []string{`"hasResendApiKey":true`},
+			TestAppFactory:  testAppFactory,
+		},
 		// this works but diff behavior on prod vs dev.
 		// dev returns 502; prod returns 200 with static html page 404
 		// TODO: align dev and prod behavior and re-enable this test

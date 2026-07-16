@@ -111,6 +111,9 @@ func (h *Hub) registerApiRoutes(se *core.ServeEvent) error {
 	}
 	// send test notification
 	apiAuth.POST("/test-notification", h.SendTestNotification)
+	// mail provider settings (SMTP / Resend)
+	apiAuth.GET("/mail-settings", alerts.GetMailSettings).BindFunc(requireAdminRole)
+	apiAuth.POST("/mail-settings", alerts.UpdateMailSettings).BindFunc(requireAdminRole)
 	// heartbeat status and test
 	apiAuth.GET("/heartbeat-status", h.getHeartbeatStatus).BindFunc(requireAdminRole)
 	apiAuth.POST("/test-heartbeat", h.testHeartbeat).BindFunc(requireAdminRole)

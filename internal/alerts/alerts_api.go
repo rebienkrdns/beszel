@@ -122,6 +122,44 @@ func DeleteUserAlerts(e *core.RequestEvent) error {
 	return e.JSON(http.StatusOK, map[string]any{"success": true, "count": numDeleted})
 }
 
+// GetMailSettings returns the effective mail provider configuration.
+// (GET /api/beszel/mail-settings, admin role required)
+func GetMailSettings(e *core.RequestEvent) error {
+	info, _, err := resolveMailSettings(e.App)
+	if err != nil {
+		return err
+	}
+	return e.JSON(http.StatusOK, info)
+}
+
+// UpdateMailSettings updates the stored mail provider and/or Resend API key.
+// (POST /api/beszel/mail-settings, admin role required)
+func UpdateMailSettings(e *core.RequestEvent) error {
+	var data struct {
+		Provider     string `json:"provider"`
+		ResendApiKey string `json:"resendApiKey"`
+	}
+	if err := e.BindBody(&data); err != nil {
+		return e.BadRequestError("Bad data", err)
+	}
+	if data.Provider != "smtp" && data.Provider != "resend" {
+		return e.BadRequestError("provider must be \"smtp\" or \"resend\"", nil)
+	}
+
+	record, err := getOrCreateHubSettings(e.App)
+	if err != nil {
+		return err
+	}
+	record.Set("mail_provider", data.Provider)
+	if data.ResendApiKey != "" {
+		record.Set("resend_api_key", data.ResendApiKey)
+	}
+	if err := e.App.Save(record); err != nil {
+		return err
+	}
+	return e.JSON(http.StatusOK, map[string]any{"success": true})
+}
+
 // SendTestNotification handles API request to send a test notification to a specified Shoutrrr URL
 func (am *AlertManager) SendTestNotification(e *core.RequestEvent) error {
 	var data struct {
