@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/tools/mailer"
 )
 
 func NewTestAlertManagerWithoutWorker(app hubLike) *AlertManager {
@@ -108,4 +109,9 @@ func GetOrCreateHubSettings(app core.App) (*core.Record, error) {
 // ResolveMailSettings resolves the effective mail provider and Resend API key.
 func ResolveMailSettings(app core.App) (MailSettingsInfo, string, error) {
 	return resolveMailSettings(app)
+}
+
+// ResolveMailClient returns the mailer.Mailer that SendAlert would currently use.
+func (am *AlertManager) ResolveMailClient() (mailer.Mailer, error) {
+	return am.resolveMailClient()
 }

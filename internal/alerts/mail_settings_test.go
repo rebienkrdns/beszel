@@ -74,3 +74,37 @@ func TestResolveMailSettings(t *testing.T) {
 	assert.Equal(t, "env", info.ResendApiKeySource)
 	assert.Equal(t, "re_env_key", key)
 }
+
+func TestResolveMailClient(t *testing.T) {
+	hub, err := beszelTests.NewTestHub(t.TempDir())
+	require.NoError(t, err)
+	defer hub.Cleanup()
+	hub.StartHub()
+
+	am := hub.GetAlertManager()
+
+	// default: smtp provider -> not a ResendMailer
+	client, err := am.ResolveMailClient()
+	require.NoError(t, err)
+	_, isResend := client.(*alerts.ResendMailer)
+	assert.False(t, isResend)
+
+	// switch to resend without a key configured -> should error
+	record, err := alerts.GetOrCreateHubSettings(hub)
+	require.NoError(t, err)
+	record.Set("mail_provider", "resend")
+	require.NoError(t, hub.Save(record))
+
+	_, err = am.ResolveMailClient()
+	assert.Error(t, err)
+
+	// configure a key -> should now return a working ResendMailer
+	record.Set("resend_api_key", "re_test_key")
+	require.NoError(t, hub.Save(record))
+
+	client, err = am.ResolveMailClient()
+	require.NoError(t, err)
+	resendClient, isResend := client.(*alerts.ResendMailer)
+	require.True(t, isResend)
+	assert.Equal(t, "re_test_key", resendClient.ApiKey)
+}

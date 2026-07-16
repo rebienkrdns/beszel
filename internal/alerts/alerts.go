@@ -246,12 +246,33 @@ func (am *AlertManager) SendAlert(data AlertMessageData) error {
 			Name:    am.hub.Settings().Meta.SenderName,
 		},
 	}
-	err = am.hub.NewMailClient().Send(&message)
+	mailClient, err := am.resolveMailClient()
+	if err != nil {
+		am.hub.Logger().Error("Failed to resolve mail client", "err", err)
+		return err
+	}
+	err = mailClient.Send(&message)
 	if err != nil {
 		return err
 	}
 	am.hub.Logger().Info("Sent email alert", "to", message.To, "subj", message.Subject)
 	return nil
+}
+
+// resolveMailClient returns the mailer.Mailer to use for the currently
+// configured provider (SMTP or Resend), applying env-over-DB precedence.
+func (am *AlertManager) resolveMailClient() (mailer.Mailer, error) {
+	info, resendApiKey, err := resolveMailSettings(am.hub)
+	if err != nil {
+		return nil, err
+	}
+	if info.Provider == "resend" {
+		if resendApiKey == "" {
+			return nil, fmt.Errorf("resend is selected as the mail provider but no API key is configured")
+		}
+		return &ResendMailer{ApiKey: resendApiKey}, nil
+	}
+	return am.hub.NewMailClient(), nil
 }
 
 // SendShoutrrrAlert sends an alert via a Shoutrrr URL
