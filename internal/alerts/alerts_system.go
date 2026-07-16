@@ -428,6 +428,7 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 func (am *AlertManager) sendSystemAlert(alert SystemAlertData) {
 	// log.Printf("Sending alert %s: val %f | count %d | threshold %f\n", alert.name, alert.val, alert.count, alert.threshold)
 	systemName := alert.systemRecord.GetString("name")
+	lowAlert := isLowAlert(alert.name)
 
 	// change Disk to Disk usage
 	if alert.name == "Disk" {
@@ -466,7 +467,6 @@ func (am *AlertManager) sendSystemAlert(alert SystemAlertData) {
 	}
 
 	var subject string
-	lowAlert := isLowAlert(alert.name)
 	if alert.triggered {
 		if lowAlert {
 			subject = fmt.Sprintf("%s %s below threshold", systemName, titleAlertName)

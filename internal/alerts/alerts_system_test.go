@@ -222,3 +222,33 @@ func TestSystemAlertsTwoMin(t *testing.T) {
 	testMultiMinuteSystemAlert(t, "Battery", 20, 2, setBatteryAlertValue, [2]uint8{21, 0}, [2]uint8{19, 0}, [2]uint8{25, 1})
 	testMultiMinuteSystemAlert(t, "MemAvailable", 4, 2, setMemAvailableAlertValue, 10, 3.9, 4.5)
 }
+
+// TestMemAvailableAlertSubjectText guards against a regression where the
+// notification subject for "low" alerts (triggered when the value drops
+// below the threshold) was computed after the alert name had already been
+// rewritten for display (e.g. "MemAvailable" -> "Available Memory"), which
+// caused isLowAlert to no longer match and produced an inverted subject.
+func TestMemAvailableAlertSubjectText(t *testing.T) {
+	synctest.Test(t, func(t *testing.T) {
+		fixture := newSystemAlertTestFixture(t, "MemAvailable", 1, 4)
+		defer fixture.cleanup()
+
+		submitValue(fixture, t, 3.9, setMemAvailableAlertValue)
+		waitForSystemAlert(time.Second)
+
+		fixture.assertTriggered(t, true, "Alert should be triggered")
+		require.Equal(t, 1, fixture.hub.TestMailer.TotalSend(), "An email should have been sent")
+		assert.Contains(t, fixture.hub.TestMailer.LastMessage().Subject, "below threshold",
+			"MemAvailable is a low alert; dropping below the threshold should say 'below threshold'")
+
+		submitValue(fixture, t, 4.1, setMemAvailableAlertValue)
+		waitForSystemAlert(time.Second)
+
+		fixture.assertTriggered(t, false, "Alert should be untriggered")
+		require.Equal(t, 2, fixture.hub.TestMailer.TotalSend(), "A second email should have been sent for untriggering the alert")
+		assert.Contains(t, fixture.hub.TestMailer.LastMessage().Subject, "above threshold",
+			"resolving a low alert should say 'above threshold'")
+
+		waitForSystemAlert(time.Minute)
+	})
+}
