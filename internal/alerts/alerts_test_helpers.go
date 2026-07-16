@@ -99,3 +99,8 @@ func (am *AlertManager) SetAlertTriggered(alert CachedAlertData, triggered bool)
 func IsInternalURL(rawURL string) (bool, error) {
 	return isInternalURL(rawURL)
 }
+
+// GetOrCreateHubSettings returns (creating if necessary) the singleton hub_settings record.
+func GetOrCreateHubSettings(app core.App) (*core.Record, error) {
+	return getOrCreateHubSettings(app)
+}
