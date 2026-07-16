@@ -146,6 +146,7 @@ msgid "Add {foo}"
 msgstr "{foo} 추가"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Add URL"
 msgstr "URL 추가"
 
@@ -408,6 +409,7 @@ msgid "Check your monitoring service"
 msgstr "모니터링 서비스 확인"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Check your notification service"
 msgstr "알림 서비스를 확인하세요."
 
@@ -668,6 +670,10 @@ msgstr "장치"
 msgid "Discharging"
 msgstr "방전 중"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Discord notifications"
+msgstr ""
+
 #: src/components/routes/system.tsx
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Disk"
@@ -806,8 +812,8 @@ msgid "Error"
 msgstr "오류"
 
 #: src/components/routes/settings/notifications.tsx
-msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
-msgstr ""
+#~ msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+#~ msgstr ""
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -1055,6 +1061,11 @@ msgstr "비활성"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Interval"
 msgstr "간격"
+
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Invalid Discord webhook URL"
+msgstr ""
 
 #: src/components/login/auth-form.tsx
 msgid "Invalid email address."
@@ -1414,6 +1425,10 @@ msgstr "비밀번호 재설정 요청이 접수되었습니다"
 #: src/components/routes/settings/quiet-hours.tsx
 msgid "Past"
 msgstr "과거"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Paste the webhook URL from your Discord channel settings (Integrations → Webhooks)."
+msgstr ""
 
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Pause"
@@ -1828,6 +1843,7 @@ msgid "Temperatures of system sensors"
 msgstr "시스템 센서의 온도"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Test <0>URL</0>"
 msgstr "테스트 <0>URL</0>"
 
@@ -1835,6 +1851,7 @@ msgstr "테스트 <0>URL</0>"
 msgid "Test heartbeat"
 msgstr "테스트 하트비트"
 
+#: src/components/routes/settings/notifications.tsx
 #: src/components/routes/settings/notifications.tsx
 msgid "Test notification sent"
 msgstr "테스트 알림이 전송되었습니다."

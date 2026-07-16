@@ -146,6 +146,7 @@ msgid "Add {foo}"
 msgstr "Добави {foo}"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Add URL"
 msgstr "Добави URL"
 
@@ -408,6 +409,7 @@ msgid "Check your monitoring service"
 msgstr "Проверете мониторинг услугата си"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Check your notification service"
 msgstr "Провери услугата си за удостоверяване"
 
@@ -668,6 +670,10 @@ msgstr "Устройство"
 msgid "Discharging"
 msgstr "Разреждане"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Discord notifications"
+msgstr ""
+
 #: src/components/routes/system.tsx
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Disk"
@@ -806,8 +812,8 @@ msgid "Error"
 msgstr "Грешка"
 
 #: src/components/routes/settings/notifications.tsx
-msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
-msgstr ""
+#~ msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+#~ msgstr ""
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -1055,6 +1061,11 @@ msgstr "Неактивен"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Interval"
 msgstr "Интервал"
+
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Invalid Discord webhook URL"
+msgstr ""
 
 #: src/components/login/auth-form.tsx
 msgid "Invalid email address."
@@ -1414,6 +1425,10 @@ msgstr "Получено е искането за нулиране на паро
 #: src/components/routes/settings/quiet-hours.tsx
 msgid "Past"
 msgstr "Минал"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Paste the webhook URL from your Discord channel settings (Integrations → Webhooks)."
+msgstr ""
 
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Pause"
@@ -1828,6 +1843,7 @@ msgid "Temperatures of system sensors"
 msgstr "Температири на системни сензори"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Test <0>URL</0>"
 msgstr "Тествай <0>URL</0>"
 
@@ -1835,6 +1851,7 @@ msgstr "Тествай <0>URL</0>"
 msgid "Test heartbeat"
 msgstr "Тестов heartbeat"
 
+#: src/components/routes/settings/notifications.tsx
 #: src/components/routes/settings/notifications.tsx
 msgid "Test notification sent"
 msgstr "Тестова нотификация изпратена"

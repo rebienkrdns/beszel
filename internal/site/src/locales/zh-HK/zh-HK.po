@@ -146,6 +146,7 @@ msgid "Add {foo}"
 msgstr "新增 {foo}"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Add URL"
 msgstr "添加 URL"
 
@@ -408,6 +409,7 @@ msgid "Check your monitoring service"
 msgstr "檢查您的監控服務"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Check your notification service"
 msgstr "檢查您的通知服務"
 
@@ -668,6 +670,10 @@ msgstr "裝置"
 msgid "Discharging"
 msgstr "放電中"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Discord notifications"
+msgstr ""
+
 #: src/components/routes/system.tsx
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Disk"
@@ -806,8 +812,8 @@ msgid "Error"
 msgstr "錯誤"
 
 #: src/components/routes/settings/notifications.tsx
-msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
-msgstr ""
+#~ msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+#~ msgstr ""
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -1055,6 +1061,11 @@ msgstr "未啟用"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Interval"
 msgstr "間隔"
+
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Invalid Discord webhook URL"
+msgstr ""
 
 #: src/components/login/auth-form.tsx
 msgid "Invalid email address."
@@ -1414,6 +1425,10 @@ msgstr "已收到密碼重設請求"
 #: src/components/routes/settings/quiet-hours.tsx
 msgid "Past"
 msgstr "過去"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Paste the webhook URL from your Discord channel settings (Integrations → Webhooks)."
+msgstr ""
 
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Pause"
@@ -1828,6 +1843,7 @@ msgid "Temperatures of system sensors"
 msgstr "系統傳感器的溫度"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Test <0>URL</0>"
 msgstr "測試<0>URL</0>"
 
@@ -1835,6 +1851,7 @@ msgstr "測試<0>URL</0>"
 msgid "Test heartbeat"
 msgstr "測試 heartbeat"
 
+#: src/components/routes/settings/notifications.tsx
 #: src/components/routes/settings/notifications.tsx
 msgid "Test notification sent"
 msgstr "測試通知已發送"

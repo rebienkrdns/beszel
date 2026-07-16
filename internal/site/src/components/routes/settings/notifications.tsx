@@ -29,14 +29,47 @@ const NotificationSchema = v.object({
 	webhooks: v.array(v.pipe(v.string(), v.url())),
 })
 
+// matches the URL Discord gives you when creating a channel webhook
+const DISCORD_WEBHOOK_URL_RE = /^https:\/\/(?:discord|discordapp)\.com\/api\/webhooks\/(\d+)\/([\w-]+)\/?$/
+// matches the internal Shoutrrr format Beszel actually stores/sends (discord://TOKEN@WEBHOOK_ID)
+const DISCORD_SHOUTRRR_RE = /^discord:\/\/([\w-]+)@(\d+)$/
+
+// converts a native Discord webhook URL to the Shoutrrr format used for storage/sending, or null if it doesn't match
+function discordUrlToShoutrrr(url: string): string | null {
+	const match = url.trim().match(DISCORD_WEBHOOK_URL_RE)
+	if (!match) return null
+	const [, id, token] = match
+	return `discord://${token}@${id}`
+}
+
+// converts a stored Shoutrrr discord:// URL back to the native Discord webhook URL for display, or null if it's not a discord webhook
+function shoutrrrToDiscordUrl(url: string): string | null {
+	const match = url.trim().match(DISCORD_SHOUTRRR_RE)
+	if (!match) return null
+	const [, token, id] = match
+	return `https://discord.com/api/webhooks/${id}/${token}`
+}
+
 const SettingsNotificationsPage = ({ userSettings }: { userSettings: UserSettings }) => {
-	const [webhooks, setWebhooks] = useState(userSettings.webhooks ?? [])
+	const [webhooks, setWebhooks] = useState<string[]>([])
+	const [discordWebhooks, setDiscordWebhooks] = useState<string[]>([])
 	const [emails, setEmails] = useState<string[]>(userSettings.emails ?? [])
 	const [isLoading, setIsLoading] = useState(false)
 
-	// update values when userSettings changes
+	// update values when userSettings changes, splitting discord webhooks into their own section
 	useEffect(() => {
-		setWebhooks(userSettings.webhooks ?? [])
+		const discord: string[] = []
+		const other: string[] = []
+		for (const webhook of userSettings.webhooks ?? []) {
+			const nativeUrl = shoutrrrToDiscordUrl(webhook)
+			if (nativeUrl) {
+				discord.push(nativeUrl)
+			} else {
+				other.push(webhook)
+			}
+		}
+		setWebhooks(other)
+		setDiscordWebhooks(discord)
 		setEmails(userSettings.emails ?? [])
 	}, [userSettings])
 
@@ -56,10 +89,36 @@ const SettingsNotificationsPage = ({ userSettings }: { userSettings: UserSetting
 		setWebhooks(newWebhooks)
 	}
 
+	function addDiscordWebhook() {
+		setDiscordWebhooks([...discordWebhooks, ""])
+		// focus on the new input
+		queueMicrotask(() => {
+			const inputs = document.querySelectorAll("#discord-webhooks input") as NodeListOf<HTMLInputElement>
+			inputs[inputs.length - 1]?.focus()
+		})
+	}
+	const removeDiscordWebhook = (index: number) => setDiscordWebhooks(discordWebhooks.filter((_, i) => i !== index))
+
+	function updateDiscordWebhook(index: number, value: string) {
+		const newWebhooks = [...discordWebhooks]
+		newWebhooks[index] = value
+		setDiscordWebhooks(newWebhooks)
+	}
+
 	async function updateSettings() {
 		setIsLoading(true)
 		try {
-			const parsedData = v.parse(NotificationSchema, { emails, webhooks })
+			const convertedDiscordWebhooks = discordWebhooks.map((url) => {
+				const shoutrrrUrl = discordUrlToShoutrrr(url)
+				if (!shoutrrrUrl) {
+					throw new Error(`${t`Invalid Discord webhook URL`}: ${url}`)
+				}
+				return shoutrrrUrl
+			})
+			const parsedData = v.parse(NotificationSchema, {
+				emails,
+				webhooks: [...webhooks, ...convertedDiscordWebhooks],
+			})
 			await saveSettings(parsedData)
 		} catch (e: unknown) {
 			toast({
@@ -127,19 +186,6 @@ const SettingsNotificationsPage = ({ userSettings }: { userSettings: UserSetting
 									to integrate with popular notification services.
 								</Trans>
 							</p>
-							<p className="text-sm text-muted-foreground mt-1 leading-relaxed">
-								<Trans>
-									Example for Discord:{" "}
-									<code className="bg-muted rounded-sm px-1 text-primary">discord://TOKEN@WEBHOOK_ID</code> — get{" "}
-									<code className="bg-muted rounded-sm px-1 text-primary">TOKEN</code> and{" "}
-									<code className="bg-muted rounded-sm px-1 text-primary">WEBHOOK_ID</code> from your Discord webhook
-									URL (
-									<code className="bg-muted rounded-sm px-1 text-primary">
-										https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN
-									</code>
-									).
-								</Trans>
-							</p>
 						</div>
 						<Button type="button" variant="outline" className="h-10 shrink-0" onClick={addWebhook}>
 							<PlusIcon className="size-4" />
@@ -156,6 +202,39 @@ const SettingsNotificationsPage = ({ userSettings }: { userSettings: UserSetting
 									url={webhook}
 									onUrlChange={(e: React.ChangeEvent<HTMLInputElement>) => updateWebhook(index, e.target.value)}
 									onRemove={() => removeWebhook(index)}
+								/>
+							))}
+						</div>
+					)}
+				</div>
+				<Separator />
+				<div className="space-y-3">
+					<div className="grid grid-cols-1 sm:flex items-center justify-between gap-4">
+						<div>
+							<h3 className="mb-1 text-lg font-medium">
+								<Trans>Discord notifications</Trans>
+							</h3>
+							<p className="text-sm text-muted-foreground leading-relaxed">
+								<Trans>
+									Paste the webhook URL from your Discord channel settings (Integrations → Webhooks).
+								</Trans>
+							</p>
+						</div>
+						<Button type="button" variant="outline" className="h-10 shrink-0" onClick={addDiscordWebhook}>
+							<PlusIcon className="size-4" />
+							<span className="ms-1">
+								<Trans>Add URL</Trans>
+							</span>
+						</Button>
+					</div>
+					{discordWebhooks.length > 0 && (
+						<div className="grid gap-2.5" id="discord-webhooks">
+							{discordWebhooks.map((webhook, index) => (
+								<DiscordWebhookCard
+									key={index}
+									url={webhook}
+									onUrlChange={(e: React.ChangeEvent<HTMLInputElement>) => updateDiscordWebhook(index, e.target.value)}
+									onRemove={() => removeDiscordWebhook(index)}
 								/>
 							))}
 						</div>
@@ -218,6 +297,63 @@ const ShoutrrrUrlCard = ({ url, onUrlChange, onRemove }: ShoutrrrUrlCardProps) =
 					className="light:bg-card"
 					required
 					placeholder="generic://webhook.site/xxxxxx"
+					value={url}
+					onChange={onUrlChange}
+				/>
+				<Button type="button" variant="outline" disabled={isLoading || url === ""} onClick={sendTestNotification}>
+					{isLoading ? (
+						<LoaderCircleIcon className="h-4 w-4 animate-spin" />
+					) : (
+						<span>
+							<Trans>
+								Test <span className="hidden sm:inline">URL</span>
+							</Trans>
+						</span>
+					)}
+				</Button>
+				<Button type="button" variant="outline" size="icon" className="shrink-0" aria-label="Delete" onClick={onRemove}>
+					<Trash2Icon className="h-4 w-4" />
+				</Button>
+			</div>
+		</Card>
+	)
+}
+
+const DiscordWebhookCard = ({ url, onUrlChange, onRemove }: ShoutrrrUrlCardProps) => {
+	const [isLoading, setIsLoading] = useState(false)
+
+	const sendTestNotification = async () => {
+		const shoutrrrUrl = discordUrlToShoutrrr(url)
+		if (!shoutrrrUrl) {
+			showTestNotificationError(t`Invalid Discord webhook URL`)
+			return
+		}
+		setIsLoading(true)
+		try {
+			const res = await pb.send("/api/beszel/test-notification", { method: "POST", body: { url: shoutrrrUrl } })
+			if ("err" in res && !res.err) {
+				toast({
+					title: t`Test notification sent`,
+					description: t`Check your notification service`,
+				})
+			} else {
+				showTestNotificationError(res.err)
+			}
+		} catch (e: unknown) {
+			showTestNotificationError((e as ClientResponseError).data?.message)
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
+	return (
+		<Card className="bg-table-header p-2 md:p-3">
+			<div className="flex items-center gap-1">
+				<Input
+					type="url"
+					className="light:bg-card"
+					required
+					placeholder="https://discord.com/api/webhooks/000000000000000000/xxxxxxxxxxxx"
 					value={url}
 					onChange={onUrlChange}
 				/>

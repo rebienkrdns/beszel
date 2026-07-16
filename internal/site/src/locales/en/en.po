@@ -141,6 +141,7 @@ msgid "Add {foo}"
 msgstr "Add {foo}"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Add URL"
 msgstr "Add URL"
 
@@ -403,6 +404,7 @@ msgid "Check your monitoring service"
 msgstr "Check your monitoring service"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Check your notification service"
 msgstr "Check your notification service"
 
@@ -663,6 +665,10 @@ msgstr "Device"
 msgid "Discharging"
 msgstr "Discharging"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Discord notifications"
+msgstr "Discord notifications"
+
 #: src/components/routes/system.tsx
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Disk"
@@ -801,8 +807,8 @@ msgid "Error"
 msgstr "Error"
 
 #: src/components/routes/settings/notifications.tsx
-msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
-msgstr "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+#~ msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+#~ msgstr "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -1050,6 +1056,11 @@ msgstr "Inactive"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Interval"
 msgstr "Interval"
+
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Invalid Discord webhook URL"
+msgstr "Invalid Discord webhook URL"
 
 #: src/components/login/auth-form.tsx
 msgid "Invalid email address."
@@ -1409,6 +1420,10 @@ msgstr "Password reset request received"
 #: src/components/routes/settings/quiet-hours.tsx
 msgid "Past"
 msgstr "Past"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Paste the webhook URL from your Discord channel settings (Integrations → Webhooks)."
+msgstr "Paste the webhook URL from your Discord channel settings (Integrations → Webhooks)."
 
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Pause"
@@ -1823,6 +1838,7 @@ msgid "Temperatures of system sensors"
 msgstr "Temperatures of system sensors"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Test <0>URL</0>"
 msgstr "Test <0>URL</0>"
 
@@ -1830,6 +1846,7 @@ msgstr "Test <0>URL</0>"
 msgid "Test heartbeat"
 msgstr "Test heartbeat"
 
+#: src/components/routes/settings/notifications.tsx
 #: src/components/routes/settings/notifications.tsx
 msgid "Test notification sent"
 msgstr "Test notification sent"

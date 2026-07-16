@@ -146,6 +146,7 @@ msgid "Add {foo}"
 msgstr "Voeg {foo} toe"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Add URL"
 msgstr "Voeg URL toe"
 
@@ -408,6 +409,7 @@ msgid "Check your monitoring service"
 msgstr "Controleer je monitoringservice"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Check your notification service"
 msgstr "Controleer je meldingsservice"
 
@@ -668,6 +670,10 @@ msgstr "Apparaat"
 msgid "Discharging"
 msgstr "Ontladen"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Discord notifications"
+msgstr ""
+
 #: src/components/routes/system.tsx
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Disk"
@@ -806,8 +812,8 @@ msgid "Error"
 msgstr "Fout"
 
 #: src/components/routes/settings/notifications.tsx
-msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
-msgstr ""
+#~ msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+#~ msgstr ""
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -1054,6 +1060,11 @@ msgstr "Inactief"
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Interval"
+msgstr ""
+
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Invalid Discord webhook URL"
 msgstr ""
 
 #: src/components/login/auth-form.tsx
@@ -1414,6 +1425,10 @@ msgstr "Wachtwoord reset aanvraag ontvangen"
 #: src/components/routes/settings/quiet-hours.tsx
 msgid "Past"
 msgstr "Verleden"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Paste the webhook URL from your Discord channel settings (Integrations → Webhooks)."
+msgstr ""
 
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Pause"
@@ -1828,6 +1843,7 @@ msgid "Temperatures of system sensors"
 msgstr "Temperatuur van systeem sensoren"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Test <0>URL</0>"
 msgstr ""
 
@@ -1835,6 +1851,7 @@ msgstr ""
 msgid "Test heartbeat"
 msgstr "Test-heartbeat"
 
+#: src/components/routes/settings/notifications.tsx
 #: src/components/routes/settings/notifications.tsx
 msgid "Test notification sent"
 msgstr "Testmelding verzonden"

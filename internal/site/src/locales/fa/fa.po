@@ -146,6 +146,7 @@ msgid "Add {foo}"
 msgstr "افزودن {foo}"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Add URL"
 msgstr "افزودن آدرس اینترنتی"
 
@@ -408,6 +409,7 @@ msgid "Check your monitoring service"
 msgstr "سرویس نظارتی خود را بررسی کنید"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Check your notification service"
 msgstr "سرویس اطلاع‌رسانی خود را بررسی کنید"
 
@@ -668,6 +670,10 @@ msgstr "دستگاه"
 msgid "Discharging"
 msgstr "در حال تخلیه"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Discord notifications"
+msgstr ""
+
 #: src/components/routes/system.tsx
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Disk"
@@ -806,8 +812,8 @@ msgid "Error"
 msgstr "خطا"
 
 #: src/components/routes/settings/notifications.tsx
-msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
-msgstr ""
+#~ msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+#~ msgstr ""
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -1055,6 +1061,11 @@ msgstr "غیرفعال"
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Interval"
 msgstr "بازه زمانی"
+
+#: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
+msgid "Invalid Discord webhook URL"
+msgstr ""
 
 #: src/components/login/auth-form.tsx
 msgid "Invalid email address."
@@ -1414,6 +1425,10 @@ msgstr "درخواست بازنشانی رمز عبور دریافت شد"
 #: src/components/routes/settings/quiet-hours.tsx
 msgid "Past"
 msgstr "گذشته"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Paste the webhook URL from your Discord channel settings (Integrations → Webhooks)."
+msgstr ""
 
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Pause"
@@ -1828,6 +1843,7 @@ msgid "Temperatures of system sensors"
 msgstr "دمای حسگرهای سیستم"
 
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 msgid "Test <0>URL</0>"
 msgstr "تست <0>آدرس اینترنتی</0>"
 
@@ -1835,6 +1851,7 @@ msgstr "تست <0>آدرس اینترنتی</0>"
 msgid "Test heartbeat"
 msgstr "تست ضربان قلب"
 
+#: src/components/routes/settings/notifications.tsx
 #: src/components/routes/settings/notifications.tsx
 msgid "Test notification sent"
 msgstr "اعلان آزمایشی ارسال شد"
