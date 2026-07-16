@@ -80,7 +80,8 @@ func init() {
 					"LoadAvg5",
 					"LoadAvg15",
 					"Battery",
-					"MemAvailable"
+					"MemAvailable",
+					"OOMKill"
 				]
 			},
 			{

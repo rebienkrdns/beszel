@@ -195,6 +195,10 @@ func setMemAvailableAlertValue(info *system.Info, stats *system.Stats, value flo
 	stats.MemAvailable = value
 }
 
+func setOOMKillAlertValue(info *system.Info, stats *system.Stats, value uint32) {
+	stats.OOMKillDelta = value
+}
+
 func TestSystemAlertsOneMin(t *testing.T) {
 	testOneMinuteSystemAlert(t, "CPU", 50, setCPUAlertValue, 51, 49)
 	testOneMinuteSystemAlert(t, "Memory", 50, setMemoryAlertValue, 51, 49)
@@ -207,6 +211,7 @@ func TestSystemAlertsOneMin(t *testing.T) {
 	testOneMinuteSystemAlert(t, "LoadAvg15", 4, setLoadAvgAlertValue, [3]float64{0, 0, 4.1}, [3]float64{0, 0, 3.9})
 	testOneMinuteSystemAlert(t, "Battery", 20, setBatteryAlertValue, [2]uint8{19, 0}, [2]uint8{21, 0})
 	testOneMinuteSystemAlert(t, "MemAvailable", 4, setMemAvailableAlertValue, 3.9, 4.1)
+	testOneMinuteSystemAlert(t, "OOMKill", 0.5, setOOMKillAlertValue, uint32(1), uint32(0))
 }
 
 func TestSystemAlertsTwoMin(t *testing.T) {
@@ -221,6 +226,7 @@ func TestSystemAlertsTwoMin(t *testing.T) {
 	testMultiMinuteSystemAlert(t, "LoadAvg15", 4, 2, setLoadAvgAlertValue, [3]float64{0, 0, 2}, [3]float64{0, 0, 4.1}, [3]float64{0, 0, 3.5})
 	testMultiMinuteSystemAlert(t, "Battery", 20, 2, setBatteryAlertValue, [2]uint8{21, 0}, [2]uint8{19, 0}, [2]uint8{25, 1})
 	testMultiMinuteSystemAlert(t, "MemAvailable", 4, 2, setMemAvailableAlertValue, 10, 3.9, 4.5)
+	testMultiMinuteSystemAlert(t, "OOMKill", 2, 2, setOOMKillAlertValue, uint32(0), uint32(3), uint32(0))
 }
 
 // TestMemAvailableAlertSubjectText guards against a regression where the
@@ -248,6 +254,35 @@ func TestMemAvailableAlertSubjectText(t *testing.T) {
 		require.Equal(t, 2, fixture.hub.TestMailer.TotalSend(), "A second email should have been sent for untriggering the alert")
 		assert.Contains(t, fixture.hub.TestMailer.LastMessage().Subject, "above threshold",
 			"resolving a low alert should say 'above threshold'")
+
+		waitForSystemAlert(time.Minute)
+	})
+}
+
+// TestOOMKillAlertSubjectText guards against the generic "above/below
+// threshold" and "averaged X for Y minutes" wording being used for OOMKill,
+// which is an event counter, not a continuous value - the event-style
+// override in sendSystemAlert must actually take effect.
+func TestOOMKillAlertSubjectText(t *testing.T) {
+	synctest.Test(t, func(t *testing.T) {
+		fixture := newSystemAlertTestFixture(t, "OOMKill", 1, 0.5)
+		defer fixture.cleanup()
+
+		submitValue(fixture, t, uint32(1), setOOMKillAlertValue)
+		waitForSystemAlert(time.Second)
+
+		fixture.assertTriggered(t, true, "Alert should be triggered")
+		require.Equal(t, 1, fixture.hub.TestMailer.TotalSend(), "An email should have been sent")
+		assert.Contains(t, fixture.hub.TestMailer.LastMessage().Subject, "OOM Killer event detected",
+			"OOMKill triggering should use event-style wording, not 'above threshold'")
+
+		submitValue(fixture, t, uint32(0), setOOMKillAlertValue)
+		waitForSystemAlert(time.Second)
+
+		fixture.assertTriggered(t, false, "Alert should be untriggered")
+		require.Equal(t, 2, fixture.hub.TestMailer.TotalSend(), "A second email should have been sent for untriggering the alert")
+		assert.Contains(t, fixture.hub.TestMailer.LastMessage().Subject, "OOM Killer events cleared",
+			"OOMKill resolving should use event-style wording, not 'below threshold'")
 
 		waitForSystemAlert(time.Minute)
 	})

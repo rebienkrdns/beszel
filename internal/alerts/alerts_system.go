@@ -163,6 +163,13 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 			}
 			val = data.Stats.MemAvailable
 			unit = " GB"
+		case "OOMKill":
+			// unlike Battery/MemAvailable, 0 is a normal, common, valid value
+			// here (no new OOM kills since last check) - not a "no reading"
+			// sentinel - so it must not be skipped, or the alert could never
+			// be evaluated back down to untriggered.
+			val = float64(data.Stats.OOMKillDelta)
+			unit = ""
 		}
 
 		triggered := alertData.Triggered
@@ -256,11 +263,14 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 		return nil
 	}
 
-	var stats SystemAlertStats
-
 	// we can skip the latest systemStats record since it's the current value
 	for i := range systemStats {
 		stat := systemStats[i]
+		// declare fresh each iteration: fields tagged "omitzero" (e.g. MemAvailable,
+		// OOMKillDelta) are absent from the JSON when their true value is 0, so
+		// reusing one struct across unmarshal calls would leak a previous
+		// record's nonzero value forward into a record that should read as 0.
+		var stats SystemAlertStats
 		// subtract 10 seconds to give a small time buffer
 		systemStatsCreation := stat.Created.Time().Add(-time.Second * 10)
 		if err := json.Unmarshal(stat.Stats, &stats); err != nil {
@@ -364,6 +374,8 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 				alert.val += stats.IOPressureFull[2]
 			case "MemAvailable":
 				alert.val += stats.MemAvailable
+			case "OOMKill":
+				alert.val += float64(stats.OOMKillDelta)
 			default:
 				continue
 			}
@@ -488,6 +500,18 @@ func (am *AlertManager) sendSystemAlert(alert SystemAlertData) {
 		alert.descriptor = alert.name
 	}
 	body := fmt.Sprintf("%s averaged %.2f%s for the previous %v %s.", alert.descriptor, alert.val, alert.unit, alert.min, minutesLabel)
+
+	// OOM Killer is an event counter, not a continuous value - "above/below
+	// threshold" and "averaged X for Y minutes" don't fit; use event wording.
+	if alert.name == "OOMKill" {
+		if alert.triggered {
+			subject = fmt.Sprintf("%s OOM Killer event detected", systemName)
+			body = fmt.Sprintf("The kernel OOM Killer terminated a process on %s.", systemName)
+		} else {
+			subject = fmt.Sprintf("%s OOM Killer events cleared", systemName)
+			body = fmt.Sprintf("No new OOM Killer events on %s in the previous %v %s.", systemName, alert.min, minutesLabel)
+		}
+	}
 
 	if err := am.setAlertTriggered(alert.alertData, alert.triggered); err != nil {
 		// app.Logger().Error("failed to save alert record", "err", err)
