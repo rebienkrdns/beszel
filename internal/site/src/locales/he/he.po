@@ -128,6 +128,10 @@ msgstr "פעיל"
 msgid "Active Alerts"
 msgstr "התראות פעילות"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Active provider:"
+msgstr ""
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Active state"
 msgstr "מצב פעיל"
@@ -775,6 +779,10 @@ msgstr "הכנס כתובת אימייל לאיפוס סיסמה"
 msgid "Enter email address..."
 msgstr "הכנס כתובת אימייל..."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Enter Resend API key..."
+msgstr ""
+
 #: src/components/login/otp-forms.tsx
 msgid "Enter your one-time password."
 msgstr "הכנס את הסיסמה החד-פעמית שלך."
@@ -789,12 +797,17 @@ msgstr "זמני"
 #: src/components/routes/settings/heartbeat.tsx
 #: src/components/routes/settings/heartbeat.tsx
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Error"
 msgstr "שגיאה"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+msgstr ""
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -854,6 +867,10 @@ msgstr "מאפיינים שנכשלו:"
 #: src/lib/api.ts
 msgid "Failed to authenticate"
 msgstr "אימות נכשל"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Failed to save mail provider settings"
+msgstr ""
 
 #: src/components/routes/settings/layout.tsx
 #: src/components/routes/settings/notifications.tsx
@@ -1088,6 +1105,10 @@ msgstr "פריסה"
 msgid "Layout width"
 msgstr "רוחב פריסה"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Leave blank to keep the currently saved key."
+msgstr ""
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Lifecycle"
 msgstr "מחזור חיים"
@@ -1149,6 +1170,18 @@ msgstr "יומנים"
 #: src/components/routes/settings/notifications.tsx
 msgid "Looking instead for where to create alerts? Click the bell <0/> icons in the systems table."
 msgstr "מחפש איפה ליצור התראות? לחץ על סמלי הפעמון <0/> בטבלת המערכות."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Mail provider"
+msgstr ""
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Mail provider is controlled by environment variables on this hub (<0>BESZEL_HUB_MAIL_PROVIDER</0> / <1>BESZEL_HUB_RESEND_API_KEY</1>)."
+msgstr ""
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Mail provider settings saved"
+msgstr ""
 
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Main PID"
@@ -1531,6 +1564,10 @@ msgstr "נדרש על ידי"
 msgid "Requires"
 msgstr "דורש"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Resend API key"
+msgstr ""
+
 #: src/components/login/forgot-pass-form.tsx
 msgid "Reset Password"
 msgstr "איפוס סיסמה"
@@ -1581,6 +1618,10 @@ msgstr "שמור {foo}"
 #: src/components/routes/settings/notifications.tsx
 msgid "Save address using enter key or comma. Leave blank to disable email notifications."
 msgstr "שמור כתובת באמצעות מקש enter או פסיק. השאר ריק כדי להשבית התראות אימייל."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Save mail provider"
+msgstr ""
 
 #: src/components/routes/settings/general.tsx
 #: src/components/routes/settings/notifications.tsx

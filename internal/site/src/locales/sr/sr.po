@@ -128,6 +128,10 @@ msgstr "Активно"
 msgid "Active Alerts"
 msgstr "Активна упозорења"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Active provider:"
+msgstr ""
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Active state"
 msgstr "Активно стање"
@@ -775,6 +779,10 @@ msgstr "Унесите адресу е-поште за ресетовање ло
 msgid "Enter email address..."
 msgstr "Унесите адресу е-поште..."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Enter Resend API key..."
+msgstr ""
+
 #: src/components/login/otp-forms.tsx
 msgid "Enter your one-time password."
 msgstr "Унесите вашу једнократну лозинку."
@@ -789,12 +797,17 @@ msgstr "Ефемеран"
 #: src/components/routes/settings/heartbeat.tsx
 #: src/components/routes/settings/heartbeat.tsx
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Error"
 msgstr "Грешка"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+msgstr ""
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -854,6 +867,10 @@ msgstr "Неуспели атрибути:"
 #: src/lib/api.ts
 msgid "Failed to authenticate"
 msgstr "Неуспела аутентификација"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Failed to save mail provider settings"
+msgstr ""
 
 #: src/components/routes/settings/layout.tsx
 #: src/components/routes/settings/notifications.tsx
@@ -1088,6 +1105,10 @@ msgstr "Распоред"
 msgid "Layout width"
 msgstr "Ширина распореда"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Leave blank to keep the currently saved key."
+msgstr ""
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Lifecycle"
 msgstr "Животни циклус"
@@ -1149,6 +1170,18 @@ msgstr "Логови"
 #: src/components/routes/settings/notifications.tsx
 msgid "Looking instead for where to create alerts? Click the bell <0/> icons in the systems table."
 msgstr "Тражите где да креирате упозорења? Кликните на звоно <0/> у табели система."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Mail provider"
+msgstr ""
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Mail provider is controlled by environment variables on this hub (<0>BESZEL_HUB_MAIL_PROVIDER</0> / <1>BESZEL_HUB_RESEND_API_KEY</1>)."
+msgstr ""
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Mail provider settings saved"
+msgstr ""
 
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Main PID"
@@ -1531,6 +1564,10 @@ msgstr "Захтевано од"
 msgid "Requires"
 msgstr "Захтева"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Resend API key"
+msgstr ""
+
 #: src/components/login/forgot-pass-form.tsx
 msgid "Reset Password"
 msgstr "Ресетуј лозинку"
@@ -1581,6 +1618,10 @@ msgstr "Сачувај {foo}"
 #: src/components/routes/settings/notifications.tsx
 msgid "Save address using enter key or comma. Leave blank to disable email notifications."
 msgstr "Сачувајте адресу користећи enter тастер или зарез. Оставите празно да онемогућите обавештења путем е -поште."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Save mail provider"
+msgstr ""
 
 #: src/components/routes/settings/general.tsx
 #: src/components/routes/settings/notifications.tsx

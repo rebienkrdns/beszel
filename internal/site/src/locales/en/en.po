@@ -123,6 +123,10 @@ msgstr "Active"
 msgid "Active Alerts"
 msgstr "Active Alerts"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Active provider:"
+msgstr "Active provider:"
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Active state"
 msgstr "Active state"
@@ -770,6 +774,10 @@ msgstr "Enter email address to reset password"
 msgid "Enter email address..."
 msgstr "Enter email address..."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Enter Resend API key..."
+msgstr "Enter Resend API key..."
+
 #: src/components/login/otp-forms.tsx
 msgid "Enter your one-time password."
 msgstr "Enter your one-time password."
@@ -784,12 +792,17 @@ msgstr "Ephemeral"
 #: src/components/routes/settings/heartbeat.tsx
 #: src/components/routes/settings/heartbeat.tsx
 #: src/components/routes/settings/notifications.tsx
+#: src/components/routes/settings/notifications.tsx
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Error"
 msgstr "Error"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+msgstr "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -849,6 +862,10 @@ msgstr "Failed Attributes:"
 #: src/lib/api.ts
 msgid "Failed to authenticate"
 msgstr "Failed to authenticate"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Failed to save mail provider settings"
+msgstr "Failed to save mail provider settings"
 
 #: src/components/routes/settings/layout.tsx
 #: src/components/routes/settings/notifications.tsx
@@ -1083,6 +1100,10 @@ msgstr "Layout"
 msgid "Layout width"
 msgstr "Layout width"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Leave blank to keep the currently saved key."
+msgstr "Leave blank to keep the currently saved key."
+
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Lifecycle"
 msgstr "Lifecycle"
@@ -1144,6 +1165,18 @@ msgstr "Logs"
 #: src/components/routes/settings/notifications.tsx
 msgid "Looking instead for where to create alerts? Click the bell <0/> icons in the systems table."
 msgstr "Looking instead for where to create alerts? Click the bell <0/> icons in the systems table."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Mail provider"
+msgstr "Mail provider"
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Mail provider is controlled by environment variables on this hub (<0>BESZEL_HUB_MAIL_PROVIDER</0> / <1>BESZEL_HUB_RESEND_API_KEY</1>)."
+msgstr "Mail provider is controlled by environment variables on this hub (<0>BESZEL_HUB_MAIL_PROVIDER</0> / <1>BESZEL_HUB_RESEND_API_KEY</1>)."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Mail provider settings saved"
+msgstr "Mail provider settings saved"
 
 #: src/components/systemd-table/systemd-table.tsx
 msgid "Main PID"
@@ -1526,6 +1559,10 @@ msgstr "Required by"
 msgid "Requires"
 msgstr "Requires"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Resend API key"
+msgstr "Resend API key"
+
 #: src/components/login/forgot-pass-form.tsx
 msgid "Reset Password"
 msgstr "Reset Password"
@@ -1576,6 +1613,10 @@ msgstr "Save {foo}"
 #: src/components/routes/settings/notifications.tsx
 msgid "Save address using enter key or comma. Leave blank to disable email notifications."
 msgstr "Save address using enter key or comma. Leave blank to disable email notifications."
+
+#: src/components/routes/settings/notifications.tsx
+msgid "Save mail provider"
+msgstr "Save mail provider"
 
 #: src/components/routes/settings/general.tsx
 #: src/components/routes/settings/notifications.tsx
