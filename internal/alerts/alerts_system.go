@@ -405,6 +405,16 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 				}
 			}
 			alert.val = float64(maxTemp)
+		case "OOMKill":
+			// OOMKillDelta is a per-poll event count, not a continuous gauge -
+			// the windowed value should be the total kills across the window,
+			// not an average per poll (matches the sum-not-average treatment
+			// already used for this same field in records.go's
+			// AverageSystemStatsSlice, for the identical reason). Leaving
+			// alert.val as the raw sum from the accumulation loop above means
+			// a single real kill anywhere in the window correctly exceeds a
+			// threshold like 0.5, regardless of how many polls are in the
+			// window (10 for the UI's default 10-minute alert, or otherwise).
 		default:
 			alert.val = alert.val / float64(alert.count)
 		}

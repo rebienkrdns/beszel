@@ -226,7 +226,6 @@ func TestSystemAlertsTwoMin(t *testing.T) {
 	testMultiMinuteSystemAlert(t, "LoadAvg15", 4, 2, setLoadAvgAlertValue, [3]float64{0, 0, 2}, [3]float64{0, 0, 4.1}, [3]float64{0, 0, 3.5})
 	testMultiMinuteSystemAlert(t, "Battery", 20, 2, setBatteryAlertValue, [2]uint8{21, 0}, [2]uint8{19, 0}, [2]uint8{25, 1})
 	testMultiMinuteSystemAlert(t, "MemAvailable", 4, 2, setMemAvailableAlertValue, 10, 3.9, 4.5)
-	testMultiMinuteSystemAlert(t, "OOMKill", 2, 2, setOOMKillAlertValue, uint32(0), uint32(3), uint32(0))
 }
 
 // TestMemAvailableAlertSubjectText guards against a regression where the
@@ -285,5 +284,78 @@ func TestOOMKillAlertSubjectText(t *testing.T) {
 			"OOMKill resolving should use event-style wording, not 'below threshold'")
 
 		waitForSystemAlert(time.Minute)
+	})
+}
+
+// TestOOMKillWindowedAlertSumsNotAverages demonstrates the actual value of
+// the sum-not-average fix for OOMKill's finalization case in
+// HandleSystemAlerts: a single real kill must trigger a windowed
+// (multi-minute) alert, which is the feature's primary real-world use case
+// and precisely the scenario that was broken before the fix (the UI's
+// alert-creation form defaults new alerts to a 10-minute window, and the
+// averaging previously applied to every alert type diluted a lone kill's
+// delta=1 below the default 0.5 threshold once divided by ~10 historical
+// records).
+//
+// This test uses min=2 (a 2-minute window, the smallest window that still
+// exercises the windowed/summed code path - min=1 alerts bypass it via the
+// separate "instant check" path) and threshold=0.5, matching lib/alerts.ts's
+// OOMKill.start default, so it exercises the real production configuration
+// rather than an artificially chosen threshold.
+//
+// Timing derivation (verified empirically against the actual finalization
+// logic - see task report for the debug-logged run): HandleSystemAlerts
+// requires a historical record older than the alert's window
+// (now-min*60s) to exist before it will evaluate the alert at all (the
+// "oldestRecordTime" gate), and separately requires alert.count (the
+// number of historical records that fall inside the window) to be >=
+// min/1.2 (~1.67 for min=2, i.e. >= 2) before it will trigger or resolve.
+// A historical record is excluded from the window once
+// record.Created-10s is older than now-min*60s.
+//
+//   - t=0s: anchor record (delta=0) - establishes history predating the
+//     window so the gate can eventually pass.
+//   - t=121s: a second delta=0 record. Alone with the anchor this gives
+//     count=1 (below the count>=2 gate), so no evaluation fires yet.
+//   - t=122s: the kill (delta=1). Now count=2 (the t=121 and t=122
+//     records both fall inside the window). With the fix, alert.val is the
+//     raw sum (0+1=1), which is > 0.5, so the alert triggers. Under the old
+//     averaging behavior this would have been (0+1)/2=0.5, which is NOT >
+//     0.5 - the alert would NOT have triggered. This is the exact defect
+//     this test guards against.
+//   - t=183s (61s later): a fresh delta=0 record. The kill (t=122) is
+//     still inside the 2-minute window, so the alert must still be
+//     triggered (sum=0+1+0=1).
+//   - t=244s (61s later still): another fresh delta=0 record. By now the
+//     kill (created at t=122) has aged out of the window (t=122-10=112s
+//     is older than the window start of t=244-120=124s), leaving only
+//     zero-delta records in the window, so the alert resolves.
+func TestOOMKillWindowedAlertSumsNotAverages(t *testing.T) {
+	synctest.Test(t, func(t *testing.T) {
+		fixture := newSystemAlertTestFixture(t, "OOMKill", 2, 0.5)
+		defer fixture.cleanup()
+
+		submitValue(fixture, t, uint32(0), setOOMKillAlertValue)
+		waitForSystemAlert(121 * time.Second)
+
+		submitValue(fixture, t, uint32(0), setOOMKillAlertValue)
+		waitForSystemAlert(time.Second)
+		fixture.assertTriggered(t, false, "Alert should not be triggered yet (below the minCount gate)")
+
+		submitValue(fixture, t, uint32(1), setOOMKillAlertValue)
+		waitForSystemAlert(time.Second)
+		fixture.assertTriggered(t, true, "A single kill must trigger a windowed alert (sum, not average)")
+		assert.Equal(t, 1, fixture.hub.TestMailer.TotalSend(), "An email should have been sent")
+
+		waitForSystemAlert(60 * time.Second)
+		submitValue(fixture, t, uint32(0), setOOMKillAlertValue)
+		waitForSystemAlert(time.Second)
+		fixture.assertTriggered(t, true, "Alert should still be triggered - the kill hasn't aged out of the window yet")
+
+		waitForSystemAlert(60 * time.Second)
+		submitValue(fixture, t, uint32(0), setOOMKillAlertValue)
+		waitForSystemAlert(time.Second)
+		fixture.assertTriggered(t, false, "Alert should resolve once the kill ages out of the window")
+		assert.Equal(t, 2, fixture.hub.TestMailer.TotalSend(), "A second email should have been sent for untriggering the alert")
 	})
 }
