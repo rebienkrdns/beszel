@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { InputTags } from "@/components/ui/input-tags"
 import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { toast } from "@/components/ui/use-toast"
 import { isAdmin, pb } from "@/lib/api"
@@ -93,17 +94,7 @@ const SettingsNotificationsPage = ({ userSettings }: { userSettings: UserSetting
 						<h3 className="mb-1 text-lg font-medium">
 							<Trans>Email notifications</Trans>
 						</h3>
-						{isAdmin() && (
-							<p className="text-sm text-muted-foreground leading-relaxed">
-								<Trans>
-									Please{" "}
-									<a href={prependBasePath("/_/#/settings/mail")} className="link" target="_blank">
-										configure an SMTP server
-									</a>{" "}
-									to ensure alerts are delivered.
-								</Trans>
-							</p>
-						)}
+						{isAdmin() && <MailProviderSettings />}
 					</div>
 					<Label className="block" htmlFor="email">
 						<Trans>To email(s)</Trans>
@@ -246,6 +237,139 @@ const ShoutrrrUrlCard = ({ url, onUrlChange, onRemove }: ShoutrrrUrlCardProps) =
 				</Button>
 			</div>
 		</Card>
+	)
+}
+
+interface MailSettingsInfo {
+	provider: "smtp" | "resend"
+	providerSource: "env" | "db"
+	hasResendApiKey: boolean
+	resendApiKeySource: "env" | "db" | "none"
+}
+
+const MailProviderSettings = () => {
+	const [info, setInfo] = useState<MailSettingsInfo | null>(null)
+	const [provider, setProvider] = useState<"smtp" | "resend">("smtp")
+	const [resendApiKey, setResendApiKey] = useState("")
+	const [isLoading, setIsLoading] = useState(true)
+	const [isSaving, setIsSaving] = useState(false)
+
+	useEffect(() => {
+		fetchInfo()
+	}, [])
+
+	async function fetchInfo() {
+		try {
+			setIsLoading(true)
+			const res = await pb.send<MailSettingsInfo>("/api/beszel/mail-settings", {})
+			setInfo(res)
+			setProvider(res.provider)
+		} catch (e: unknown) {
+			toast({
+				title: t`Error`,
+				description: (e as Error).message,
+				variant: "destructive",
+			})
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
+	async function save() {
+		setIsSaving(true)
+		try {
+			await pb.send("/api/beszel/mail-settings", {
+				method: "POST",
+				body: { provider, resendApiKey },
+			})
+			setResendApiKey("")
+			await fetchInfo()
+			toast({ title: t`Mail provider settings saved` })
+		} catch (e: unknown) {
+			toast({
+				title: t`Failed to save mail provider settings`,
+				description: (e as Error).message,
+				variant: "destructive",
+			})
+		} finally {
+			setIsSaving(false)
+		}
+	}
+
+	if (isLoading || !info) {
+		return null
+	}
+
+	const envLocked = info.providerSource === "env" || info.resendApiKeySource === "env"
+
+	if (envLocked) {
+		return (
+			<div className="grid gap-2">
+				<p className="text-sm text-muted-foreground leading-relaxed">
+					<Trans>
+						Mail provider is controlled by environment variables on this hub (
+						<code className="bg-muted rounded-sm px-1 text-primary">BESZEL_HUB_MAIL_PROVIDER</code> /{" "}
+						<code className="bg-muted rounded-sm px-1 text-primary">BESZEL_HUB_RESEND_API_KEY</code>).
+					</Trans>
+				</p>
+				<p className="text-sm text-muted-foreground leading-relaxed">
+					<Trans>Active provider:</Trans> <span className="font-medium">{info.provider}</span>
+				</p>
+			</div>
+		)
+	}
+
+	return (
+		<div className="grid gap-3">
+			<div className="grid gap-2 max-w-xs">
+				<Label htmlFor="mail-provider">
+					<Trans>Mail provider</Trans>
+				</Label>
+				<Select value={provider} onValueChange={(value: "smtp" | "resend") => setProvider(value)}>
+					<SelectTrigger id="mail-provider">
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="smtp">SMTP</SelectItem>
+						<SelectItem value="resend">Resend</SelectItem>
+					</SelectContent>
+				</Select>
+			</div>
+			{provider === "smtp" && (
+				<p className="text-sm text-muted-foreground leading-relaxed">
+					<Trans>
+						Please{" "}
+						<a href={prependBasePath("/_/#/settings/mail")} className="link" target="_blank">
+							configure an SMTP server
+						</a>{" "}
+						to ensure alerts are delivered.
+					</Trans>
+				</p>
+			)}
+			{provider === "resend" && (
+				<div className="grid gap-2 max-w-xs">
+					<Label htmlFor="resend-api-key">
+						<Trans>Resend API key</Trans>
+					</Label>
+					<Input
+						id="resend-api-key"
+						type="password"
+						value={resendApiKey}
+						onChange={(e) => setResendApiKey(e.target.value)}
+						placeholder={info.hasResendApiKey ? "•••••••• (already set)" : t`Enter Resend API key...`}
+					/>
+					<p className="text-[0.8rem] text-muted-foreground">
+						<Trans>Leave blank to keep the currently saved key.</Trans>
+					</p>
+				</div>
+			)}
+			<Button type="button" variant="outline" className="w-fit" onClick={save} disabled={isSaving}>
+				{isSaving ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : <SaveIcon className="h-4 w-4" />}
+				<span className="ms-1">
+					<Trans>Save mail provider</Trans>
+				</span>
+			</Button>
+		</div>
 	)
 }
 
