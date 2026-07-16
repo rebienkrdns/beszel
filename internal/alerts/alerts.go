@@ -253,6 +253,7 @@ func (am *AlertManager) SendAlert(data AlertMessageData) error {
 	}
 	err = mailClient.Send(&message)
 	if err != nil {
+		am.hub.Logger().Error("Failed to send email alert", "err", err)
 		return err
 	}
 	am.hub.Logger().Info("Sent email alert", "to", message.To, "subj", message.Subject)
