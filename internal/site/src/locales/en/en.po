@@ -1483,6 +1483,10 @@ msgstr "Persistence"
 msgid "Please <0>configure an SMTP server</0> to ensure alerts are delivered."
 msgstr "Please <0>configure an SMTP server</0> to ensure alerts are delivered."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Please also go <0>here</0> and set the Sender name and Sender address, using an email from a domain you've verified in your Resend account. Otherwise Resend will reject your alert emails."
+msgstr "Please also go <0>here</0> and set the Sender name and Sender address, using an email from a domain you've verified in your Resend account. Otherwise Resend will reject your alert emails."
+
 #: src/components/alerts/alerts-sheet.tsx
 msgid "Please check logs for more details."
 msgstr "Please check logs for more details."

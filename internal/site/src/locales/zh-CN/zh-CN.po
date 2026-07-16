@@ -1488,6 +1488,10 @@ msgstr "持久性"
 msgid "Please <0>configure an SMTP server</0> to ensure alerts are delivered."
 msgstr "请<0>配置 SMTP 服务器</0>以确保警报被传递。"
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Please also go <0>here</0> and set the Sender name and Sender address, using an email from a domain you've verified in your Resend account. Otherwise Resend will reject your alert emails."
+msgstr ""
+
 #: src/components/alerts/alerts-sheet.tsx
 msgid "Please check logs for more details."
 msgstr "请检查日志以获取更多详细信息。"

@@ -1488,6 +1488,10 @@ msgstr "Postojanost"
 msgid "Please <0>configure an SMTP server</0> to ensure alerts are delivered."
 msgstr "Molimo <0>konfigurirajte SMTP server</0> kako biste osigurali isporuku upozorenja."
 
+#: src/components/routes/settings/notifications.tsx
+msgid "Please also go <0>here</0> and set the Sender name and Sender address, using an email from a domain you've verified in your Resend account. Otherwise Resend will reject your alert emails."
+msgstr ""
+
 #: src/components/alerts/alerts-sheet.tsx
 msgid "Please check logs for more details."
 msgstr "Za više detalja provjerite zapise (logove)."

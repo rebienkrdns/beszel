@@ -542,6 +542,16 @@ const MailProviderSettings = () => {
 					<p className="text-[0.8rem] text-muted-foreground">
 						<Trans>Leave blank to keep the currently saved key.</Trans>
 					</p>
+					<p className="text-sm text-muted-foreground leading-relaxed">
+						<Trans>
+							Please also go{" "}
+							<a href={prependBasePath("/_/#/settings/mail")} className="link" target="_blank">
+								here
+							</a>{" "}
+							and set the Sender name and Sender address, using an email from a domain you've verified in your Resend
+							account. Otherwise Resend will reject your alert emails.
+						</Trans>
+					</p>
 				</div>
 			)}
 			{provider === "none" && (
