@@ -104,3 +104,8 @@ func IsInternalURL(rawURL string) (bool, error) {
 func GetOrCreateHubSettings(app core.App) (*core.Record, error) {
 	return getOrCreateHubSettings(app)
 }
+
+// ResolveMailSettings resolves the effective mail provider and Resend API key.
+func ResolveMailSettings(app core.App) (MailSettingsInfo, string, error) {
+	return resolveMailSettings(app)
+}
