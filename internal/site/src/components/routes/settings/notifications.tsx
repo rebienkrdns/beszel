@@ -108,13 +108,15 @@ const SettingsNotificationsPage = ({ userSettings }: { userSettings: UserSetting
 	async function updateSettings() {
 		setIsLoading(true)
 		try {
-			const convertedDiscordWebhooks = discordWebhooks.map((url) => {
-				const shoutrrrUrl = discordUrlToShoutrrr(url)
-				if (!shoutrrrUrl) {
-					throw new Error(`${t`Invalid Discord webhook URL`}: ${url}`)
-				}
-				return shoutrrrUrl
-			})
+			const convertedDiscordWebhooks = discordWebhooks
+				.filter((url) => url.trim() !== "")
+				.map((url) => {
+					const shoutrrrUrl = discordUrlToShoutrrr(url)
+					if (!shoutrrrUrl) {
+						throw new Error(`${t`Invalid Discord webhook URL`}: ${url}`)
+					}
+					return shoutrrrUrl
+				})
 			const parsedData = v.parse(NotificationSchema, {
 				emails,
 				webhooks: [...webhooks, ...convertedDiscordWebhooks],
