@@ -269,12 +269,12 @@ func (a *Agent) getSystemStats(cacheTimeMs uint16) system.Stats {
 	a.systemInfo.Uptime, _ = host.Uptime()
 	oomKillCount := readOOMKillCount()
 	a.systemInfo.OOMKillCount = oomKillCount
-	if oomKillCount >= a.prevOOMKillCount {
-		systemStats.OOMKillDelta = uint32(oomKillCount - a.prevOOMKillCount)
+	if prevCount, hasPrev := a.prevOOMKillCount[cacheTimeMs]; hasPrev && oomKillCount >= prevCount {
+		systemStats.OOMKillDelta = uint32(oomKillCount - prevCount)
 	} else {
-		systemStats.OOMKillDelta = 0 // counter reset (host reboot) - avoid underflow/false spike
+		systemStats.OOMKillDelta = 0 // first observation for this cache bucket, or counter reset (reboot) - avoid false spike/underflow
 	}
-	a.prevOOMKillCount = oomKillCount
+	a.prevOOMKillCount[cacheTimeMs] = oomKillCount
 	a.systemInfo.BandwidthBytes = systemStats.Bandwidth[0] + systemStats.Bandwidth[1]
 	a.systemInfo.Threads = a.systemDetails.Threads
 

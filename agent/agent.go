@@ -48,7 +48,7 @@ type Agent struct {
 	keys                      []gossh.PublicKey                                     // SSH public keys
 	smartManager              *SmartManager                                         // Manages SMART data
 	systemdManager            *systemdManager                                       // Manages systemd services
-	prevOOMKillCount          uint64                                                // Previous cumulative OOM kill count, for delta calculation
+	prevOOMKillCount          map[uint16]uint64                                     // Previous cumulative OOM kill count per cache interval, for delta calculation
 }
 
 // NewAgent creates a new agent with the given data directory for persisting data.
@@ -64,10 +64,11 @@ func NewAgent(dataDir ...string) (agent *Agent, err error) {
 	// Initialize per-cache-time network tracking structures
 	agent.netIoStats = make(map[uint16]system.NetIoStats)
 	agent.netInterfaceDeltaTrackers = make(map[uint16]*deltatracker.DeltaTracker[string, uint64])
-	// Seed OOM kill baseline from the current cumulative count, so the first
-	// collection cycle after startup reports a delta of 0 (not a false spike
-	// equal to every OOM kill that happened before the agent even started).
-	agent.prevOOMKillCount = readOOMKillCount()
+	// Initialize per-cache-time OOM kill baseline storage. Each cache bucket seeds
+	// its own baseline on its first observation (see getSystemStats), so the first
+	// collection cycle for that bucket reports a delta of 0 (not a false spike
+	// equal to every OOM kill that happened before that bucket's first poll).
+	agent.prevOOMKillCount = make(map[uint16]uint64)
 
 	agent.dataDir, err = GetDataDir(dataDir...)
 	if err != nil {
