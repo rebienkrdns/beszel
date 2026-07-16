@@ -1,5 +1,5 @@
 import { t } from "@lingui/core/macro"
-import { CpuIcon, GaugeIcon, HardDriveIcon, MemoryStickIcon, ServerIcon } from "lucide-react"
+import { CpuIcon, GaugeIcon, HardDriveIcon, MemoryStickIcon, ServerIcon, SkullIcon } from "lucide-react"
 import type { RecordSubscription } from "pocketbase"
 import { EthernetIcon, GpuIcon } from "@/components/ui/icons"
 import { $alerts } from "@/lib/stores"
@@ -266,6 +266,15 @@ export const alertInfo: Record<string, AlertInfo> = {
 			{ label: () => t`High (>5%)`, value: 5 },
 			{ label: () => t`Critical (>10%)`, value: 10 },
 		],
+	},
+	OOMKill: {
+		name: () => t`OOM Killer`,
+		unit: "",
+		icon: SkullIcon,
+		desc: () => t`Triggers when the kernel OOM killer terminates a process`,
+		start: 0.5,
+		min: 0.5,
+		step: 1,
 	},
 } as const
 
