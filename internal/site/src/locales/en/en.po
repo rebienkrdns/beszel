@@ -1312,6 +1312,14 @@ msgstr "One-time"
 msgid "One-time password"
 msgstr "One-time password"
 
+#: src/lib/alerts.ts
+msgid "OOM Killer"
+msgstr "OOM Killer"
+
+#: src/components/routes/system/info-bar.tsx
+msgid "OOM Kills"
+msgstr "OOM Kills"
+
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
@@ -1975,6 +1983,10 @@ msgstr "Triggers when memory usage exceeds a threshold"
 #: src/lib/alerts.ts
 msgid "Triggers when status switches between up and down"
 msgstr "Triggers when status switches between up and down"
+
+#: src/lib/alerts.ts
+msgid "Triggers when the kernel OOM killer terminates a process"
+msgstr "Triggers when the kernel OOM killer terminates a process"
 
 #: src/lib/alerts.ts
 msgid "Triggers when usage of any disk exceeds a threshold"

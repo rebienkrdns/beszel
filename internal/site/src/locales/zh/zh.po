@@ -1317,6 +1317,14 @@ msgstr "一次性"
 msgid "One-time password"
 msgstr "一次性密碼"
 
+#: src/lib/alerts.ts
+msgid "OOM Killer"
+msgstr ""
+
+#: src/components/routes/system/info-bar.tsx
+msgid "OOM Kills"
+msgstr ""
+
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
@@ -1980,6 +1988,10 @@ msgstr "當記憶體使用率超過閾值時觸發"
 #: src/lib/alerts.ts
 msgid "Triggers when status switches between up and down"
 msgstr "當連線和離線時觸發"
+
+#: src/lib/alerts.ts
+msgid "Triggers when the kernel OOM killer terminates a process"
+msgstr ""
 
 #: src/lib/alerts.ts
 msgid "Triggers when usage of any disk exceeds a threshold"

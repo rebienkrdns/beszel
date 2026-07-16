@@ -1317,6 +1317,14 @@ msgstr "일회성"
 msgid "One-time password"
 msgstr "OTP"
 
+#: src/lib/alerts.ts
+msgid "OOM Killer"
+msgstr ""
+
+#: src/components/routes/system/info-bar.tsx
+msgid "OOM Kills"
+msgstr ""
+
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
@@ -1980,6 +1988,10 @@ msgstr "메모리 사용량이 임계값을 초과할 때 트리거됩니다."
 #: src/lib/alerts.ts
 msgid "Triggers when status switches between up and down"
 msgstr "시스템의 전원이 켜지거나 꺼질때 트리거됩니다."
+
+#: src/lib/alerts.ts
+msgid "Triggers when the kernel OOM killer terminates a process"
+msgstr ""
 
 #: src/lib/alerts.ts
 msgid "Triggers when usage of any disk exceeds a threshold"

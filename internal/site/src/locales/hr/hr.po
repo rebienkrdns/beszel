@@ -1317,6 +1317,14 @@ msgstr "Jednokratno"
 msgid "One-time password"
 msgstr "Jednokratna lozinka"
 
+#: src/lib/alerts.ts
+msgid "OOM Killer"
+msgstr ""
+
+#: src/components/routes/system/info-bar.tsx
+msgid "OOM Kills"
+msgstr ""
+
 #: src/components/routes/settings/quiet-hours.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
 #: src/components/routes/settings/tokens-fingerprints.tsx
@@ -1980,6 +1988,10 @@ msgstr "Pokreće se kada iskorištenost memorije premaši prag"
 #: src/lib/alerts.ts
 msgid "Triggers when status switches between up and down"
 msgstr "Pokreće se kada se status sustava promijeni"
+
+#: src/lib/alerts.ts
+msgid "Triggers when the kernel OOM killer terminates a process"
+msgstr ""
 
 #: src/lib/alerts.ts
 msgid "Triggers when usage of any disk exceeds a threshold"
