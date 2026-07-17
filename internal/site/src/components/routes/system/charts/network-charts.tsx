@@ -103,17 +103,11 @@ export function NetworkHealthChart({
 	isLongerChart: boolean
 	maxValues: boolean
 }) {
-	// hardware/OS-dependent presence check, same convention as BatteryChart/
-	// TemperatureChart: hide the whole card if the latest record has neither
-	// field populated (e.g. a non-Linux agent with no interface errors ever
-	// recorded), rather than checking each value individually against 0 -
-	// 0 is a normal, healthy reading for both fields.
-	const latestStats = chartData.systemStats.at(-1)?.stats
-	const showChart = latestStats?.trp !== undefined || latestStats?.nep !== undefined
-	if (!showChart) {
-		return null
-	}
-
+	// Unlike Battery/Temperature (hardware that's either present or absent),
+	// 0 is the normal, most common healthy reading for both trp/nep - a
+	// presence check would hide this chart on every healthy host, since
+	// omitzero omits both fields whenever they're exactly 0. Always render,
+	// same as BandwidthChart.
 	const maxValSelect = isLongerChart ? <SelectAvgMax max={maxValues} /> : null
 
 	return (
