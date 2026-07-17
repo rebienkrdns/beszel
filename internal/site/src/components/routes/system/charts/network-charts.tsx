@@ -124,13 +124,13 @@ export function NetworkHealthChart({
 				dataPoints={[
 					{
 						label: t`TCP Retransmissions`,
-						dataKey: ({ stats }) => stats?.trp,
+						dataKey: ({ stats }) => stats?.trp ?? 0,
 						color: 3,
 						opacity: 0.3,
 					},
 					{
 						label: t`Errors + Drops`,
-						dataKey: ({ stats }) => stats?.nep,
+						dataKey: ({ stats }) => stats?.nep ?? 0,
 						color: 4,
 						opacity: 0.3,
 					},
