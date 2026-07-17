@@ -49,6 +49,8 @@ type Agent struct {
 	smartManager              *SmartManager                                         // Manages SMART data
 	systemdManager            *systemdManager                                       // Manages systemd services
 	prevOOMKillCount          map[uint16]uint64                                     // Previous cumulative OOM kill count per cache interval, for delta calculation
+	prevTCPRetransSegs        map[uint16]uint64                                     // Previous cumulative TCP retransmit count per cache interval, for rate calculation
+	prevNetErrorsTotal        map[uint16]uint64                                     // Previous cumulative network errors+drops total per cache interval, for rate calculation
 }
 
 // NewAgent creates a new agent with the given data directory for persisting data.
@@ -69,6 +71,8 @@ func NewAgent(dataDir ...string) (agent *Agent, err error) {
 	// collection cycle for that bucket reports a delta of 0 (not a false spike
 	// equal to every OOM kill that happened before that bucket's first poll).
 	agent.prevOOMKillCount = make(map[uint16]uint64)
+	agent.prevTCPRetransSegs = make(map[uint16]uint64)
+	agent.prevNetErrorsTotal = make(map[uint16]uint64)
 
 	agent.dataDir, err = GetDataDir(dataDir...)
 	if err != nil {
