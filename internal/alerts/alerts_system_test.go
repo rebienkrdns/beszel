@@ -199,6 +199,14 @@ func setOOMKillAlertValue(info *system.Info, stats *system.Stats, value uint32) 
 	stats.OOMKillDelta = value
 }
 
+func setTCPRetransAlertValue(info *system.Info, stats *system.Stats, value float64) {
+	stats.TCPRetransPs = value
+}
+
+func setNetworkErrorsAlertValue(info *system.Info, stats *system.Stats, value float64) {
+	stats.NetworkErrorsPs = value
+}
+
 func TestSystemAlertsOneMin(t *testing.T) {
 	testOneMinuteSystemAlert(t, "CPU", 50, setCPUAlertValue, 51, 49)
 	testOneMinuteSystemAlert(t, "Memory", 50, setMemoryAlertValue, 51, 49)
@@ -212,6 +220,8 @@ func TestSystemAlertsOneMin(t *testing.T) {
 	testOneMinuteSystemAlert(t, "Battery", 20, setBatteryAlertValue, [2]uint8{19, 0}, [2]uint8{21, 0})
 	testOneMinuteSystemAlert(t, "MemAvailable", 4, setMemAvailableAlertValue, 3.9, 4.1)
 	testOneMinuteSystemAlert(t, "OOMKill", 0.5, setOOMKillAlertValue, uint32(1), uint32(0))
+	testOneMinuteSystemAlert(t, "TCPRetrans", 10, setTCPRetransAlertValue, 12.0, 8.0)
+	testOneMinuteSystemAlert(t, "NetworkErrors", 10, setNetworkErrorsAlertValue, 12.0, 8.0)
 }
 
 func TestSystemAlertsTwoMin(t *testing.T) {
@@ -226,6 +236,8 @@ func TestSystemAlertsTwoMin(t *testing.T) {
 	testMultiMinuteSystemAlert(t, "LoadAvg15", 4, 2, setLoadAvgAlertValue, [3]float64{0, 0, 2}, [3]float64{0, 0, 4.1}, [3]float64{0, 0, 3.5})
 	testMultiMinuteSystemAlert(t, "Battery", 20, 2, setBatteryAlertValue, [2]uint8{21, 0}, [2]uint8{19, 0}, [2]uint8{25, 1})
 	testMultiMinuteSystemAlert(t, "MemAvailable", 4, 2, setMemAvailableAlertValue, 10, 3.9, 4.5)
+	testMultiMinuteSystemAlert(t, "TCPRetrans", 10, 2, setTCPRetransAlertValue, 4.0, 12.0, 4.0)
+	testMultiMinuteSystemAlert(t, "NetworkErrors", 10, 2, setNetworkErrorsAlertValue, 4.0, 12.0, 4.0)
 }
 
 // TestMemAvailableAlertSubjectText guards against a regression where the

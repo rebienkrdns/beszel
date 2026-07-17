@@ -170,6 +170,12 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 			// be evaluated back down to untriggered.
 			val = float64(data.Stats.OOMKillDelta)
 			unit = ""
+		case "TCPRetrans":
+			val = data.Stats.TCPRetransPs
+			unit = "/s"
+		case "NetworkErrors":
+			val = data.Stats.NetworkErrorsPs
+			unit = "/s"
 		}
 
 		triggered := alertData.Triggered
@@ -376,6 +382,10 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 				alert.val += stats.MemAvailable
 			case "OOMKill":
 				alert.val += float64(stats.OOMKillDelta)
+			case "TCPRetrans":
+				alert.val += stats.TCPRetransPs
+			case "NetworkErrors":
+				alert.val += stats.NetworkErrorsPs
 			default:
 				continue
 			}

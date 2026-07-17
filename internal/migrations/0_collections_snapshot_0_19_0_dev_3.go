@@ -81,7 +81,9 @@ func init() {
 					"LoadAvg15",
 					"Battery",
 					"MemAvailable",
-					"OOMKill"
+					"OOMKill",
+					"TCPRetrans",
+					"NetworkErrors"
 				]
 			},
 			{

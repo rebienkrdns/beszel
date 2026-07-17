@@ -63,6 +63,8 @@ type SystemAlertStats struct {
 	IOPressureFull  [3]float64                    `json:"iodf"`
 	MemAvailable    float64                       `json:"mav"`
 	OOMKillDelta    uint32                        `json:"okd"`
+	TCPRetransPs    float64                       `json:"trp"`
+	NetworkErrorsPs float64                       `json:"nep"`
 }
 
 type SystemAlertGPUData struct {
