@@ -88,12 +88,7 @@ func (a *Agent) updateNetworkStats(cacheTimeMs uint16, systemStats *system.Stats
 		bytesSentPerSecond, bytesRecvPerSecond := a.computeBytesPerSecond(msElapsed, totalBytesSent, totalBytesRecv, nis)
 		a.applyNetworkTotals(cacheTimeMs, netIO, systemStats, nis, totalBytesSent, totalBytesRecv, bytesSentPerSecond, bytesRecvPerSecond)
 
-		if prevErrors, hasPrev := a.prevNetErrorsTotal[cacheTimeMs]; hasPrev && msElapsed > 0 && totalErrors >= prevErrors {
-			systemStats.NetworkErrorsPs = float64(totalErrors-prevErrors) * 1000 / float64(msElapsed)
-		} else {
-			systemStats.NetworkErrorsPs = 0
-		}
-		a.prevNetErrorsTotal[cacheTimeMs] = totalErrors
+		systemStats.NetworkErrorsPs = a.rateFromCumulativeCounter(a.prevNetErrorsTotal, cacheTimeMs, totalErrors, msElapsed)
 
 		// TCP retransmissions live inside this same block so they can reuse
 		// msElapsed from the network baseline above, rather than tracking
@@ -101,13 +96,24 @@ func (a *Agent) updateNetworkStats(cacheTimeMs uint16, systemStats *system.Stats
 		// collection is skipped too for this poll (consistent with every
 		// other network stat already being skipped in that case).
 		retransSegs := readTCPRetransSegs()
-		if prevSegs, hasPrev := a.prevTCPRetransSegs[cacheTimeMs]; hasPrev && msElapsed > 0 && retransSegs >= prevSegs {
-			systemStats.TCPRetransPs = float64(retransSegs-prevSegs) * 1000 / float64(msElapsed)
-		} else {
-			systemStats.TCPRetransPs = 0
-		}
-		a.prevTCPRetransSegs[cacheTimeMs] = retransSegs
+		systemStats.TCPRetransPs = a.rateFromCumulativeCounter(a.prevTCPRetransSegs, cacheTimeMs, retransSegs, msElapsed)
 	}
+}
+
+// rateFromCumulativeCounter computes a per-second rate from a monotonically
+// increasing cumulative counter, tracking the previous value per cache-time
+// bucket in prevMap. Returns 0 (rather than a false spike or an underflowed
+// value) when this is the bucket's first observation, no time has elapsed
+// since the last observation, or the counter appears to have reset (e.g. a
+// host reboot) - current < the stored previous value.
+func (a *Agent) rateFromCumulativeCounter(prevMap map[uint16]uint64, cacheTimeMs uint16, current uint64, msElapsed uint64) float64 {
+	prev, hasPrev := prevMap[cacheTimeMs]
+	var rate float64
+	if hasPrev && msElapsed > 0 && current >= prev {
+		rate = float64(current-prev) * 1000 / float64(msElapsed)
+	}
+	prevMap[cacheTimeMs] = current
+	return rate
 }
 
 func (a *Agent) initializeNetIoStats() {

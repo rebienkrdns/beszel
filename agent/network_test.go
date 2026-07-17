@@ -350,20 +350,22 @@ func TestSumAndTrackPerNicDeltas(t *testing.T) {
 
 	// Two samples for same cache interval to verify delta behavior
 	cache := uint16(42)
-	net1 := []psutilNet.IOCountersStat{{Name: "eth0", BytesSent: 1000, BytesRecv: 2000}}
+	net1 := []psutilNet.IOCountersStat{{Name: "eth0", BytesSent: 1000, BytesRecv: 2000, Errin: 5, Errout: 3, Dropin: 2, Dropout: 1}}
 	stats1 := &system.Stats{}
 	a.ensureNetworkInterfacesMap(stats1)
-	tx1, rx1, _ := a.sumAndTrackPerNicDeltas(cache, 0, net1, stats1)
+	tx1, rx1, errs1 := a.sumAndTrackPerNicDeltas(cache, 0, net1, stats1)
 	assert.Equal(t, uint64(1000), tx1)
 	assert.Equal(t, uint64(2000), rx1)
+	assert.Equal(t, uint64(11), errs1, "totalErrors should sum Errin+Errout+Dropin+Dropout across NICs")
 
 	// Second cycle with elapsed, larger counters -> deltas computed inside
 	net2 := []psutilNet.IOCountersStat{{Name: "eth0", BytesSent: 4000, BytesRecv: 9000}}
 	stats := &system.Stats{}
 	a.ensureNetworkInterfacesMap(stats)
-	tx2, rx2, _ := a.sumAndTrackPerNicDeltas(cache, 1000, net2, stats)
+	tx2, rx2, errs2 := a.sumAndTrackPerNicDeltas(cache, 1000, net2, stats)
 	assert.Equal(t, uint64(4000), tx2)
 	assert.Equal(t, uint64(9000), rx2)
+	assert.Equal(t, uint64(0), errs2, "no error/drop counters set on this sample")
 	// Up/Down deltas per second should be (4000-1000)/1s = 3000 and (9000-2000)/1s = 7000
 	ni, ok := stats.NetworkInterfaces["eth0"]
 	assert.True(t, ok)
@@ -510,4 +512,48 @@ func TestApplyNetworkTotals(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestRateFromCumulativeCounter(t *testing.T) {
+	t.Run("first observation for a cache bucket returns 0 and seeds the map", func(t *testing.T) {
+		a := &Agent{}
+		prevMap := make(map[uint16]uint64)
+
+		rate := a.rateFromCumulativeCounter(prevMap, 42, 500, 1000)
+
+		assert.Equal(t, float64(0), rate)
+		stored, ok := prevMap[42]
+		require.True(t, ok)
+		assert.Equal(t, uint64(500), stored)
+	})
+
+	t.Run("steady state computes the correct per-second rate", func(t *testing.T) {
+		a := &Agent{}
+		prevMap := map[uint16]uint64{42: 100}
+
+		rate := a.rateFromCumulativeCounter(prevMap, 42, 200, 1000)
+
+		assert.Equal(t, float64(100), rate)
+		assert.Equal(t, uint64(200), prevMap[42])
+	})
+
+	t.Run("counter reset returns 0 and updates map to the new lower value", func(t *testing.T) {
+		a := &Agent{}
+		prevMap := map[uint16]uint64{42: 1000}
+
+		rate := a.rateFromCumulativeCounter(prevMap, 42, 50, 1000)
+
+		assert.Equal(t, float64(0), rate)
+		assert.Equal(t, uint64(50), prevMap[42])
+	})
+
+	t.Run("zero elapsed time returns 0 despite counter increase", func(t *testing.T) {
+		a := &Agent{}
+		prevMap := map[uint16]uint64{42: 100}
+
+		rate := a.rateFromCumulativeCounter(prevMap, 42, 200, 0)
+
+		assert.Equal(t, float64(0), rate)
+		assert.Equal(t, uint64(200), prevMap[42])
+	})
 }
