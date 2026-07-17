@@ -1,5 +1,14 @@
 import { t } from "@lingui/core/macro"
-import { CpuIcon, GaugeIcon, HardDriveIcon, MemoryStickIcon, ServerIcon, SkullIcon } from "lucide-react"
+import {
+	CpuIcon,
+	GaugeIcon,
+	HardDriveIcon,
+	MemoryStickIcon,
+	RefreshCwIcon,
+	ServerIcon,
+	SkullIcon,
+	UnplugIcon,
+} from "lucide-react"
 import type { RecordSubscription } from "pocketbase"
 import { EthernetIcon, GpuIcon } from "@/components/ui/icons"
 import { $alerts } from "@/lib/stores"
@@ -51,6 +60,24 @@ export const alertInfo: Record<string, AlertInfo> = {
 		icon: EthernetIcon,
 		desc: () => t`Triggers when combined up/down exceeds a threshold`,
 		max: 250,
+	},
+	TCPRetrans: {
+		name: () => t`TCP Retransmissions`,
+		unit: "/s",
+		icon: RefreshCwIcon,
+		desc: () => t`Triggers when TCP retransmissions exceed a threshold`,
+		start: 10,
+		min: 1,
+		step: 1,
+	},
+	NetworkErrors: {
+		name: () => t`Network Errors`,
+		unit: "/s",
+		icon: UnplugIcon,
+		desc: () => t`Triggers when network interface errors or dropped packets exceed a threshold`,
+		start: 10,
+		min: 1,
+		step: 1,
 	},
 	GPU: {
 		name: () => t`GPU Usage`,
