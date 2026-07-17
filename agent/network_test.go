@@ -353,7 +353,7 @@ func TestSumAndTrackPerNicDeltas(t *testing.T) {
 	net1 := []psutilNet.IOCountersStat{{Name: "eth0", BytesSent: 1000, BytesRecv: 2000}}
 	stats1 := &system.Stats{}
 	a.ensureNetworkInterfacesMap(stats1)
-	tx1, rx1 := a.sumAndTrackPerNicDeltas(cache, 0, net1, stats1)
+	tx1, rx1, _ := a.sumAndTrackPerNicDeltas(cache, 0, net1, stats1)
 	assert.Equal(t, uint64(1000), tx1)
 	assert.Equal(t, uint64(2000), rx1)
 
@@ -361,7 +361,7 @@ func TestSumAndTrackPerNicDeltas(t *testing.T) {
 	net2 := []psutilNet.IOCountersStat{{Name: "eth0", BytesSent: 4000, BytesRecv: 9000}}
 	stats := &system.Stats{}
 	a.ensureNetworkInterfacesMap(stats)
-	tx2, rx2 := a.sumAndTrackPerNicDeltas(cache, 1000, net2, stats)
+	tx2, rx2, _ := a.sumAndTrackPerNicDeltas(cache, 1000, net2, stats)
 	assert.Equal(t, uint64(4000), tx2)
 	assert.Equal(t, uint64(9000), rx2)
 	// Up/Down deltas per second should be (4000-1000)/1s = 3000 and (9000-2000)/1s = 7000
@@ -383,13 +383,13 @@ func TestSumAndTrackPerNicDeltasHandlesCounterReset(t *testing.T) {
 	initial := []psutilNet.IOCountersStat{{Name: "eth0", BytesSent: 4_000, BytesRecv: 6_000}}
 	statsInitial := &system.Stats{}
 	a.ensureNetworkInterfacesMap(statsInitial)
-	_, _ = a.sumAndTrackPerNicDeltas(cache, 0, initial, statsInitial)
+	_, _, _ = a.sumAndTrackPerNicDeltas(cache, 0, initial, statsInitial)
 
 	// Second interval increments counters normally so previous snapshot gets populated
 	increment := []psutilNet.IOCountersStat{{Name: "eth0", BytesSent: 9_000, BytesRecv: 11_000}}
 	statsIncrement := &system.Stats{}
 	a.ensureNetworkInterfacesMap(statsIncrement)
-	_, _ = a.sumAndTrackPerNicDeltas(cache, 1_000, increment, statsIncrement)
+	_, _, _ = a.sumAndTrackPerNicDeltas(cache, 1_000, increment, statsIncrement)
 
 	niIncrement, ok := statsIncrement.NetworkInterfaces["eth0"]
 	require.True(t, ok)
@@ -400,7 +400,7 @@ func TestSumAndTrackPerNicDeltasHandlesCounterReset(t *testing.T) {
 	reset := []psutilNet.IOCountersStat{{Name: "eth0", BytesSent: 1_200, BytesRecv: 1_500}}
 	statsReset := &system.Stats{}
 	a.ensureNetworkInterfacesMap(statsReset)
-	_, _ = a.sumAndTrackPerNicDeltas(cache, 1_000, reset, statsReset)
+	_, _, _ = a.sumAndTrackPerNicDeltas(cache, 1_000, reset, statsReset)
 
 	niReset, ok := statsReset.NetworkInterfaces["eth0"]
 	require.True(t, ok)

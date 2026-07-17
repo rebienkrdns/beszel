@@ -84,9 +84,29 @@ func (a *Agent) updateNetworkStats(cacheTimeMs uint16, systemStats *system.Stats
 
 	if netIO, err := psutilNet.IOCounters(true); err == nil {
 		nis, msElapsed := a.loadAndTickNetBaseline(cacheTimeMs)
-		totalBytesSent, totalBytesRecv := a.sumAndTrackPerNicDeltas(cacheTimeMs, msElapsed, netIO, systemStats)
+		totalBytesSent, totalBytesRecv, totalErrors := a.sumAndTrackPerNicDeltas(cacheTimeMs, msElapsed, netIO, systemStats)
 		bytesSentPerSecond, bytesRecvPerSecond := a.computeBytesPerSecond(msElapsed, totalBytesSent, totalBytesRecv, nis)
 		a.applyNetworkTotals(cacheTimeMs, netIO, systemStats, nis, totalBytesSent, totalBytesRecv, bytesSentPerSecond, bytesRecvPerSecond)
+
+		if prevErrors, hasPrev := a.prevNetErrorsTotal[cacheTimeMs]; hasPrev && msElapsed > 0 && totalErrors >= prevErrors {
+			systemStats.NetworkErrorsPs = float64(totalErrors-prevErrors) * 1000 / float64(msElapsed)
+		} else {
+			systemStats.NetworkErrorsPs = 0
+		}
+		a.prevNetErrorsTotal[cacheTimeMs] = totalErrors
+
+		// TCP retransmissions live inside this same block so they can reuse
+		// msElapsed from the network baseline above, rather than tracking
+		// their own timestamp. If IOCounters fails, TCP-retransmission
+		// collection is skipped too for this poll (consistent with every
+		// other network stat already being skipped in that case).
+		retransSegs := readTCPRetransSegs()
+		if prevSegs, hasPrev := a.prevTCPRetransSegs[cacheTimeMs]; hasPrev && msElapsed > 0 && retransSegs >= prevSegs {
+			systemStats.TCPRetransPs = float64(retransSegs-prevSegs) * 1000 / float64(msElapsed)
+		} else {
+			systemStats.TCPRetransPs = 0
+		}
+		a.prevTCPRetransSegs[cacheTimeMs] = retransSegs
 	}
 }
 
@@ -150,7 +170,7 @@ func (a *Agent) loadAndTickNetBaseline(cacheTimeMs uint16) (netIoStat system.Net
 }
 
 // sumAndTrackPerNicDeltas accumulates totals and records per-NIC up/down deltas into systemStats
-func (a *Agent) sumAndTrackPerNicDeltas(cacheTimeMs uint16, msElapsed uint64, netIO []psutilNet.IOCountersStat, systemStats *system.Stats) (totalBytesSent, totalBytesRecv uint64) {
+func (a *Agent) sumAndTrackPerNicDeltas(cacheTimeMs uint16, msElapsed uint64, netIO []psutilNet.IOCountersStat, systemStats *system.Stats) (totalBytesSent, totalBytesRecv, totalErrors uint64) {
 	tracker := a.netInterfaceDeltaTrackers[cacheTimeMs]
 	if tracker == nil {
 		tracker = deltatracker.NewDeltaTracker[string, uint64]()
@@ -164,6 +184,7 @@ func (a *Agent) sumAndTrackPerNicDeltas(cacheTimeMs uint16, msElapsed uint64, ne
 		}
 		totalBytesSent += v.BytesSent
 		totalBytesRecv += v.BytesRecv
+		totalErrors += v.Errin + v.Errout + v.Dropin + v.Dropout
 
 		var upDelta, downDelta uint64
 		upKey, downKey := fmt.Sprintf("%sup", v.Name), fmt.Sprintf("%sdown", v.Name)
@@ -192,7 +213,7 @@ func (a *Agent) sumAndTrackPerNicDeltas(cacheTimeMs uint16, msElapsed uint64, ne
 		systemStats.NetworkInterfaces[v.Name] = [4]uint64{upDelta, downDelta, v.BytesSent, v.BytesRecv}
 	}
 
-	return totalBytesSent, totalBytesRecv
+	return totalBytesSent, totalBytesRecv, totalErrors
 }
 
 // computeBytesPerSecond calculates per-second totals from elapsed time and totals
