@@ -490,10 +490,17 @@ func (am *AlertManager) sendSystemAlert(alert SystemAlertData) {
 	if alert.name == "MemAvailable" {
 		alert.name = "Available Memory"
 	}
+	// format TCPRetrans/NetworkErrors names
+	if alert.name == "TCPRetrans" {
+		alert.name = "TCP Retransmissions"
+	} else if alert.name == "NetworkErrors" {
+		alert.name = "Network Errors"
+	}
 
 	// make title alert name lowercase if not CPU, GPU, CPU Pressure, Memory Pressure, or IO Pressure
 	titleAlertName := alert.name
-	if titleAlertName != "CPU" && titleAlertName != "GPU" && !strings.HasPrefix(titleAlertName, "CPU Pressure") &&
+	if titleAlertName != "CPU" && titleAlertName != "GPU" && titleAlertName != "TCP Retransmissions" &&
+		!strings.HasPrefix(titleAlertName, "CPU Pressure") &&
 		!strings.HasPrefix(titleAlertName, "Memory Pressure") && !strings.HasPrefix(titleAlertName, "IO Pressure") {
 		titleAlertName = strings.ToLower(titleAlertName)
 	}

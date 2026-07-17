@@ -299,6 +299,78 @@ func TestOOMKillAlertSubjectText(t *testing.T) {
 	})
 }
 
+// TestTCPRetransAlertSubjectText guards against a regression where
+// "TCPRetrans" was never added to sendSystemAlert's display-name rewrite
+// block, which left notification subjects/bodies showing the raw internal
+// name (e.g. "tcpretrans above threshold") instead of the friendly,
+// correctly-cased "TCP Retransmissions".
+func TestTCPRetransAlertSubjectText(t *testing.T) {
+	synctest.Test(t, func(t *testing.T) {
+		fixture := newSystemAlertTestFixture(t, "TCPRetrans", 1, 10)
+		defer fixture.cleanup()
+
+		submitValue(fixture, t, 12.0, setTCPRetransAlertValue)
+		waitForSystemAlert(time.Second)
+
+		fixture.assertTriggered(t, true, "Alert should be triggered")
+		require.Equal(t, 1, fixture.hub.TestMailer.TotalSend(), "An email should have been sent")
+		subject := fixture.hub.TestMailer.LastMessage().Subject
+		assert.Contains(t, subject, "TCP Retransmissions",
+			"TCPRetrans should display as the friendly, correctly-cased 'TCP Retransmissions'")
+		assert.NotContains(t, subject, "tcpretrans",
+			"subject should not contain the raw internal alert name")
+
+		submitValue(fixture, t, 8.0, setTCPRetransAlertValue)
+		waitForSystemAlert(time.Second)
+
+		fixture.assertTriggered(t, false, "Alert should be untriggered")
+		require.Equal(t, 2, fixture.hub.TestMailer.TotalSend(), "A second email should have been sent for untriggering the alert")
+		subject = fixture.hub.TestMailer.LastMessage().Subject
+		assert.Contains(t, subject, "TCP Retransmissions",
+			"resolved TCPRetrans alert should also use the friendly, correctly-cased name")
+		assert.NotContains(t, subject, "tcpretrans",
+			"subject should not contain the raw internal alert name")
+
+		waitForSystemAlert(time.Minute)
+	})
+}
+
+// TestNetworkErrorsAlertSubjectText guards against a regression where
+// "NetworkErrors" was never added to sendSystemAlert's display-name rewrite
+// block, which left notification subjects/bodies showing the raw internal
+// name (e.g. "networkerrors above threshold") instead of the friendly
+// "network errors" text.
+func TestNetworkErrorsAlertSubjectText(t *testing.T) {
+	synctest.Test(t, func(t *testing.T) {
+		fixture := newSystemAlertTestFixture(t, "NetworkErrors", 1, 10)
+		defer fixture.cleanup()
+
+		submitValue(fixture, t, 12.0, setNetworkErrorsAlertValue)
+		waitForSystemAlert(time.Second)
+
+		fixture.assertTriggered(t, true, "Alert should be triggered")
+		require.Equal(t, 1, fixture.hub.TestMailer.TotalSend(), "An email should have been sent")
+		subject := fixture.hub.TestMailer.LastMessage().Subject
+		assert.Contains(t, subject, "network errors",
+			"NetworkErrors should display as the friendly, lowercased 'network errors'")
+		assert.NotContains(t, subject, "networkerrors",
+			"subject should not contain the raw internal alert name")
+
+		submitValue(fixture, t, 8.0, setNetworkErrorsAlertValue)
+		waitForSystemAlert(time.Second)
+
+		fixture.assertTriggered(t, false, "Alert should be untriggered")
+		require.Equal(t, 2, fixture.hub.TestMailer.TotalSend(), "A second email should have been sent for untriggering the alert")
+		subject = fixture.hub.TestMailer.LastMessage().Subject
+		assert.Contains(t, subject, "network errors",
+			"resolved NetworkErrors alert should also use the friendly, lowercased name")
+		assert.NotContains(t, subject, "networkerrors",
+			"subject should not contain the raw internal alert name")
+
+		waitForSystemAlert(time.Minute)
+	})
+}
+
 // TestOOMKillWindowedAlertSumsNotAverages demonstrates the actual value of
 // the sum-not-average fix for OOMKill's finalization case in
 // HandleSystemAlerts: a single real kill must trigger a windowed
