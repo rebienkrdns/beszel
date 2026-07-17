@@ -819,9 +819,9 @@ msgstr "Efímero"
 msgid "Error"
 msgstr ""
 
-#: src/components/routes/settings/notifications.tsx
-#~ msgid "Example for Discord: <0>discord://TOKEN@WEBHOOK_ID</0> — get <1>TOKEN</1> and <2>WEBHOOK_ID</2> from your Discord webhook URL (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
-#~ msgstr "Ejemplo para Discord: <0>discord://TOKEN@WEBHOOK_ID</0>: obtén <1>TOKEN</1> y <2>WEBHOOK_ID</2> desde la URL de tu webhook de Discord (<3>https://discord.com/api/webhooks/WEBHOOK_ID/TOKEN</3>)."
+#: src/components/routes/system/charts/network-charts.tsx
+msgid "Errors + Drops"
+msgstr "Errores + Descartes"
 
 #: src/components/routes/settings/heartbeat.tsx
 msgid "Example:"
@@ -1301,6 +1301,14 @@ msgstr "Nombre"
 #: src/components/systems-table/systems-table-columns.tsx
 msgid "Net"
 msgstr "Red"
+
+#: src/lib/alerts.ts
+msgid "Network Errors"
+msgstr "Errores de Red"
+
+#: src/components/routes/system/charts/network-charts.tsx
+msgid "Network Health"
+msgstr "Salud de Red"
 
 #: src/components/routes/system/charts/network-charts.tsx
 msgid "Network traffic of docker containers"
@@ -1849,6 +1857,15 @@ msgstr "Pestañas"
 msgid "Tasks"
 msgstr "Tareas"
 
+#: src/components/routes/system/charts/network-charts.tsx
+#: src/lib/alerts.ts
+msgid "TCP Retransmissions"
+msgstr "Retransmisiones TCP"
+
+#: src/components/routes/system/charts/network-charts.tsx
+msgid "TCP retransmissions and network interface errors"
+msgstr "Retransmisiones TCP y errores de interfaz de red"
+
 #. Temperature label in systems table
 #: src/components/routes/system/smart-table.tsx
 #: src/components/systems-table/systems-table-columns.tsx
@@ -2078,8 +2095,16 @@ msgid "Triggers when memory usage exceeds a threshold"
 msgstr "Se activa cuando el uso de memoria supera un umbral"
 
 #: src/lib/alerts.ts
+msgid "Triggers when network interface errors or dropped packets exceed a threshold"
+msgstr "Se activa cuando los errores o paquetes descartados de la interfaz de red superan un umbral"
+
+#: src/lib/alerts.ts
 msgid "Triggers when status switches between up and down"
 msgstr "Se activa cuando el estado cambia entre activo e inactivo"
+
+#: src/lib/alerts.ts
+msgid "Triggers when TCP retransmissions exceed a threshold"
+msgstr "Se activa cuando las retransmisiones TCP superan un umbral"
 
 #: src/lib/alerts.ts
 msgid "Triggers when the kernel OOM killer terminates a process"
