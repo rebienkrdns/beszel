@@ -865,3 +865,22 @@ func TestAverageContainerStatsSlice_ManyContainers(t *testing.T) {
 	assert.Equal(t, 35.0, result[2].Cpu)
 	assert.Equal(t, 45.0, result[3].Cpu)
 }
+
+// TestAverageSystemStatsSlice_TCPRetransAndNetworkErrorsAverage verifies that
+// TCPRetransPs and NetworkErrorsPs are averaged (not summed) across an
+// aggregation window - unlike OOMKillDelta, both are continuous rates
+// (events/sec), not per-poll event counts, so "the average rate during this
+// window" is the meaningful long-interval value, matching how MemAvailable
+// and NetworkSent/NetworkRecv are already averaged.
+func TestAverageSystemStatsSlice_TCPRetransAndNetworkErrorsAverage(t *testing.T) {
+	input := []system.Stats{
+		{TCPRetransPs: 2, NetworkErrorsPs: 1},
+		{TCPRetransPs: 4, NetworkErrorsPs: 3},
+		{TCPRetransPs: 6, NetworkErrorsPs: 2},
+	}
+
+	result := records.AverageSystemStatsSlice(input)
+
+	assert.Equal(t, 4.0, result.TCPRetransPs)
+	assert.Equal(t, 2.0, result.NetworkErrorsPs)
+}

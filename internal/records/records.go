@@ -210,6 +210,8 @@ func AverageSystemStatsSlice(records []system.Stats) system.Stats {
 		sum.MemZfsArc += stats.MemZfsArc
 		sum.MemAvailable += stats.MemAvailable
 		sum.OOMKillDelta += stats.OOMKillDelta
+		sum.TCPRetransPs += stats.TCPRetransPs
+		sum.NetworkErrorsPs += stats.NetworkErrorsPs
 		for i := range stats.CpuPressure {
 			sum.CpuPressure[i] += stats.CpuPressure[i]
 			sum.MemPressureSome[i] += stats.MemPressureSome[i]
@@ -354,6 +356,8 @@ func AverageSystemStatsSlice(records []system.Stats) system.Stats {
 	sum.MemBuffCache = twoDecimals(sum.MemBuffCache / count)
 	sum.MemZfsArc = twoDecimals(sum.MemZfsArc / count)
 	sum.MemAvailable = twoDecimals(sum.MemAvailable / count)
+	sum.TCPRetransPs = twoDecimals(sum.TCPRetransPs / count)
+	sum.NetworkErrorsPs = twoDecimals(sum.NetworkErrorsPs / count)
 	for i := range sum.CpuPressure {
 		sum.CpuPressure[i] = twoDecimals(sum.CpuPressure[i] / count)
 		sum.MemPressureSome[i] = twoDecimals(sum.MemPressureSome[i] / count)
