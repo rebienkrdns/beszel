@@ -88,6 +88,66 @@ export function BandwidthChart({
 	)
 }
 
+export function NetworkHealthChart({
+	chartData,
+	grid,
+	dataEmpty,
+	showMax,
+	isLongerChart,
+	maxValues,
+}: {
+	chartData: ChartData
+	grid: boolean
+	dataEmpty: boolean
+	showMax: boolean
+	isLongerChart: boolean
+	maxValues: boolean
+}) {
+	// hardware/OS-dependent presence check, same convention as BatteryChart/
+	// TemperatureChart: hide the whole card if the latest record has neither
+	// field populated (e.g. a non-Linux agent with no interface errors ever
+	// recorded), rather than checking each value individually against 0 -
+	// 0 is a normal, healthy reading for both fields.
+	const latestStats = chartData.systemStats.at(-1)?.stats
+	const showChart = latestStats?.trp !== undefined || latestStats?.nep !== undefined
+	if (!showChart) {
+		return null
+	}
+
+	const maxValSelect = isLongerChart ? <SelectAvgMax max={maxValues} /> : null
+
+	return (
+		<ChartCard
+			empty={dataEmpty}
+			grid={grid}
+			title={t`Network Health`}
+			cornerEl={maxValSelect}
+			description={t`TCP retransmissions and network interface errors`}
+		>
+			<AreaChartDefault
+				chartData={chartData}
+				maxToggled={showMax}
+				dataPoints={[
+					{
+						label: t`TCP Retransmissions`,
+						dataKey: ({ stats }) => stats?.trp,
+						color: 3,
+						opacity: 0.3,
+					},
+					{
+						label: t`Errors + Drops`,
+						dataKey: ({ stats }) => stats?.nep,
+						color: 4,
+						opacity: 0.3,
+					},
+				]}
+				tickFormatter={(val) => `${toFixedFloat(val, val >= 10 ? 0 : 1)}/s`}
+				contentFormatter={(data) => `${decimalString(data.value)}/s`}
+			/>
+		</ChartCard>
+	)
+}
+
 export function ContainerNetworkChart({
 	chartData,
 	grid,

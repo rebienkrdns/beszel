@@ -8,7 +8,7 @@ import { useSystemData } from "./system/use-system-data"
 import { CpuChart, ContainerCpuChart } from "./system/charts/cpu-charts"
 import { MemoryChart, ContainerMemoryChart, SwapChart } from "./system/charts/memory-charts"
 import { RootDiskCharts, ExtraFsCharts } from "./system/charts/disk-charts"
-import { BandwidthChart, ContainerNetworkChart } from "./system/charts/network-charts"
+import { BandwidthChart, ContainerNetworkChart, NetworkHealthChart } from "./system/charts/network-charts"
 import { TemperatureChart, BatteryChart } from "./system/charts/sensor-charts"
 import { GpuPowerChart, GpuDetailCharts } from "./system/charts/gpu-charts"
 import { LazyContainersTable, LazySmartTable, LazySystemdTable } from "./system/lazy-tables"
@@ -107,6 +107,8 @@ export default memo(function SystemDetail({ id }: { id: string }) {
 
 					<BandwidthChart {...coreProps} systemStats={systemStats} />
 
+					<NetworkHealthChart {...coreProps} />
+
 					{hasContainers && (
 						<ContainerNetworkChart
 							chartData={chartData}
@@ -187,6 +189,7 @@ export default memo(function SystemDetail({ id }: { id: string }) {
 						<MemoryChart {...coreProps} />
 						<LoadAverageChart chartData={chartData} grid={grid} dataEmpty={dataEmpty} />
 						<BandwidthChart {...coreProps} systemStats={systemStats} />
+						<NetworkHealthChart {...coreProps} />
 						<TemperatureChart {...coreProps} setPageBottomExtraMargin={setPageBottomExtraMargin} />
 						<BatteryChart {...coreProps} />
 						<SwapChart chartData={chartData} grid={grid} dataEmpty={dataEmpty} systemStats={systemStats} />

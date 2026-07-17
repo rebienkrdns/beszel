@@ -119,6 +119,10 @@ export interface SystemStats {
 	mav?: number
 	/** OOM kills since last poll */
 	okd?: number
+	/** TCP retransmitted segments/sec (Linux only) */
+	trp?: number
+	/** network interface errors+drops/sec */
+	nep?: number
 	/** swap space (gb) */
 	s: number
 	/** swap used (gb) */
