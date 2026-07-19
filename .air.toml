@@ -1,0 +1,13 @@
+root = "."
+tmp_dir = "/tmp/air"
+
+[build]
+cmd = "go build -tags development -o /tmp/air/beszel ./internal/cmd/hub"
+bin = "/tmp/air/beszel"
+args_bin = ["serve", "--http=0.0.0.0:8090"]
+include_ext = ["go"]
+exclude_dir = ["internal/site", "supplemental", ".git"]
+delay = 1000
+
+[log]
+time = false

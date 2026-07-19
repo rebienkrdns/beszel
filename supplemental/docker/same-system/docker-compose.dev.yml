@@ -1,25 +1,44 @@
 # Docs: https://beszel.dev/guide/getting-started
 # Env vars: https://beszel.dev/guide/environment-variables
 
+networks:
+  beszel-dev:
+
 services:
   beszel:
     build:
       context: ../../../
-      dockerfile: Dockerfile.hub
+      dockerfile: Dockerfile.hub.dev
     container_name: beszel
     restart: unless-stopped
-    environment:
-      APP_URL: http://localhost:8090
+    networks:
+      - beszel-dev
     ports:
       - 8090:8090
+    environment:
+      APP_URL: http://localhost:8090
+      ENV: dev
+      VITE_HOST: beszel-frontend:5173
+    command: sh -c "mkdir -p internal/site/dist && touch internal/site/dist/.gitkeep && air"
     volumes:
-      - ./beszel_data:/beszel_data
+      - ../../../:/app
+      - ./beszel_data:/app/beszel_data
       - ./beszel_socket:/beszel_socket
-    # healthcheck:
-    #   test: ['CMD', '/beszel', 'health', '--url', 'http://localhost:8090']
-    #   interval: 120s
-    #   start_period: 10s
-    #   timeout: 5s
+
+  beszel-frontend:
+    image: oven/bun:1-alpine
+    container_name: beszel-frontend
+    restart: unless-stopped
+    networks:
+      - beszel-dev
+    ports:
+      - 5173:5173
+    working_dir: /app
+    environment:
+      HUB_URL: http://beszel:8090
+    command: sh -c "bun install --frozen-lockfile && bun run dev --host"
+    volumes:
+      - ../../../internal/site:/app
 
   beszel-agent:
     build:

@@ -18,7 +18,7 @@ export default defineConfig(({ command }) => ({
 				if (command !== "serve") return html
 				return html.replace(
 					`globalThis.BESZEL = "{info}"`,
-					`globalThis.BESZEL = {"BASE_PATH":"","HUB_VERSION":"dev","HUB_URL":"","OAUTH_DISABLE_POPUP":false}`
+					`globalThis.BESZEL = {"BASE_PATH":"/","HUB_VERSION":"dev","HUB_URL":"","OAUTH_DISABLE_POPUP":false}`
 				)
 			},
 		},
@@ -34,12 +34,12 @@ export default defineConfig(({ command }) => ({
 	server: {
 		proxy: {
 			"/api": {
-				target: "http://localhost:8090",
+				target: process.env.HUB_URL ?? "http://localhost:8090",
 				changeOrigin: true,
 				ws: true,
 			},
 			"/_": {
-				target: "http://localhost:8090",
+				target: process.env.HUB_URL ?? "http://localhost:8090",
 				changeOrigin: true,
 			},
 		},
