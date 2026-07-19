@@ -91,8 +91,7 @@ function getMeterStateByThresholds(value: number, warn = 65, crit = 90): MeterSt
 export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<SystemRecord>[] {
 	return [
 		{
-			// size: 200,
-			size: 100,
+			size: 200,
 			minSize: 0,
 			accessorKey: "name",
 			id: "system",
@@ -140,13 +139,18 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 
 				return (
 					<>
-						<span className="flex gap-2 items-center font-medium text-sm text-nowrap md:ps-1">
+						<span
+							className={cn(
+								"flex gap-2 items-center font-medium text-sm md:ps-1",
+								viewMode === "table" ? "overflow-hidden" : "text-nowrap"
+							)}
+						>
 							<IndicatorDot system={info.row.original} />
 							<Link
 								href={linkUrl}
 								tabIndex={-1}
-								className="truncate z-10 relative"
-								style={{ width: `${longestName / 1.05}ch` }}
+								className={cn("truncate z-10 relative", viewMode === "table" ? "flex-1 min-w-0" : "")}
+								style={viewMode === "grid" ? { width: `${longestName / 1.05}ch` } : undefined}
 								onMouseEnter={(e) => {
 									// set title on hover if text is truncated to show full name
 									const a = e.currentTarget
@@ -170,7 +174,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			accessorFn: ({ info }) => info.cpu || undefined,
 			id: "cpu",
 			name: () => t`CPU`,
-			cell: TableCellWithMeter,
+			cell: (info) => TableCellWithMeter(info, viewMode),
 			Icon: CpuIcon,
 			header: sortableHeader,
 		},
@@ -179,7 +183,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			accessorFn: ({ info }) => info.mp || undefined,
 			id: "memory",
 			name: () => t`Memory`,
-			cell: TableCellWithMeter,
+			cell: (info) => TableCellWithMeter(info, viewMode),
 			Icon: MemoryStickIcon,
 			header: sortableHeader,
 		},
@@ -188,7 +192,11 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			id: "disk",
 			name: () => t`Disk`,
 			cell: (info: CellContext<SystemRecord, unknown>) =>
-				info.row.original.info.efs ? DiskCellWithMultiple(info) : TableCellWithMeter(info),
+				viewMode === "table"
+					? TableCellWithMeter(info, viewMode)
+					: info.row.original.info.efs
+						? DiskCellWithMultiple(info)
+						: TableCellWithMeter(info, viewMode),
 			Icon: HardDriveIcon,
 			header: sortableHeader,
 		},
@@ -196,7 +204,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			accessorFn: ({ info }) => info.g || undefined,
 			id: "gpu",
 			name: () => "GPU",
-			cell: TableCellWithMeter,
+			cell: (info) => TableCellWithMeter(info, viewMode),
 			Icon: GpuIcon,
 			header: sortableHeader,
 		},
@@ -204,7 +212,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			id: "loadAverage",
 			accessorFn: ({ info }) => info.la?.reduce((acc, curr) => acc + curr, 0),
 			name: () => t({ message: "Load Avg", comment: "Short label for load average" }),
-			size: 0,
+			size: 85,
 			Icon: HourglassIcon,
 			header: sortableHeader,
 			cell(info: CellContext<SystemRecord, unknown>) {
@@ -232,7 +240,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 							})}
 						/>
 						{loadAverages?.map((la, i) => (
-							<span key={i}>{decimalString(la, la >= 10 ? 1 : 2)}</span>
+							<span key={i}>{decimalString(la, viewMode === "table" ? 1 : la >= 10 ? 1 : 2)}</span>
 						))}
 					</div>
 				)
@@ -242,7 +250,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			accessorFn: ({ info, status }) => (status !== SystemStatus.Up ? undefined : info.bb),
 			id: "net",
 			name: () => t`Net`,
-			size: 0,
+			size: 90,
 			Icon: EthernetIcon,
 			header: sortableHeader,
 			sortUndefined: "last",
@@ -264,7 +272,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			accessorFn: ({ info }) => info.dt,
 			id: "temp",
 			name: () => t({ message: "Temp", comment: "Temperature label in systems table" }),
-			size: 50,
+			size: 65,
 			hideSort: true,
 			Icon: ThermometerIcon,
 			header: sortableHeader,
@@ -332,7 +340,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			accessorFn: ({ info }) => info.sv?.[0],
 			id: "services",
 			name: () => t`Services`,
-			size: 50,
+			size: 65,
 			Icon: TerminalSquareIcon,
 			header: sortableHeader,
 			hideSort: true,
@@ -359,10 +367,10 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 								[STATUS_COLORS[SystemStatus.Up]]: numFailed === 0,
 							})}
 						/>
-						{totalCount}{" "}
-						<span className="text-muted-foreground text-sm -ms-0.5">
-							({t`Failed`.toLowerCase()}: {numFailed})
-						</span>
+						{totalCount}
+						{numFailed > 0 && (
+							<span className="text-muted-foreground text-sm -ms-0.5">({numFailed})</span>
+						)}
 					</span>
 				)
 			},
@@ -371,7 +379,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			accessorFn: ({ info }) => info.u || undefined,
 			id: "uptime",
 			name: () => t`Uptime`,
-			size: 50,
+			size: 70,
 			Icon: ClockArrowUp,
 			header: sortableHeader,
 			hideSort: true,
@@ -387,7 +395,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			accessorFn: ({ info }) => info.v,
 			id: "agent",
 			name: () => t`Agent`,
-			size: 50,
+			size: 65,
 			Icon: WifiIcon,
 			hideSort: true,
 			header: sortableHeader,
@@ -429,7 +437,7 @@ export function SystemsTableColumns(viewMode: "table" | "grid"): ColumnDef<Syste
 			id: "actions",
 			// @ts-expect-error
 			name: () => t({ message: "Actions", comment: "Table column" }),
-			size: 50,
+			size: 90,
 			cell: ({ row }) => (
 				<div className="relative z-10 flex justify-end items-center gap-1 -ms-3">
 					<AlertButton system={row.original} />
@@ -448,32 +456,40 @@ function sortableHeader(context: HeaderContext<SystemRecord, unknown>) {
 	return (
 		<Button
 			variant="ghost"
-			className={cn("h-9 px-3 flex duration-50", isSorted && "bg-accent/70 light:bg-accent text-accent-foreground/90")}
+			className={cn("h-9 px-2 flex w-full overflow-hidden duration-50", isSorted && "bg-accent/70 light:bg-accent text-accent-foreground/90")}
 			onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 		>
-			{Icon && <Icon className="me-2 size-4" />}
-			{name()}
-			{hideSort || <ArrowUpDownIcon className="ms-2 size-4" />}
+			{Icon && <Icon className="shrink-0 me-1.5 size-4" />}
+			<span className="truncate">{name()}</span>
+			{hideSort || <ArrowUpDownIcon className="shrink-0 ms-1.5 size-4" />}
 		</Button>
 	)
 }
 
-function TableCellWithMeter(info: CellContext<SystemRecord, unknown>) {
+function TableCellWithMeter(info: CellContext<SystemRecord, unknown>, viewMode: "table" | "grid" = "grid") {
 	const { colorWarn = 65, colorCrit = 90 } = useStore($userSettings, { keys: ["colorWarn", "colorCrit"] })
 	const val = Number(info.getValue()) || 0
 	const threshold = getMeterStateByThresholds(val, colorWarn, colorCrit)
-	const meterClass = cn(
-		"h-full",
+	const colorClass =
 		(info.row.original.status !== SystemStatus.Up && STATUS_COLORS.paused) ||
-			(threshold === MeterState.Good && STATUS_COLORS.up) ||
-			(threshold === MeterState.Warn && STATUS_COLORS.pending) ||
-			STATUS_COLORS.down
-	)
+		(threshold === MeterState.Good && STATUS_COLORS.up) ||
+		(threshold === MeterState.Warn && STATUS_COLORS.pending) ||
+		STATUS_COLORS.down
+
+	if (viewMode === "table") {
+		return (
+			<div className="flex gap-1.5 items-center tabular-nums tracking-tight">
+				<span className={cn("shrink-0 size-2 rounded-full", colorClass)} />
+				<span>{decimalString(val, val >= 10 ? 1 : 2)}%</span>
+			</div>
+		)
+	}
+
 	return (
 		<div className="flex gap-2 items-center tabular-nums tracking-tight w-full">
 			<span className="min-w-8 shrink-0">{decimalString(val, val >= 10 ? 1 : 2)}%</span>
 			<span className="flex-1 min-w-8 grid bg-muted h-[1em] rounded-sm overflow-hidden">
-				<span className={meterClass} style={{ width: `${val}%` }}></span>
+				<span className={cn("h-full", colorClass)} style={{ width: `${val}%` }}></span>
 			</span>
 		</div>
 	)

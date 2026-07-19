@@ -119,8 +119,7 @@ export default function SystemsTable() {
 			invertSorting: true,
 			sortUndefined: "last",
 			minSize: 0,
-			size: 900,
-			maxSize: 900,
+			size: 80,
 		},
 	})
 
@@ -354,7 +353,15 @@ const AllSystemsTable = memo(
 			>
 				{/* add header height to table size */}
 				<div style={{ height: `${virtualizer.getTotalSize() + 50}px`, paddingTop, paddingBottom }}>
-					<table className="text-sm w-full h-full">
+					<table className="text-sm w-full h-full table-fixed">
+						<colgroup>
+							{table.getVisibleLeafColumns().map((col) => (
+								<col
+									key={col.id}
+									style={{ width: `${(col.getSize() / table.getTotalSize()) * 100}%` }}
+								/>
+							))}
+						</colgroup>
 						<SystemsTableHead table={table} />
 						<TableBody onMouseEnter={preloadSystemDetail}>
 							{rows.length ? (
@@ -395,7 +402,7 @@ function SystemsTableHead({ table }: { table: TableType<SystemRecord> }) {
 				<tr key={headerGroup.id}>
 					{headerGroup.headers.map((header) => {
 						return (
-							<TableHead className="px-1.5" key={header.id}>
+							<TableHead className="px-0 overflow-hidden" key={header.id}>
 								{flexRender(header.column.columnDef.header, header.getContext())}
 							</TableHead>
 						)
@@ -430,11 +437,8 @@ const SystemTableRow = memo(
 					{row.getVisibleCells().map((cell) => (
 						<TableCell
 							key={cell.id}
-							style={{
-								width: cell.column.getSize(),
-								height: virtualRow.size,
-							}}
-							className="py-0 ps-4.5"
+							style={{ height: virtualRow.size }}
+							className="py-0 ps-4.5 overflow-hidden"
 						>
 							{flexRender(cell.column.columnDef.cell, cell.getContext())}
 						</TableCell>
