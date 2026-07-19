@@ -18,7 +18,7 @@ export default defineConfig(({ command }) => ({
 				if (command !== "serve") return html
 				return html.replace(
 					`globalThis.BESZEL = "{info}"`,
-					`globalThis.BESZEL = {"BASE_PATH":window.location.origin,"HUB_VERSION":"dev","HUB_URL":"","OAUTH_DISABLE_POPUP":false}`
+					`globalThis.BESZEL = {"BASE_PATH":"","HUB_VERSION":"dev","HUB_URL":"","OAUTH_DISABLE_POPUP":false}`
 				)
 			},
 		},
