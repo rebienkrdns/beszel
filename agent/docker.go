@@ -81,6 +81,10 @@ type dockerManager struct {
 	networkSentTrackers map[uint16]*deltatracker.DeltaTracker[string, uint64]
 	networkRecvTrackers map[uint16]*deltatracker.DeltaTracker[string, uint64]
 	lastNetworkReadTime map[uint16]map[string]time.Time // cacheTimeMs -> containerId -> last network read time
+
+	// Restart and OOM kill tracking
+	restartDelta map[string]uint8  // container ID -> restarts detected this poll cycle
+	prevOomKill  map[string]uint64 // container ID -> previous cumulative OOM kill count
 }
 
 // userAgentRoundTripper is a custom http.RoundTripper that adds a User-Agent header to all requests
@@ -177,7 +181,14 @@ func (dm *dockerManager) getDockerStats(cacheTimeMs uint16) ([]*container.Stats,
 		// check if container is less than 1 minute old (possible restart)
 		// note: can't use Created field because it's not updated on restart
 		if strings.Contains(ctr.Status, "second") {
-			// if so, remove old container data
+			// Track restart if the container previously had stats (not a first start)
+			dm.containerStatsMutex.RLock()
+			_, existed := dm.containerStatsMap[ctr.IdShort]
+			dm.containerStatsMutex.RUnlock()
+			if existed {
+				dm.restartDelta[ctr.IdShort]++
+			}
+			// remove old container data so CPU/net deltas reset correctly
 			dm.deleteContainerStatsSync(ctr.IdShort)
 		}
 		dm.queue()
@@ -210,6 +221,14 @@ func (dm *dockerManager) getDockerStats(cacheTimeMs uint16) ([]*container.Stats,
 			}(ctr)
 		}
 		dm.wg.Wait()
+	}
+
+	// Apply restart deltas detected this poll cycle and clear for next poll
+	for id, count := range dm.restartDelta {
+		if s, ok := dm.containerStatsMap[id]; ok {
+			s.Restarts = count
+		}
+		delete(dm.restartDelta, id)
 	}
 
 	// populate final stats and remove old / invalid container stats
@@ -522,6 +541,8 @@ func (dm *dockerManager) updateContainerStats(ctr *container.ApiInfo, cacheTimeM
 	// TODO(0.19+): stop populating NetworkSent/NetworkRecv (deprecated in 0.18.3)
 	stats.NetworkSent = 0
 	stats.NetworkRecv = 0
+	stats.Restarts = 0
+	stats.OomKillDelta = 0
 
 	res := dm.apiStats
 	res.Networks = nil
@@ -577,6 +598,18 @@ func (dm *dockerManager) updateContainerStats(ctr *container.ApiInfo, cacheTimeM
 	}
 	stats.PrevNet.Sent, stats.PrevNet.Recv = total_sent, total_recv
 
+	// Calculate OOM kill delta (cgroup v2 only; field is 0 on cgroup v1 / Windows)
+	currentOomKill := res.MemoryStats.Stats.OomKill
+	if currentOomKill > 0 {
+		if prev, ok := dm.prevOomKill[ctr.IdShort]; ok && currentOomKill > prev {
+			delta := currentOomKill - prev
+			if delta <= 0xFFFF {
+				stats.OomKillDelta = uint16(delta)
+			}
+		}
+		dm.prevOomKill[ctr.IdShort] = currentOomKill
+	}
+
 	// Update final stats values
 	updateContainerStatsValues(stats, cpuPct, usedMemory, sent_delta, recv_delta, res.Read)
 	// store per-cache-time read time for Windows CPU percent calc
@@ -602,6 +635,7 @@ func (dm *dockerManager) deleteContainerStatsSync(id string) {
 	for ct := range dm.lastNetworkReadTime {
 		delete(dm.lastNetworkReadTime[ct], id)
 	}
+	delete(dm.prevOomKill, id)
 }
 
 // Creates a new http client for Docker or Podman API
@@ -689,6 +723,8 @@ func newDockerManager(agent *Agent) *dockerManager {
 		networkSentTrackers: make(map[uint16]*deltatracker.DeltaTracker[string, uint64]),
 		networkRecvTrackers: make(map[uint16]*deltatracker.DeltaTracker[string, uint64]),
 		lastNetworkReadTime: make(map[uint16]map[string]time.Time),
+		restartDelta:        make(map[string]uint8),
+		prevOomKill:         make(map[string]uint64),
 	}
 
 	// Best-effort startup probe. If the engine is not ready yet, getDockerStats will

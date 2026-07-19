@@ -97,6 +97,12 @@ func (a *Agent) updateNetworkStats(cacheTimeMs uint16, systemStats *system.Stats
 		// other network stat already being skipped in that case).
 		retransSegs := readTCPRetransSegs()
 		systemStats.TCPRetransPs = a.rateFromCumulativeCounter(a.prevTCPRetransSegs, cacheTimeMs, retransSegs, msElapsed)
+
+		ctxSwitches := readCtxSwitches()
+		systemStats.CtxSwitchesPs = a.rateFromCumulativeCounter(a.prevCtxSwitches, cacheTimeMs, ctxSwitches, msElapsed)
+
+		interrupts := readInterrupts()
+		systemStats.InterruptsPs = a.rateFromCumulativeCounter(a.prevInterrupts, cacheTimeMs, interrupts, msElapsed)
 	}
 }
 

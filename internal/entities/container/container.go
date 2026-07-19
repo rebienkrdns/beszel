@@ -106,6 +106,7 @@ type MemoryStats struct {
 type MemoryStatsStats struct {
 	Cache        uint64 `json:"cache,omitempty"`
 	InactiveFile uint64 `json:"inactive_file,omitempty"`
+	OomKill      uint64 `json:"oom_kill,omitempty"` // cgroup v2 cumulative OOM kill count for this container
 }
 
 type NetworkStats struct {
@@ -144,6 +145,8 @@ type Stats struct {
 	NetworkSent float64   `json:"ns,omitzero" cbor:"3,keyasint,omitzero"` // deprecated 0.18.3 (MB) - keep field for old agents/records
 	NetworkRecv float64   `json:"nr,omitzero" cbor:"4,keyasint,omitzero"` // deprecated 0.18.3 (MB) - keep field for old agents/records
 	Bandwidth   [2]uint64 `json:"b,omitzero" cbor:"9,keyasint,omitzero"`  // [sent bytes, recv bytes]
+	Restarts    uint8     `json:"rs,omitzero" cbor:"11,keyasint,omitzero"` // restarts detected since last poll
+	OomKillDelta uint16   `json:"ok,omitzero" cbor:"12,keyasint,omitzero"` // OOM kills since last poll
 
 	Health DockerHealth `json:"-" cbor:"5,keyasint"`
 	Status string       `json:"-" cbor:"6,keyasint"`

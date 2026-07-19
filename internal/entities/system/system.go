@@ -59,6 +59,8 @@ type Stats struct {
 	OOMKillDelta      uint32               `json:"okd,omitzero" cbor:"42,keyasint,omitzero"`    // OOM kills since last poll
 	TCPRetransPs      float64              `json:"trp,omitzero" cbor:"43,keyasint,omitzero"`    // TCP retransmitted segments/sec (Linux only), /proc/net/snmp Tcp:RetransSegs
 	NetworkErrorsPs   float64              `json:"nep,omitzero" cbor:"44,keyasint,omitzero"`    // network interface errors+drops/sec, summed across public interfaces
+	CtxSwitchesPs     float64              `json:"ctx,omitzero" cbor:"45,keyasint,omitzero"`    // context switches/sec (Linux only), /proc/stat ctxt
+	InterruptsPs      float64              `json:"irq,omitzero" cbor:"46,keyasint,omitzero"`    // hardware interrupts/sec (Linux only), /proc/stat intr
 }
 
 // Uint8Slice wraps []uint8 to customize JSON encoding while keeping CBOR efficient.

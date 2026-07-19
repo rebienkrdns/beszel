@@ -212,6 +212,8 @@ func AverageSystemStatsSlice(records []system.Stats) system.Stats {
 		sum.OOMKillDelta += stats.OOMKillDelta
 		sum.TCPRetransPs += stats.TCPRetransPs
 		sum.NetworkErrorsPs += stats.NetworkErrorsPs
+		sum.CtxSwitchesPs += stats.CtxSwitchesPs
+		sum.InterruptsPs += stats.InterruptsPs
 		for i := range stats.CpuPressure {
 			sum.CpuPressure[i] += stats.CpuPressure[i]
 			sum.MemPressureSome[i] += stats.MemPressureSome[i]
@@ -358,6 +360,8 @@ func AverageSystemStatsSlice(records []system.Stats) system.Stats {
 	sum.MemAvailable = twoDecimals(sum.MemAvailable / count)
 	sum.TCPRetransPs = twoDecimals(sum.TCPRetransPs / count)
 	sum.NetworkErrorsPs = twoDecimals(sum.NetworkErrorsPs / count)
+	sum.CtxSwitchesPs = twoDecimals(sum.CtxSwitchesPs / count)
+	sum.InterruptsPs = twoDecimals(sum.InterruptsPs / count)
 	for i := range sum.CpuPressure {
 		sum.CpuPressure[i] = twoDecimals(sum.CpuPressure[i] / count)
 		sum.MemPressureSome[i] = twoDecimals(sum.MemPressureSome[i] / count)

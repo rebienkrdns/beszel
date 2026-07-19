@@ -51,6 +51,8 @@ type Agent struct {
 	prevOOMKillCount          map[uint16]uint64                                     // Previous cumulative OOM kill count per cache interval, for delta calculation
 	prevTCPRetransSegs        map[uint16]uint64                                     // Previous cumulative TCP retransmit count per cache interval, for rate calculation
 	prevNetErrorsTotal        map[uint16]uint64                                     // Previous cumulative network errors+drops total per cache interval, for rate calculation
+	prevCtxSwitches           map[uint16]uint64                                     // Previous cumulative context switches per cache interval, for rate calculation
+	prevInterrupts            map[uint16]uint64                                     // Previous cumulative hardware interrupts per cache interval, for rate calculation
 }
 
 // NewAgent creates a new agent with the given data directory for persisting data.
@@ -73,6 +75,8 @@ func NewAgent(dataDir ...string) (agent *Agent, err error) {
 	agent.prevOOMKillCount = make(map[uint16]uint64)
 	agent.prevTCPRetransSegs = make(map[uint16]uint64)
 	agent.prevNetErrorsTotal = make(map[uint16]uint64)
+	agent.prevCtxSwitches = make(map[uint16]uint64)
+	agent.prevInterrupts = make(map[uint16]uint64)
 
 	agent.dataDir, err = GetDataDir(dataDir...)
 	if err != nil {
