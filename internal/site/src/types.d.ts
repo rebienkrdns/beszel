@@ -123,6 +123,10 @@ export interface SystemStats {
 	trp?: number
 	/** network interface errors+drops/sec */
 	nep?: number
+	/** context switches/sec (Linux only) */
+	ctx?: number
+	/** hardware interrupts/sec (Linux only) */
+	irq?: number
 	/** swap space (gb) */
 	s: number
 	/** swap used (gb) */

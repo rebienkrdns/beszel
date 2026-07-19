@@ -125,6 +125,9 @@ export const containerChartCols: ColumnDef<ContainerRecord>[] = [
 		minSize: 121,
 		cell: ({ getValue }) => {
 			const healthValue = getValue() as number
+			if (healthValue === ContainerHealth.None) {
+				return <span className="ms-1.5 text-muted-foreground">-</span>
+			}
 			const healthStatus = ContainerHealthLabels[healthValue] || "Unknown"
 			return (
 				<Badge variant="outline" className="dark:border-white/12">
@@ -133,7 +136,6 @@ export const containerChartCols: ColumnDef<ContainerRecord>[] = [
 							"bg-green-500": healthValue === ContainerHealth.Healthy,
 							"bg-red-500": healthValue === ContainerHealth.Unhealthy,
 							"bg-yellow-500": healthValue === ContainerHealth.Starting,
-							"bg-zinc-500": healthValue === ContainerHealth.None,
 						})}
 					></span>
 					{healthStatus}

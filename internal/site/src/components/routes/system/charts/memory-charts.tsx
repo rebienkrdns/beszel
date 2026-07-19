@@ -46,7 +46,7 @@ export function MemoryChart({
 				domain={[0, totalMem]}
 				itemSorter={(a, b) => a.order - b.order}
 				maxToggled={showMax}
-				showTotal={true}
+				showTotal={false}
 				tickFormatter={(value) => {
 					const { value: convertedValue, unit } = formatBytes(value * 1024, false, Unit.Bytes, true)
 					return `${toFixedFloat(convertedValue, value >= 10 ? 0 : 1)} ${unit}`
