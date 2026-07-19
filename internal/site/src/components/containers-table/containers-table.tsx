@@ -27,7 +27,7 @@ import { Sheet, SheetTitle, SheetHeader, SheetContent, SheetDescription } from "
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog"
 import { Button } from "@/components/ui/button"
 import { $allSystemsById } from "@/lib/stores"
-import { LoaderCircleIcon, MaximizeIcon, RefreshCwIcon, XIcon } from "lucide-react"
+import { CheckIcon, CopyIcon, DownloadIcon, LoaderCircleIcon, MaximizeIcon, RefreshCwIcon, XIcon } from "lucide-react"
 import { Separator } from "../ui/separator"
 import { $router, Link } from "../router"
 import { listenKeys } from "nanostores"
@@ -272,7 +272,7 @@ const AllContainersTable = memo(function AllContainersTable({
 	)
 })
 
-async function getLogsHtml(container: ContainerRecord): Promise<string> {
+async function getLogsHtml(container: ContainerRecord): Promise<{ html: string; text: string }> {
 	try {
 		const [{ highlighter }, logsHtml] = await Promise.all([
 			import("@/lib/shiki"),
@@ -281,30 +281,66 @@ async function getLogsHtml(container: ContainerRecord): Promise<string> {
 				container: container.id,
 			}),
 		])
-		return logsHtml.logs ? highlighter.codeToHtml(logsHtml.logs, { lang: "log", theme: syntaxTheme }) : t`No results.`
+		const text = logsHtml.logs ?? ""
+		const html = text ? highlighter.codeToHtml(text, { lang: "log", theme: syntaxTheme }) : t`No results.`
+		return { html, text }
 	} catch (error) {
 		console.error(error)
-		return ""
+		return { html: "", text: "" }
 	}
 }
 
-async function getInfoHtml(container: ContainerRecord): Promise<string> {
+async function getInfoHtml(container: ContainerRecord): Promise<{ html: string; text: string }> {
 	try {
-		let [{ highlighter }, { info }] = await Promise.all([
+		const [{ highlighter }, { info }] = await Promise.all([
 			import("@/lib/shiki"),
 			pb.send<{ info: string }>("/api/beszel/containers/info", {
 				system: container.system,
 				container: container.id,
 			}),
 		])
+		let text = info ?? ""
 		try {
-			info = JSON.stringify(JSON.parse(info), null, 2)
+			text = JSON.stringify(JSON.parse(info), null, 2)
 		} catch (_) {}
-		return info ? highlighter.codeToHtml(info, { lang: "json", theme: syntaxTheme }) : t`No results.`
+		const html = text ? highlighter.codeToHtml(text, { lang: "json", theme: syntaxTheme }) : t`No results.`
+		return { html, text }
 	} catch (error) {
 		console.error(error)
-		return ""
+		return { html: "", text: "" }
 	}
+}
+
+async function copyText(text: string, setCopied: (v: boolean) => void, fallbackEl?: HTMLTextAreaElement | null) {
+	let success = false
+	try {
+		await navigator.clipboard.writeText(text)
+		success = true
+	} catch {
+		// fallback for non-secure contexts (HTTP): use an element mounted inside the dialog
+		// to avoid Radix UI's inert attribute on document.body
+		if (fallbackEl) {
+			fallbackEl.value = text
+			fallbackEl.select()
+			try {
+				success = document.execCommand("copy")
+			} catch {}
+		}
+	}
+	if (success) {
+		setCopied(true)
+		setTimeout(() => setCopied(false), 2000)
+	}
+}
+
+function downloadText(text: string, filename: string) {
+	const blob = new Blob([text], { type: "text/plain" })
+	const url = URL.createObjectURL(blob)
+	const a = document.createElement("a")
+	a.href = url
+	a.download = filename
+	a.click()
+	URL.revokeObjectURL(url)
 }
 
 function ContainerSheet({
@@ -318,10 +354,15 @@ function ContainerSheet({
 }) {
 	const [logsDisplay, setLogsDisplay] = useState<string>("")
 	const [infoDisplay, setInfoDisplay] = useState<string>("")
+	const [logsText, setLogsText] = useState<string>("")
+	const [infoText, setInfoText] = useState<string>("")
 	const [logsFullscreenOpen, setLogsFullscreenOpen] = useState<boolean>(false)
 	const [infoFullscreenOpen, setInfoFullscreenOpen] = useState<boolean>(false)
 	const [isRefreshingLogs, setIsRefreshingLogs] = useState<boolean>(false)
+	const [logsCopied, setLogsCopied] = useState(false)
+	const [infoCopied, setInfoCopied] = useState(false)
 	const logsContainerRef = useRef<HTMLDivElement>(null)
+	const copyTextareaRef = useRef<HTMLTextAreaElement>(null)
 
 	const container = activeContainer.current
 
@@ -337,13 +378,13 @@ function ContainerSheet({
 		const startTime = Date.now()
 
 		try {
-			const logsHtml = await getLogsHtml(container)
-			setLogsDisplay(logsHtml)
+			const { html, text } = await getLogsHtml(container)
+			setLogsDisplay(html)
+			setLogsText(text)
 			setTimeout(scrollLogsToBottom, 20)
 		} catch (error) {
 			console.error(error)
 		} finally {
-			// Ensure minimum spin duration of 800ms
 			const elapsed = Date.now() - startTime
 			const remaining = Math.max(0, 500 - elapsed)
 			setTimeout(() => {
@@ -355,11 +396,15 @@ function ContainerSheet({
 	useEffect(() => {
 		setLogsDisplay("")
 		setInfoDisplay("")
+		setLogsText("")
+		setInfoText("")
 		if (!container) return
 		;(async () => {
-			const [logsHtml, infoHtml] = await Promise.all([getLogsHtml(container), getInfoHtml(container)])
-			setLogsDisplay(logsHtml)
-			setInfoDisplay(infoHtml)
+			const [logs, info] = await Promise.all([getLogsHtml(container), getInfoHtml(container)])
+			setLogsDisplay(logs.html)
+			setLogsText(logs.text)
+			setInfoDisplay(info.html)
+			setInfoText(info.text)
 			setTimeout(scrollLogsToBottom, 20)
 		})()
 	}, [container])
@@ -372,6 +417,7 @@ function ContainerSheet({
 				open={logsFullscreenOpen}
 				onOpenChange={setLogsFullscreenOpen}
 				logsDisplay={logsDisplay}
+				logsText={logsText}
 				containerName={container.name}
 				onRefresh={refreshLogs}
 				isRefreshing={isRefreshingLogs}
@@ -380,6 +426,7 @@ function ContainerSheet({
 				open={infoFullscreenOpen}
 				onOpenChange={setInfoFullscreenOpen}
 				infoDisplay={infoDisplay}
+				infoText={infoText}
 				containerName={container.name}
 			/>
 			<Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -420,6 +467,26 @@ function ContainerSheet({
 									className={`size-4 transition-transform duration-300 ${isRefreshingLogs ? "animate-spin" : ""}`}
 								/>
 							</Button>
+							<Button
+								variant="ghost"
+								size="sm"
+								onClick={() => copyText(logsText, setLogsCopied, copyTextareaRef.current)}
+								className="h-8 w-8 p-0"
+								title={t`Copy`}
+								disabled={!logsText}
+							>
+								{logsCopied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
+							</Button>
+							<Button
+								variant="ghost"
+								size="sm"
+								onClick={() => downloadText(logsText, `${container.name}-logs.txt`)}
+								className="h-8 w-8 p-0"
+								title={t`Download`}
+								disabled={!logsText}
+							>
+								<DownloadIcon className="size-4" />
+							</Button>
 							<Button variant="ghost" size="sm" onClick={() => setLogsFullscreenOpen(true)} className="h-8 w-8 p-0">
 								<MaximizeIcon className="size-4" />
 							</Button>
@@ -438,8 +505,28 @@ function ContainerSheet({
 							<Button
 								variant="ghost"
 								size="sm"
-								onClick={() => setInfoFullscreenOpen(true)}
+								onClick={() => copyText(infoText, setInfoCopied, copyTextareaRef.current)}
 								className="h-8 w-8 p-0 ms-auto"
+								title={t`Copy`}
+								disabled={!infoText}
+							>
+								{infoCopied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
+							</Button>
+							<Button
+								variant="ghost"
+								size="sm"
+								onClick={() => downloadText(infoText, `${container.name}-info.json`)}
+								className="h-8 w-8 p-0"
+								title={t`Download`}
+								disabled={!infoText}
+							>
+								<DownloadIcon className="size-4" />
+							</Button>
+							<Button
+								variant="ghost"
+								size="sm"
+								onClick={() => setInfoFullscreenOpen(true)}
+								className="h-8 w-8 p-0"
 							>
 								<MaximizeIcon className="size-4" />
 							</Button>
@@ -453,6 +540,7 @@ function ContainerSheet({
 							<div dangerouslySetInnerHTML={{ __html: infoDisplay }} />
 						</div>
 					</div>
+									<textarea ref={copyTextareaRef} aria-hidden readOnly className="sr-only" />
 				</SheetContent>
 			</Sheet>
 		</>
@@ -512,6 +600,7 @@ function LogsFullscreenDialog({
 	open,
 	onOpenChange,
 	logsDisplay,
+	logsText,
 	containerName,
 	onRefresh,
 	isRefreshing,
@@ -519,15 +608,17 @@ function LogsFullscreenDialog({
 	open: boolean
 	onOpenChange: (open: boolean) => void
 	logsDisplay: string
+	logsText: string
 	containerName: string
 	onRefresh: () => void | Promise<void>
 	isRefreshing: boolean
 }) {
 	const outerContainerRef = useRef<HTMLDivElement>(null)
+	const copyTextareaRef = useRef<HTMLTextAreaElement>(null)
+	const [copied, setCopied] = useState(false)
 
 	useEffect(() => {
 		if (open && logsDisplay) {
-			// Scroll the outer container to bottom
 			const scrollToBottom = () => {
 				if (outerContainerRef.current) {
 					outerContainerRef.current.scrollTop = outerContainerRef.current.scrollHeight
@@ -541,20 +632,41 @@ function LogsFullscreenDialog({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="w-[calc(100vw-20px)] h-[calc(100dvh-20px)] max-w-none p-0 bg-gh-dark border-0 text-white">
 				<DialogTitle className="sr-only">{containerName} logs</DialogTitle>
+				<textarea ref={copyTextareaRef} aria-hidden readOnly className="sr-only" />
 				<div ref={outerContainerRef} className="h-full overflow-auto">
 					<div className="h-full w-full px-3 leading-relaxed rounded-md bg-gh-dark text-sm">
 						<div className="py-3" dangerouslySetInnerHTML={{ __html: logsDisplay }} />
 					</div>
 				</div>
-				<button
-					onClick={onRefresh}
-					className="absolute top-3 right-11 opacity-60 hover:opacity-100 p-1"
-					disabled={isRefreshing}
-					title={t`Refresh`}
-					aria-label={t`Refresh`}
-				>
-					<RefreshCwIcon className={`size-4 transition-transform duration-300 ${isRefreshing ? "animate-spin" : ""}`} />
-				</button>
+				<div className="absolute top-2 right-2 flex items-center gap-0.5">
+					<button
+						onClick={() => copyText(logsText, setCopied, copyTextareaRef.current)}
+						className="opacity-60 hover:opacity-100 p-1"
+						disabled={!logsText}
+						title={t`Copy`}
+						aria-label={t`Copy`}
+					>
+						{copied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
+					</button>
+					<button
+						onClick={() => downloadText(logsText, `${containerName}-logs.txt`)}
+						className="opacity-60 hover:opacity-100 p-1"
+						disabled={!logsText}
+						title={t`Download`}
+						aria-label={t`Download`}
+					>
+						<DownloadIcon className="size-4" />
+					</button>
+					<button
+						onClick={onRefresh}
+						className="opacity-60 hover:opacity-100 p-1"
+						disabled={isRefreshing}
+						title={t`Refresh`}
+						aria-label={t`Refresh`}
+					>
+						<RefreshCwIcon className={`size-4 transition-transform duration-300 ${isRefreshing ? "animate-spin" : ""}`} />
+					</button>
+				</div>
 			</DialogContent>
 		</Dialog>
 	)
@@ -564,21 +676,47 @@ function InfoFullscreenDialog({
 	open,
 	onOpenChange,
 	infoDisplay,
+	infoText,
 	containerName,
 }: {
 	open: boolean
 	onOpenChange: (open: boolean) => void
 	infoDisplay: string
+	infoText: string
 	containerName: string
 }) {
+	const copyTextareaRef = useRef<HTMLTextAreaElement>(null)
+	const [copied, setCopied] = useState(false)
+
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="w-[calc(100vw-20px)] h-[calc(100dvh-20px)] max-w-none p-0 bg-gh-dark border-0 text-white">
 				<DialogTitle className="sr-only">{containerName} info</DialogTitle>
+				<textarea ref={copyTextareaRef} aria-hidden readOnly className="sr-only" />
 				<div className="flex-1 overflow-auto">
 					<div className="h-full w-full overflow-auto p-3 rounded-md bg-gh-dark text-sm leading-relaxed">
 						<div dangerouslySetInnerHTML={{ __html: infoDisplay }} />
 					</div>
+				</div>
+				<div className="absolute top-2 right-2 flex items-center gap-0.5">
+					<button
+						onClick={() => copyText(infoText, setCopied, copyTextareaRef.current)}
+						className="opacity-60 hover:opacity-100 p-1"
+						disabled={!infoText}
+						title={t`Copy`}
+						aria-label={t`Copy`}
+					>
+						{copied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
+					</button>
+					<button
+						onClick={() => downloadText(infoText, `${containerName}-info.json`)}
+						className="opacity-60 hover:opacity-100 p-1"
+						disabled={!infoText}
+						title={t`Download`}
+						aria-label={t`Download`}
+					>
+						<DownloadIcon className="size-4" />
+					</button>
 				</div>
 			</DialogContent>
 		</Dialog>
