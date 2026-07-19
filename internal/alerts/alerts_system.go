@@ -176,6 +176,12 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 		case "NetworkErrors":
 			val = data.Stats.NetworkErrorsPs
 			unit = "/s"
+		case "CtxSwitches":
+			val = data.Stats.CtxSwitchesPs
+			unit = "/s"
+		case "Interrupts":
+			val = data.Stats.InterruptsPs
+			unit = "/s"
 		}
 
 		triggered := alertData.Triggered
@@ -386,6 +392,10 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 				alert.val += stats.TCPRetransPs
 			case "NetworkErrors":
 				alert.val += stats.NetworkErrorsPs
+			case "CtxSwitches":
+				alert.val += stats.CtxSwitchesPs
+			case "Interrupts":
+				alert.val += stats.InterruptsPs
 			default:
 				continue
 			}
@@ -490,11 +500,15 @@ func (am *AlertManager) sendSystemAlert(alert SystemAlertData) {
 	if alert.name == "MemAvailable" {
 		alert.name = "Available Memory"
 	}
-	// format TCPRetrans/NetworkErrors names
+	// format TCPRetrans/NetworkErrors/CtxSwitches/Interrupts names
 	if alert.name == "TCPRetrans" {
 		alert.name = "TCP Retransmissions"
 	} else if alert.name == "NetworkErrors" {
 		alert.name = "Network Errors"
+	} else if alert.name == "CtxSwitches" {
+		alert.name = "Context Switches"
+	} else if alert.name == "Interrupts" {
+		alert.name = "Interrupts"
 	}
 
 	// make title alert name lowercase if not CPU, GPU, CPU Pressure, Memory Pressure, or IO Pressure

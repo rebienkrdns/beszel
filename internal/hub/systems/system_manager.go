@@ -7,6 +7,7 @@ import (
 
 	"github.com/henrygd/beszel/internal/hub/ws"
 
+	"github.com/henrygd/beszel/internal/entities/container"
 	"github.com/henrygd/beszel/internal/entities/system"
 	"github.com/henrygd/beszel/internal/hub/expirymap"
 
@@ -53,6 +54,7 @@ type hubLike interface {
 	core.App
 	GetSSHKey(dataDir string) (ssh.Signer, error)
 	HandleSystemAlerts(systemRecord *core.Record, data *system.CombinedData) error
+	HandleContainerAlerts(systemRecord *core.Record, containers []*container.Stats) error
 	HandleStatusAlerts(status string, systemRecord *core.Record) error
 	CancelPendingStatusAlerts(systemID string)
 }
@@ -211,10 +213,15 @@ func (sm *SystemManager) onRecordAfterUpdateSuccess(e *core.RecordEvent) error {
 		return sm.AddRecord(e.Record, nil)
 	}
 
-	// Trigger system alerts when system comes online
+	// Trigger system and container alerts when system comes online
 	if newStatus == up {
 		if err := sm.hub.HandleSystemAlerts(e.Record, system.data); err != nil {
 			e.App.Logger().Error("Error handling system alerts", "err", err)
+		}
+		if len(system.data.Containers) > 0 {
+			if err := sm.hub.HandleContainerAlerts(e.Record, system.data.Containers); err != nil {
+				e.App.Logger().Error("Error handling container alerts", "err", err)
+			}
 		}
 	}
 

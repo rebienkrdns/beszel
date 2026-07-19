@@ -65,6 +65,8 @@ type SystemAlertStats struct {
 	OOMKillDelta    uint32                        `json:"okd"`
 	TCPRetransPs    float64                       `json:"trp"`
 	NetworkErrorsPs float64                       `json:"nep"`
+	CtxSwitchesPs   float64                       `json:"ctx"`
+	InterruptsPs    float64                       `json:"irq"`
 }
 
 type SystemAlertGPUData struct {
