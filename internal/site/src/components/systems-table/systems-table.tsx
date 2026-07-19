@@ -353,15 +353,7 @@ const AllSystemsTable = memo(
 			>
 				{/* add header height to table size */}
 				<div style={{ height: `${virtualizer.getTotalSize() + 50}px`, paddingTop, paddingBottom }}>
-					<table className="text-sm w-full h-full table-fixed">
-						<colgroup>
-							{table.getVisibleLeafColumns().map((col) => (
-								<col
-									key={col.id}
-									style={{ width: `${(col.getSize() / table.getTotalSize()) * 100}%` }}
-								/>
-							))}
-						</colgroup>
+					<table className="text-sm w-full h-full">
 						<SystemsTableHead table={table} />
 						<TableBody onMouseEnter={preloadSystemDetail}>
 							{rows.length ? (
