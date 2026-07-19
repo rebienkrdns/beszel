@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"os"
 	"strings"
 
 	"github.com/pocketbase/pocketbase/core"
@@ -46,9 +47,13 @@ func (rm *responseModifier) RoundTrip(req *http.Request) (*http.Response, error)
 
 // startServer sets up the development server for Beszel
 func (h *Hub) startServer(se *core.ServeEvent) error {
+	viteHost := os.Getenv("VITE_HOST")
+	if viteHost == "" {
+		viteHost = "localhost:5173"
+	}
 	proxy := httputil.NewSingleHostReverseProxy(&url.URL{
 		Scheme: "http",
-		Host:   "localhost:5173",
+		Host:   viteHost,
 	})
 
 	proxy.Transport = &responseModifier{
